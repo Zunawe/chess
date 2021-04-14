@@ -5,7 +5,7 @@ import { thunkMiddleware } from './middlewares'
 import { reducer } from './reducers/app'
 
 const initialState: State = {
-  counter: 0
+  board: []
 }
 
 export const AppContext = createContext<[State, Dispatch, () => State]>([initialState, () => {}, () => initialState])

@@ -6,10 +6,18 @@
   display: flex;
   flex-direction: column-reverse;
 
-  .row {
+  .rank {
     height: 10vmin;
     display: flex;
     flex-direction: row;
     align-items: stretch;
+  }
+}
+
+#board.flipped {
+  flex-direction: column;
+
+  .rank {
+    flex-direction: row-reverse;
   }
 }

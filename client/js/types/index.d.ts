@@ -3,8 +3,19 @@ declare abstract class Action {
   constructor (payload?: any)
 }
 
+declare interface Coordinates {
+  rank: number
+  file: number
+}
+
+declare interface Piece {
+  color: 'D' | 'L'
+  type: 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
+  coordinates: Coordinates
+}
+
 declare interface State {
-  counter: number
+  board: Piece[]
 }
 
 declare interface Store {

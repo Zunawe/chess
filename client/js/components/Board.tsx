@@ -1,4 +1,6 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
+
+import { AppContext } from '../context/app'
 import { Tile, TileProps } from './index'
 
 interface BoardProps {
@@ -6,6 +8,8 @@ interface BoardProps {
 }
 
 export const Board: FC<BoardProps> = (props) => {
+  const [state] = useContext(AppContext)
+
   const tiles: TileProps[][] = Array(8).fill(null).map((_, r) => {
     return Array(8).fill(null).map((_, c) => {
       return {
@@ -16,19 +20,16 @@ export const Board: FC<BoardProps> = (props) => {
     })
   })
 
-  tiles[0][1].piece = {
-    type: 'P',
-    color: 'D'
-  }
-
-  console.log(tiles)
+  state.board.forEach((piece) => {
+    tiles[piece.coordinates.rank][piece.coordinates.file].piece = piece
+  })
 
   return (
-    <div id='board'>
-      {tiles.map((row, r) => {
+    <div id='board' className={props.perspective === 'D' ? 'flipped' : ''}>
+      {tiles.map((rank, r) => {
         return (
-          <div className='row' key={r}>
-            {row.map((tile) => {
+          <div className='rank' key={r}>
+            {rank.map((tile) => {
               return (
                 <Tile {...tile} key={`${tile.rank}${tile.file}`} />
               )

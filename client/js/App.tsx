@@ -1,12 +1,18 @@
-import React, { FC } from 'react'
-// import React, { FC, useContext } from 'react'
+import React, { FC, useContext, useEffect } from 'react'
 
-// import { setCounter, slowlyDecrementCounter } from './context/actions/app'
+import { movePiece, resetBoard } from './context/actions/app'
 import { Board } from './components'
-// import { AppContext } from './context/app'
+import { AppContext } from './context/app'
 
 export const App: FC = () => {
-  // const [state, dispatch] = useContext(AppContext)
+  const [, dispatch] = useContext(AppContext)
+
+  useEffect(() => {
+    dispatch(resetBoard())
+  }, [])
+  useEffect(() => {
+    setTimeout(() => dispatch(movePiece({ rank: 1, file: 0 }, { rank: 3, file: 0 })), 2000)
+  }, [])
 
   return (
     <Board perspective='L' />

@@ -7,7 +7,7 @@ export interface TileProps {
   file: number
   piece?: null | {
     color: 'D' | 'L'
-    type: 'K' | 'Q' | 'R' | 'B' | 'N' | 'P'
+    type: 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
   }
 }
 
