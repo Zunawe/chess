@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useContext, useMemo, useState } from 'react'
-import { setDragging, selectPiece } from '../context/actions/app'
+import { setDragging, selectPiece, removePiece, movePiece } from '../context/actions/app'
 
 import { AppContext } from '../context/app'
 
@@ -35,8 +35,22 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
     }
   }, [state.dragging])
 
-  const endDrag = useCallback(() => {
+  const endDrag = useCallback((e) => {
     dispatch(setDragging(false))
+
+    e.target.hidden = true
+    const hoveredTile = document.elementFromPoint(e.clientX, e.clientY)
+    e.target.hidden = false
+
+    if (hoveredTile !== null) {
+      const tile = hoveredTile as HTMLElement
+      if (tile.dataset.rank !== undefined && tile.dataset.file !== undefined) {
+        const r = Number.parseInt(tile.dataset.rank)
+        const f = Number.parseInt(tile.dataset.file)
+        dispatch(removePiece({ rank: r, file: f }))
+        dispatch(movePiece(coordinates, { rank: r, file: f }))
+      }
+    }
   }, [])
 
   const selected = useMemo(() => {
@@ -45,6 +59,8 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
 
   return (
     <img
+      data-rank={coordinates.rank}
+      data-file={coordinates.file}
       style={selected && state.dragging ? {
         transform: `translate(calc(${dx}px - 5vmin), calc(${dy}px - 5vmin))`
       } : {}}

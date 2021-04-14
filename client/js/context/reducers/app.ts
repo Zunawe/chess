@@ -11,9 +11,14 @@ import {
 export const reducer: Reducer = (state, action) => {
   if (action instanceof RemovePieceAction) {
     const i = state.board.findIndex((piece) => {
-      return piece.coordinates.rank === action.payload.from.rank &&
-        piece.coordinates.file === action.payload.from.file
+      return piece.coordinates.rank === action.payload.rank &&
+        piece.coordinates.file === action.payload.file
     })
+
+    if (i === -1) {
+      return state
+    }
+
     return {
       ...state,
       board: [
@@ -26,6 +31,11 @@ export const reducer: Reducer = (state, action) => {
       return piece.coordinates.rank === action.payload.from.rank &&
         piece.coordinates.file === action.payload.from.file
     })
+
+    if (i === -1) {
+      return state
+    }
+
     return {
       ...state,
       board: [
