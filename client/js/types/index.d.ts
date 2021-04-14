@@ -16,6 +16,8 @@ declare interface Piece {
 
 declare interface State {
   board: Piece[]
+  dragging: boolean
+  selected: null | Coordinates
 }
 
 declare interface Store {

@@ -12,3 +12,12 @@ export const removePiece = (from: Coordinates): RemovePieceAction => (new Remove
 
 export class SetPieceAction extends Action {}
 export const setPiece = (at: Coordinates, piece: Piece): SetPieceAction => (new SetPieceAction({ at, piece }))
+
+export class SetDraggingAction extends Action {}
+export const setDragging = (dragging: boolean): SetDraggingAction => (new SetDraggingAction(dragging))
+
+export class SelectPieceAction extends Action {}
+export const selectPiece = (coordinates: Coordinates): SelectPieceAction => (new SelectPieceAction(coordinates))
+
+export class DeselectPieceAction extends Action {}
+export const deselectPiece = (): DeselectPieceAction => (new DeselectPieceAction())

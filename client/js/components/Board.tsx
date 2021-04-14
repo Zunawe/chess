@@ -1,14 +1,20 @@
-import React, { FC, useContext } from 'react'
+import React, { FC, useContext, useCallback } from 'react'
 
 import { AppContext } from '../context/app'
 import { Tile, TileProps } from './index'
+import { deselectPiece } from '../context/actions/app'
 
 interface BoardProps {
   perspective: 'D' | 'L'
 }
 
 export const Board: FC<BoardProps> = (props) => {
-  const [state] = useContext(AppContext)
+  const [state, dispatch] = useContext(AppContext)
+  const handleMouseUp = useCallback(() => {
+    if (!state.dragging) {
+      dispatch(deselectPiece())
+    }
+  }, [state.dragging])
 
   const tiles: TileProps[][] = Array(8).fill(null).map((_, r) => {
     return Array(8).fill(null).map((_, c) => {
@@ -25,7 +31,7 @@ export const Board: FC<BoardProps> = (props) => {
   })
 
   return (
-    <div id='board' className={props.perspective === 'D' ? 'flipped' : ''}>
+    <div id='board' className={props.perspective === 'D' ? 'flipped' : ''} onMouseUp={handleMouseUp}>
       {tiles.map((rank, r) => {
         return (
           <div className='rank' key={r}>

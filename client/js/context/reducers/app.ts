@@ -1,4 +1,12 @@
-import { RemovePieceAction, MovePieceAction, ResetBoardAction, SetPieceAction } from '../actions/app'
+import {
+  RemovePieceAction,
+  MovePieceAction,
+  ResetBoardAction,
+  SetPieceAction,
+  SetDraggingAction,
+  SelectPieceAction,
+  DeselectPieceAction
+} from '../actions/app'
 
 export const reducer: Reducer = (state, action) => {
   if (action instanceof RemovePieceAction) {
@@ -83,6 +91,23 @@ export const reducer: Reducer = (state, action) => {
         { color: 'D', type: 'N', coordinates: { rank: 7, file: 6 } },
         { color: 'D', type: 'R', coordinates: { rank: 7, file: 7 } }
       ]
+    }
+  } else if (action instanceof SetDraggingAction) {
+    return {
+      ...state,
+      dragging: action.payload
+    }
+  } else if (action instanceof SelectPieceAction) {
+    return {
+      ...state,
+      selected: {
+        ...action.payload
+      }
+    }
+  } else if (action instanceof DeselectPieceAction) {
+    return {
+      ...state,
+      selected: null
     }
   }
   return state

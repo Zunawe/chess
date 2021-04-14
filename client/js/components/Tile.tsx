@@ -14,7 +14,7 @@ export interface TileProps {
 export const Tile: FC<TileProps> = ({ rank, file, piece }) => {
   return (
     <div className={`tile tile--${(rank + file) % 2 === 0 ? 'dark' : 'light'}`}>
-      {piece === undefined || piece === null ? null : <Piece color={piece.color} type={piece.type} />}
+      {piece === undefined || piece === null ? null : <Piece color={piece.color} type={piece.type} coordinates={{ rank, file }} />}
     </div>
   )
 }
