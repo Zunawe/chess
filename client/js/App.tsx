@@ -1,18 +1,14 @@
-import React, { FC, useContext } from 'react'
+import React, { FC } from 'react'
+// import React, { FC, useContext } from 'react'
 
-import { setCounter, slowlyDecrementCounter } from './context/actions/app'
-import { Button } from './components'
-import { AppContext } from './context/app'
+// import { setCounter, slowlyDecrementCounter } from './context/actions/app'
+import { Board } from './components'
+// import { AppContext } from './context/app'
 
 export const App: FC = () => {
-  const [state, dispatch] = useContext(AppContext)
-
-  const handleClick = (): void => {
-    dispatch(setCounter(state.counter + 1))
-    dispatch(slowlyDecrementCounter())
-  }
+  // const [state, dispatch] = useContext(AppContext)
 
   return (
-    <Button onClick={handleClick}>You've clicked me {state.counter} times</Button>
+    <Board perspective='L' />
   )
 }
