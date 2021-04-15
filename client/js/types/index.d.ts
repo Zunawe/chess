@@ -8,10 +8,18 @@ declare interface Coordinates {
   file: number
 }
 
+declare type Color = 'D' | 'L'
+declare type PieceType = 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
+
 declare interface Piece {
-  color: 'D' | 'L'
-  type: 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
+  color: Color
+  type: PieceType
   coordinates: Coordinates
+}
+
+declare interface Move {
+  piece: Piece
+  to: Coordinates
 }
 
 declare interface State {
