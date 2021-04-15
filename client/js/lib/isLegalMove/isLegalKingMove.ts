@@ -18,13 +18,13 @@ export const isLegalKingMove = (move: Move, moves: Move[], board: Board): boolea
 
       // All spaces between king and rook must not be occupied
       for (let f = 4 + direction; f !== 0 && f !== 7; f += direction) {
-        if (board.get((new Coordinates(f, rank)).toString()) !== undefined) {
+        if (board[(new Coordinates(f, rank)).toString()] !== undefined) {
           return false
         }
       }
 
       // Rook of the same color must be in the corresponding corner
-      const rook = board.get((new Coordinates(direction < 0 ? 0 : 7, rank)).toString())
+      const rook = board[(new Coordinates(direction < 0 ? 0 : 7, rank)).toString()]
       if (rook === undefined || rook.color !== from[1].color) {
         return false
       }
@@ -44,7 +44,7 @@ export const isLegalKingMove = (move: Move, moves: Move[], board: Board): boolea
       return true
     }
 
-    const pieceAtDestination = board.get(to[0].toString())
+    const pieceAtDestination = board[to[0].toString()]
     if (pieceAtDestination === undefined) {
       return true
     } else {

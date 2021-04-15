@@ -12,12 +12,12 @@ export const isLegalPawnMove = (move: Move, moves: Move[], board: Board): boolea
         return false
       }
 
-      return board.get((new Coordinates(from[0].file, from[0].rank + direction)).toString()) === undefined &&
-        board.get(to[0].toString()) === undefined
+      return board[(new Coordinates(from[0].file, from[0].rank + direction)).toString()] === undefined &&
+        board[to[0].toString()] === undefined
     }
 
     if (to[0].file - from[0].file !== 0) {
-      const pieceAtDestination = board.get(to[0].toString())
+      const pieceAtDestination = board[to[0].toString()]
       if (pieceAtDestination === undefined) {
         const prevMove = moves[moves.length - 1]
         if (prevMove !== undefined && prevMove.from[1].type === 'P' && prevMove.to[0].file === to[0].file) {
@@ -31,7 +31,7 @@ export const isLegalPawnMove = (move: Move, moves: Move[], board: Board): boolea
       }
     }
 
-    return board.get(to[0].toString()) === undefined
+    return board[to[0].toString()] === undefined
   })
 
   return legalMoves.some((legalMove) => movesEqual(legalMove, move))

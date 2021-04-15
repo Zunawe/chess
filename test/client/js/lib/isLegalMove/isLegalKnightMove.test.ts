@@ -25,9 +25,9 @@ describe('isLegalKnightMove', () => {
   })
 
   it('should allow a knight to capture', () => {
-    const board: Board = new Map()
-    board.set('d4', createPiece('N', 'L'))
-    board.set('e6', createPiece('P', 'D'))
+    const board: Board = {}
+    board['d4'] = createPiece('N', 'L')
+    board['e6'] = createPiece('P', 'D')
 
     const move: Move = {
       from: [new Coordinates('d4'), createPiece('N', 'L')],

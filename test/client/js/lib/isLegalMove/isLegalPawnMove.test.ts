@@ -39,9 +39,9 @@ describe('isLegalPawnMove', () => {
   })
 
   it('should allow a pawn to capture left', () => {
-    const board: Board = new Map()
-    board.set('b2', createPiece('P', 'L'))
-    board.set('a3', createPiece('P', 'D'))
+    const board: Board = {}
+    board['b2'] = createPiece('P', 'L')
+    board['a3'] = createPiece('P', 'D')
 
     const move: Move = {
       from: [new Coordinates('b2'), createPiece('P', 'L')],
@@ -51,9 +51,9 @@ describe('isLegalPawnMove', () => {
   })
 
   it('should allow a pawn to capture right', () => {
-    const board: Board = new Map()
-    board.set('b2', createPiece('P', 'L'))
-    board.set('c3', createPiece('P', 'D'))
+    const board: Board = {}
+    board['b2'] = createPiece('P', 'L')
+    board['c3'] = createPiece('P', 'D')
 
     const move: Move = {
       from: [new Coordinates('b2'), createPiece('P', 'L')],
@@ -63,9 +63,9 @@ describe('isLegalPawnMove', () => {
   })
 
   it('should not allow a pawn to capture its own pieces', () => {
-    const board: Board = new Map()
-    board.set('b2', createPiece('P', 'L'))
-    board.set('c3', createPiece('P', 'L'))
+    const board: Board = {}
+    board['b2'] = createPiece('P', 'L')
+    board['c3'] = createPiece('P', 'L')
 
     const move: Move = {
       from: [new Coordinates('b2'), createPiece('P', 'L')],
@@ -75,9 +75,9 @@ describe('isLegalPawnMove', () => {
   })
 
   it('should not allow a pawn to move when it is blocked', () => {
-    const board: Board = new Map()
-    board.set('a2', createPiece('P', 'L'))
-    board.set('a3', createPiece('P', 'D'))
+    const board: Board = {}
+    board['a2'] = createPiece('P', 'L')
+    board['a3'] = createPiece('P', 'D')
 
     const move: Move = {
       from: [new Coordinates('a2'), createPiece('P', 'L')],
@@ -87,9 +87,9 @@ describe('isLegalPawnMove', () => {
   })
 
   it('should not allow a pawn to move two spaces when it is blocked', () => {
-    const board: Board = new Map()
-    board.set('a2', createPiece('P', 'L'))
-    board.set('a4', createPiece('P', 'D'))
+    const board: Board = {}
+    board['a2'] = createPiece('P', 'L')
+    board['a4'] = createPiece('P', 'D')
 
     const move: Move = {
       from: [new Coordinates('a2'), createPiece('P', 'L')],
@@ -99,9 +99,9 @@ describe('isLegalPawnMove', () => {
   })
 
   it('should not allow a pawn to move two spaces when it is blocked from moving one', () => {
-    const board: Board = new Map()
-    board.set('a2', createPiece('P', 'L'))
-    board.set('a3', createPiece('P', 'D'))
+    const board: Board = {}
+    board['a2'] = createPiece('P', 'L')
+    board['a3'] = createPiece('P', 'D')
 
     const move: Move = {
       from: [new Coordinates('a2'), createPiece('P', 'L')],

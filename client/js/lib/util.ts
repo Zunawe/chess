@@ -79,9 +79,9 @@ export const getStartingBoard = (): Board => {
   ]
 
   return data.reduce<Board>((board, [coordinates, piece]) => {
-    board.set(coordinates.toString(), piece)
+    board[coordinates.toString()] = piece
     return board
-  }, new Map())
+  }, {})
 }
 
 export const applyMoves = (moves: Move[], board: Board): void => {
@@ -91,7 +91,7 @@ export const applyMoves = (moves: Move[], board: Board): void => {
 }
 
 export const applyMove = (move: Move, board: Board): void => {
-  const piece = board.get(move.from[0].toString())
+  const piece = board[move.from[0].toString()]
 
   if (piece === undefined) {
     throw new Error('Invalid move')
@@ -103,7 +103,7 @@ export const applyMove = (move: Move, board: Board): void => {
       ? (move.from[1].color === 'L' ? new Coordinates('a1') : new Coordinates('a8'))
       : (move.from[1].color === 'L' ? new Coordinates('h1') : new Coordinates('h8'))
 
-    const rook = board.get(rookCoords.toString())
+    const rook = board[rookCoords.toString()]
     if (rook === undefined || rook.type !== 'R') {
       throw new Error('Couldn\'t find rook to castle with')
     }
@@ -114,6 +114,6 @@ export const applyMove = (move: Move, board: Board): void => {
     }, board)
   }
 
-  board.delete(move.from[0].toString())
-  board.set(move.to[0].toString(), move.to[1])
+  delete board[move.from[0].toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
+  board[move.to[0].toString()] = move.to[1]
 }

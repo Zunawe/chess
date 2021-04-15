@@ -3,8 +3,8 @@ import { isLegalKingMove } from '../../../../../client/js/lib/isLegalMove'
 
 describe('isLegalKingMove', () => {
   it('should allow the king to move normally', () => {
-    const board: Board = new Map()
-    board.set('e1', createPiece('K', 'L'))
+    const board: Board = {}
+    board['e1'] = createPiece('K', 'L')
 
     const move1: Move = {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
@@ -26,9 +26,9 @@ describe('isLegalKingMove', () => {
   })
 
   it('should not allow the king to capture its own piece', () => {
-    const board: Board = new Map()
-    board.set('e1', createPiece('K', 'L'))
-    board.set('e2', createPiece('P', 'L'))
+    const board: Board = {}
+    board['e1'] = createPiece('K', 'L')
+    board['e2'] = createPiece('P', 'L')
 
     const move: Move = {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
@@ -38,9 +38,9 @@ describe('isLegalKingMove', () => {
   })
 
   it('should allow the king to capture pieces', () => {
-    const board: Board = new Map()
-    board.set('e1', createPiece('K', 'L'))
-    board.set('e2', createPiece('P', 'D'))
+    const board: Board = {}
+    board['e1'] = createPiece('K', 'L')
+    board['e2'] = createPiece('P', 'D')
 
     const move: Move = {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
@@ -50,9 +50,9 @@ describe('isLegalKingMove', () => {
   })
 
   it('should allow the white king to castle kingside', () => {
-    const board: Board = new Map()
-    board.set('e1', createPiece('K', 'L'))
-    board.set('h1', createPiece('R', 'L'))
+    const board: Board = {}
+    board['e1'] = createPiece('K', 'L')
+    board['h1'] = createPiece('R', 'L')
 
     const move: Move = {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
@@ -62,9 +62,9 @@ describe('isLegalKingMove', () => {
   })
 
   it('should allow the white king to castle queenside', () => {
-    const board: Board = new Map()
-    board.set('e1', createPiece('K', 'L'))
-    board.set('a1', createPiece('R', 'L'))
+    const board: Board = {}
+    board['e1'] = createPiece('K', 'L')
+    board['a1'] = createPiece('R', 'L')
 
     const move: Move = {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
@@ -74,9 +74,9 @@ describe('isLegalKingMove', () => {
   })
 
   it('should allow the black king to castle kingside', () => {
-    const board: Board = new Map()
-    board.set('e8', createPiece('K', 'D'))
-    board.set('h8', createPiece('R', 'D'))
+    const board: Board = {}
+    board['e8'] = createPiece('K', 'D')
+    board['h8'] = createPiece('R', 'D')
 
     const move: Move = {
       from: [new Coordinates('e8'), createPiece('K', 'D')],
@@ -86,9 +86,9 @@ describe('isLegalKingMove', () => {
   })
 
   it('should allow the black king to castle queenside', () => {
-    const board: Board = new Map()
-    board.set('e8', createPiece('K', 'D'))
-    board.set('a8', createPiece('R', 'D'))
+    const board: Board = {}
+    board['e8'] = createPiece('K', 'D')
+    board['a8'] = createPiece('R', 'D')
 
     const move: Move = {
       from: [new Coordinates('e8'), createPiece('K', 'D')],
@@ -98,10 +98,10 @@ describe('isLegalKingMove', () => {
   })
 
   it('should not allow the king to castle if there is a piece blocking', () => {
-    const board: Board = new Map()
-    board.set('e1', createPiece('K', 'L'))
-    board.set('a1', createPiece('R', 'L'))
-    board.set('b1', createPiece('N', 'L'))
+    const board: Board = {}
+    board['e1'] = createPiece('K', 'L')
+    board['a1'] = createPiece('R', 'L')
+    board['b1'] = createPiece('N', 'L')
 
     const move: Move = {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
@@ -111,9 +111,9 @@ describe('isLegalKingMove', () => {
   })
 
   it('should not allow the king to castle if the king has moved', () => {
-    const board: Board = new Map()
-    board.set('e1', createPiece('K', 'L'))
-    board.set('a1', createPiece('R', 'L'))
+    const board: Board = {}
+    board['e1'] = createPiece('K', 'L')
+    board['a1'] = createPiece('R', 'L')
 
     const moves: Move[] = [
       {
@@ -134,9 +134,9 @@ describe('isLegalKingMove', () => {
   })
 
   it('should not allow the king to castle if the rook has moved', () => {
-    const board: Board = new Map()
-    board.set('e1', createPiece('K', 'L'))
-    board.set('a1', createPiece('R', 'L'))
+    const board: Board = {}
+    board['e1'] = createPiece('K', 'L')
+    board['a1'] = createPiece('R', 'L')
 
     const moves: Move[] = [
       {
@@ -157,8 +157,8 @@ describe('isLegalKingMove', () => {
   })
 
   it('should not allow the king to castle if the rook is missing', () => {
-    const board: Board = new Map()
-    board.set('e1', createPiece('K', 'L'))
+    const board: Board = {}
+    board['e1'] = createPiece('K', 'L')
 
     const move: Move = {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
@@ -168,9 +168,9 @@ describe('isLegalKingMove', () => {
   })
 
   it('should not allow the king to castle if the rook is the wrong color', () => {
-    const board: Board = new Map()
-    board.set('e1', createPiece('K', 'L'))
-    board.set('a1', createPiece('K', 'D'))
+    const board: Board = {}
+    board['e1'] = createPiece('K', 'L')
+    board['a1'] = createPiece('K', 'D')
 
     const move: Move = {
       from: [new Coordinates('e1'), createPiece('K', 'L')],

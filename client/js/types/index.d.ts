@@ -11,7 +11,9 @@ declare interface Piece {
   type: PieceType
 }
 
-declare type Board = Map<string, Piece>
+declare interface Board {
+  [key: string]: Piece
+}
 
 declare interface Move {
   from: [import('../lib/util').Coordinates, Piece]
