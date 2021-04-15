@@ -1,6 +1,8 @@
 import { getAllPawnMoves } from './getAllPawnMoves'
+import { getAllKnightMoves } from './getAllKnightMoves'
 
 export * from './getAllPawnMoves'
+export * from './getAllKnightMoves'
 
 export const getAllMoves = (piece: Piece): Move[] => {
   switch (piece.type) {
@@ -8,6 +10,7 @@ export const getAllMoves = (piece: Piece): Move[] => {
       return getAllPawnMoves(piece)
     case 'R':
     case 'N':
+      return getAllKnightMoves(piece)
     case 'B':
     case 'Q':
     case 'K':
