@@ -3,29 +3,25 @@ declare abstract class Action {
   constructor (payload?: any)
 }
 
-declare interface Coordinates {
-  rank: number
-  file: number
-}
-
 declare type Color = 'D' | 'L'
 declare type PieceType = 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
 
 declare interface Piece {
   color: Color
   type: PieceType
-  coordinates: Coordinates
 }
 
+declare type Board = Map<string, Piece>
+
 declare interface Move {
-  piece: Piece
-  to: Coordinates
+  from: [import('../lib/util').Coordinates, Piece]
+  to: [import('../lib/util').Coordinates, Piece]
 }
 
 declare interface State {
   board: Piece[]
   dragging: boolean
-  selected: null | Coordinates
+  selected: null | import('../lib/util').Coordinates
 }
 
 declare interface Store {

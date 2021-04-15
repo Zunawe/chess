@@ -1,38 +1,37 @@
 import { getAllPawnMoves } from '../getAllMoves'
-import { getPieceAtCoordinates, movesEqual } from '../util'
+import { Coordinates, movesEqual } from '../util'
 
-export const isLegalPawnMove = (move: Move, moves: Move[], board: Piece[]): boolean => {
-  const { piece } = move
-  const isFirstMove = piece.color === 'L' ? piece.coordinates.rank === 1 : piece.coordinates.rank === 6
-  const direction = piece.color === 'L' ? 1 : -1
-  const legalMoves = getAllPawnMoves(piece).filter((move) => {
-    if (Math.abs(move.to.rank - piece.coordinates.rank) === 2) {
+export const isLegalPawnMove = (move: Move, moves: Move[], board: Board): boolean => {
+  const { from } = move
+  const isFirstMove = from[1].color === 'L' ? from[0].rank === 1 : from[0].rank === 6
+  const direction = from[1].color === 'L' ? 1 : -1
+  const legalMoves = getAllPawnMoves(from).filter((possibleMove) => {
+    const { from, to } = possibleMove
+    if (Math.abs(to[0].rank - from[0].rank) === 2) {
       if (!isFirstMove) {
         return false
       }
 
-      return getPieceAtCoordinates({
-        rank: piece.coordinates.rank + direction,
-        file: piece.coordinates.file
-      }, board) === null && getPieceAtCoordinates(move.to, board) === null
+      return board.get((new Coordinates(from[0].file, from[0].rank + direction)).toString()) === undefined &&
+        board.get(to[0].toString()) === undefined
     }
 
-    if (move.to.file - piece.coordinates.file !== 0) {
-      const pieceAtDestination = getPieceAtCoordinates(move.to, board)
-      if (pieceAtDestination === null) {
+    if (to[0].file - from[0].file !== 0) {
+      const pieceAtDestination = board.get(to[0].toString())
+      if (pieceAtDestination === undefined) {
         const prevMove = moves[moves.length - 1]
-        if (prevMove !== undefined && prevMove.piece.type === 'P' && prevMove.to.file === move.to.file) {
-          if (Math.abs(prevMove.to.rank - prevMove.piece.coordinates.rank) === 2) {
+        if (prevMove !== undefined && prevMove.from[1].type === 'P' && prevMove.to[0].file === to[0].file) {
+          if (Math.abs(prevMove.to[0].rank - prevMove.from[0].rank) === 2) {
             return true
           }
         }
         return false
       } else {
-        return pieceAtDestination.color !== piece.color
+        return pieceAtDestination.color !== from[1].color
       }
     }
 
-    return getPieceAtCoordinates(move.to, board) === null
+    return board.get(to[0].toString()) === undefined
   })
 
   return legalMoves.some((legalMove) => movesEqual(legalMove, move))

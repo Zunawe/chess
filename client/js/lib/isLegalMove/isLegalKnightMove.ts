@@ -1,14 +1,14 @@
 import { getAllKnightMoves } from '../getAllMoves'
-import { getPieceAtCoordinates, movesEqual } from '../util'
+import { movesEqual } from '../util'
 
-export const isLegalKnightMove = (move: Move, board: Piece[]): boolean => {
-  const { piece } = move
-  const legalMoves = getAllKnightMoves(piece).filter((move) => {
-    const pieceAtDestination = getPieceAtCoordinates(move.to, board)
-    if (pieceAtDestination === null) {
+export const isLegalKnightMove = (move: Move, board: Board): boolean => {
+  const { from, to } = move
+  const legalMoves = getAllKnightMoves(from).filter((move) => {
+    const pieceAtDestination = board.get(to[0].toString())
+    if (pieceAtDestination === undefined) {
       return true
     } else {
-      return pieceAtDestination.color !== piece.color
+      return pieceAtDestination.color !== from[1].color
     }
   })
 

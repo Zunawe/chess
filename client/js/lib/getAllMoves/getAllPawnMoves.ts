@@ -1,37 +1,70 @@
-export const getAllPawnMoves = (piece: Piece): Move[] => {
+import { Coordinates } from '../util'
+
+export const getAllPawnMoves = (from: [Coordinates, Piece]): Move[] => {
+  const [coordinates, piece] = from
   const direction = piece.color === 'L' ? 1 : -1
-  const possibleMoves = [
+  const possibleMoves: Move[] = [
     {
-      piece,
-      to: {
-        rank: piece.coordinates.rank + direction,
-        file: piece.coordinates.file
-      }
+      from,
+      to: [new Coordinates(
+        coordinates.file,
+        coordinates.rank + direction
+      ), piece]
     },
     {
-      piece,
-      to: {
-        rank: piece.coordinates.rank + (direction * 2),
-        file: piece.coordinates.file
-      }
+      from,
+      to: [new Coordinates(
+        coordinates.file,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'Q'
+      }]
     },
     {
-      piece,
-      to: {
-        rank: piece.coordinates.rank + direction,
-        file: piece.coordinates.file + 1
-      }
+      from,
+      to: [new Coordinates(
+        coordinates.file,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'R'
+      }]
     },
     {
-      piece,
-      to: {
-        rank: piece.coordinates.rank + direction,
-        file: piece.coordinates.file - 1
-      }
+      from,
+      to: [new Coordinates(
+        coordinates.file,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'B'
+      }]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file,
+        coordinates.rank + direction + direction
+      ), piece]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file + 1,
+        coordinates.rank + direction
+      ), piece]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file - 1,
+        coordinates.rank + direction
+      ), piece]
     }
   ]
 
   return possibleMoves.filter((move) => {
-    return move.to.file <= 7 && move.to.file >= 0 && move.to.rank <= 7 && move.to.rank >= 0
+    return move.to[0].file <= 7 && move.to[0].file >= 0 && move.to[0].rank <= 7 && move.to[0].rank >= 0
   })
 }

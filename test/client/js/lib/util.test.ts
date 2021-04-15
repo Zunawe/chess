@@ -1,18 +1,12 @@
-import { piecesEqual, coordinatesEqual } from '../../../../client/js/lib/util'
+import { piecesEqual, coordinatesEqual, Coordinates } from '../../../../client/js/lib/util'
 
 describe('util', () => {
   describe('coordinatesEqual', () => {
     let a: Coordinates, b: Coordinates
 
     beforeEach(() => {
-      a = {
-        rank: 0,
-        file: 0
-      }
-      b = {
-        rank: 0,
-        file: 0
-      }
+      a = new Coordinates(0, 0)
+      b = new Coordinates(0, 0)
     })
 
     it('should find coordinates to be equal to themselves', () => {
@@ -37,19 +31,11 @@ describe('util', () => {
     beforeEach(() => {
       a = {
         type: 'P',
-        color: 'L',
-        coordinates: {
-          rank: 0,
-          file: 0
-        }
+        color: 'L'
       }
       b = {
         type: 'P',
-        color: 'L',
-        coordinates: {
-          rank: 0,
-          file: 0
-        }
+        color: 'L'
       }
     })
 
@@ -65,11 +51,6 @@ describe('util', () => {
 
     it('should find different colored pieces to be different', () => {
       b.color = 'D'
-      expect(piecesEqual(a, b)).toBe(false)
-    })
-
-    it('should find pieces in different positions to be different', () => {
-      b.coordinates.rank = 4
       expect(piecesEqual(a, b)).toBe(false)
     })
   })

@@ -1,175 +1,167 @@
-import { getStartingBoard, applyMoves, createPiece } from '../../../../../client/js/lib/util'
+import { getStartingBoard, applyMoves, createPiece, Coordinates } from '../../../../../client/js/lib/util'
 import { isLegalPawnMove } from '../../../../../client/js/lib/isLegalMove'
 
 describe('isLegalPawnMove', () => {
-  let board: Piece[]
-  let piece: Piece
+  let board: Board
 
   beforeEach(() => {
     board = getStartingBoard()
-    piece = createPiece('P', 'L', 1, 0)
   })
 
   it('should allow a pawn to move forward one space', () => {
     const move: Move = {
-      piece,
-      to: { rank: 2, file: 0 }
+      from: [new Coordinates('a2'), createPiece('P', 'L')],
+      to: [new Coordinates('a3'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, [], board)).toBe(true)
   })
 
   it('should allow a pawn to move forward two spaces on its first turn', () => {
     const move: Move = {
-      piece,
-      to: { rank: 3, file: 0 }
+      from: [new Coordinates('a2'), createPiece('P', 'L')],
+      to: [new Coordinates('a4'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, [], board)).toBe(true)
   })
 
   it('should not allow a pawn to move forward two spaces on its second turn', () => {
-    const moves = [{
-      piece: createPiece('P', 'L', 1, 0),
-      to: { rank: 2, file: 0 }
+    const moves: Move[] = [{
+      from: [new Coordinates('a2'), createPiece('P', 'L')],
+      to: [new Coordinates('a3'), createPiece('P', 'L')]
     }]
     applyMoves(moves, board)
 
     const move: Move = {
-      piece: createPiece('P', 'L', 2, 0),
-      to: { rank: 4, file: 0 }
+      from: [new Coordinates('a3'), createPiece('P', 'L')],
+      to: [new Coordinates('a5'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, moves, board)).toBe(false)
   })
 
   it('should allow a pawn to capture left', () => {
-    const board: Piece[] = [
-      createPiece('P', 'L', 1, 1),
-      createPiece('P', 'D', 2, 0)
-    ]
+    const board: Board = new Map()
+    board.set('b2', createPiece('P', 'L'))
+    board.set('a3', createPiece('P', 'D'))
 
     const move: Move = {
-      piece: createPiece('P', 'L', 1, 1),
-      to: { rank: 2, file: 0 }
+      from: [new Coordinates('b2'), createPiece('P', 'L')],
+      to: [new Coordinates('a3'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, [], board)).toBe(true)
   })
 
   it('should allow a pawn to capture right', () => {
-    const board: Piece[] = [
-      createPiece('P', 'L', 1, 1),
-      createPiece('P', 'D', 2, 2)
-    ]
+    const board: Board = new Map()
+    board.set('b2', createPiece('P', 'L'))
+    board.set('c3', createPiece('P', 'D'))
 
     const move: Move = {
-      piece: createPiece('P', 'L', 1, 1),
-      to: { rank: 2, file: 2 }
+      from: [new Coordinates('b2'), createPiece('P', 'L')],
+      to: [new Coordinates('c3'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, [], board)).toBe(true)
   })
 
   it('should not allow a pawn to capture its own pieces', () => {
-    const board: Piece[] = [
-      createPiece('P', 'L', 1, 1),
-      createPiece('P', 'L', 2, 2)
-    ]
+    const board: Board = new Map()
+    board.set('b2', createPiece('P', 'L'))
+    board.set('c3', createPiece('P', 'L'))
 
     const move: Move = {
-      piece: createPiece('P', 'L', 1, 1),
-      to: { rank: 2, file: 2 }
+      from: [new Coordinates('b2'), createPiece('P', 'L')],
+      to: [new Coordinates('c3'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, [], board)).toBe(false)
   })
 
   it('should not allow a pawn to move when it is blocked', () => {
-    const board: Piece[] = [
-      createPiece('P', 'L', 1, 0),
-      createPiece('P', 'D', 2, 0)
-    ]
+    const board: Board = new Map()
+    board.set('a2', createPiece('P', 'L'))
+    board.set('a3', createPiece('P', 'D'))
+
     const move: Move = {
-      piece: createPiece('P', 'L', 1, 0),
-      to: { rank: 2, file: 0 }
+      from: [new Coordinates('a2'), createPiece('P', 'L')],
+      to: [new Coordinates('a3'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, [], board)).toBe(false)
   })
 
   it('should not allow a pawn to move two spaces when it is blocked', () => {
-    const board: Piece[] = [
-      createPiece('P', 'L', 1, 0),
-      createPiece('P', 'D', 3, 0)
-    ]
+    const board: Board = new Map()
+    board.set('a2', createPiece('P', 'L'))
+    board.set('a4', createPiece('P', 'D'))
+
     const move: Move = {
-      piece: createPiece('P', 'L', 1, 0),
-      to: { rank: 3, file: 0 }
+      from: [new Coordinates('a2'), createPiece('P', 'L')],
+      to: [new Coordinates('a4'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, [], board)).toBe(false)
   })
 
   it('should not allow a pawn to move two spaces when it is blocked from moving one', () => {
-    const board: Piece[] = [
-      createPiece('P', 'L', 1, 0),
-      createPiece('P', 'D', 2, 0)
-    ]
+    const board: Board = new Map()
+    board.set('a2', createPiece('P', 'L'))
+    board.set('a3', createPiece('P', 'D'))
+
     const move: Move = {
-      piece: createPiece('P', 'L', 1, 0),
-      to: { rank: 3, file: 0 }
+      from: [new Coordinates('a2'), createPiece('P', 'L')],
+      to: [new Coordinates('a4'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, [], board)).toBe(false)
   })
 
   it('should allow en passant when applicable', () => {
-    const moves = [
+    const moves: Move[] = [
       {
-        piece: createPiece('P', 'L', 1, 0),
-        to: { rank: 3, file: 0 }
+        from: [new Coordinates('a2'), createPiece('P', 'L')],
+        to: [new Coordinates('a4'), createPiece('P', 'L')]
       },
       {
-        piece: createPiece('P', 'D', 6, 7),
-        to: { rank: 6, file: 6 }
+        from: [new Coordinates('h7'), createPiece('P', 'D')],
+        to: [new Coordinates('h6'), createPiece('P', 'D')]
       },
       {
-        piece: createPiece('P', 'L', 3, 0),
-        to: { rank: 4, file: 0 }
+        from: [new Coordinates('a4'), createPiece('P', 'L')],
+        to: [new Coordinates('a5'), createPiece('P', 'L')]
       },
       {
-        piece: createPiece('P', 'D', 6, 1),
-        to: { rank: 4, file: 1 }
+        from: [new Coordinates('b7'), createPiece('P', 'D')],
+        to: [new Coordinates('b5'), createPiece('P', 'D')]
       }
     ]
     applyMoves(moves, board)
 
     const move: Move = {
-      piece: createPiece('P', 'L', 4, 0),
-      to: { rank: 5, file: 1 }
+      from: [new Coordinates('a5'), createPiece('P', 'L')],
+      to: [new Coordinates('b6'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, moves, board)).toBe(true)
   })
 
   it('should not allow en passant if previous move was not relevant', () => {
-    const moves = [
+    const moves: Move[] = [
       {
-        piece: createPiece('P', 'L', 1, 0),
-        to: { rank: 3, file: 0 }
+        from: [new Coordinates('a2'), createPiece('P', 'L')],
+        to: [new Coordinates('a4'), createPiece('P', 'L')]
       },
       {
-        piece: createPiece('P', 'D', 6, 1),
-        to: { rank: 4, file: 1 }
+        from: [new Coordinates('b7'), createPiece('P', 'D')],
+        to: [new Coordinates('b5'), createPiece('P', 'D')]
       },
       {
-        piece: createPiece('P', 'L', 3, 0),
-        to: { rank: 4, file: 0 }
+        from: [new Coordinates('a4'), createPiece('P', 'L')],
+        to: [new Coordinates('a5'), createPiece('P', 'L')]
       },
       {
-        piece: createPiece('P', 'D', 6, 7),
-        to: { rank: 6, file: 6 }
+        from: [new Coordinates('h7'), createPiece('P', 'D')],
+        to: [new Coordinates('h6'), createPiece('P', 'D')]
       }
     ]
     applyMoves(moves, board)
 
     const move: Move = {
-      piece: createPiece('P', 'L', 4, 0),
-      to: {
-        rank: 5,
-        file: 1
-      }
+      from: [new Coordinates('a5'), createPiece('P', 'L')],
+      to: [new Coordinates('b6'), createPiece('P', 'L')]
     }
     expect(isLegalPawnMove(move, moves, board)).toBe(false)
   })

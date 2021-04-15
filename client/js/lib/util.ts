@@ -1,7 +1,31 @@
+export class Coordinates {
+  file: number
+  rank: number
+
+  constructor (file: number, rank: number)
+  constructor (name: string)
+
+  constructor (...args: any[]) {
+    if (args.length === 1) {
+      const name: string = args[0]
+      this.file = name.charCodeAt(0) - 97
+      this.rank = Number.parseInt(name[1]) - 1
+    } else if (args.length === 2) {
+      this.file = args[0]
+      this.rank = args[1]
+    } else {
+      throw new Error('Wrong number of arguments to Coordinate constructor')
+    }
+  }
+
+  toString (): string {
+    return `${String.fromCharCode(this.file + 97)}${this.rank + 1}`
+  }
+}
+
 export const piecesEqual = (a: Piece, b: Piece): boolean => {
   return a.color === b.color &&
-    a.type === b.type &&
-    coordinatesEqual(a.coordinates, b.coordinates)
+    a.type === b.type
 }
 
 export const coordinatesEqual = (a: Coordinates, b: Coordinates): boolean => {
@@ -10,88 +34,86 @@ export const coordinatesEqual = (a: Coordinates, b: Coordinates): boolean => {
 }
 
 export const movesEqual = (a: Move, b: Move): boolean => {
-  return piecesEqual(a.piece, b.piece) && coordinatesEqual(a.to, b.to)
+  return coordinatesEqual(a.from[0], b.from[0]) &&
+    coordinatesEqual(a.to[0], b.to[0]) &&
+    piecesEqual(a.from[1], b.from[1]) &&
+    piecesEqual(a.to[1], b.to[1])
 }
 
-export const getPieceAtCoordinates = (coordinates: Coordinates, board: Piece[]): Piece | null => {
-  return board.find((piece) => {
-    return coordinatesEqual(piece.coordinates, coordinates)
-  }) ?? null
+export const createPiece = (type: PieceType, color: Color): Piece => ({ type, color })
+
+export const getStartingBoard = (): Board => {
+  const data: Array<[Coordinates, Piece]> = [
+    [new Coordinates(0, 1), createPiece('P', 'L')],
+    [new Coordinates(1, 1), createPiece('P', 'L')],
+    [new Coordinates(2, 1), createPiece('P', 'L')],
+    [new Coordinates(3, 1), createPiece('P', 'L')],
+    [new Coordinates(4, 1), createPiece('P', 'L')],
+    [new Coordinates(5, 1), createPiece('P', 'L')],
+    [new Coordinates(6, 1), createPiece('P', 'L')],
+    [new Coordinates(7, 1), createPiece('P', 'L')],
+    [new Coordinates(0, 0), createPiece('R', 'L')],
+    [new Coordinates(1, 0), createPiece('N', 'L')],
+    [new Coordinates(2, 0), createPiece('B', 'L')],
+    [new Coordinates(3, 0), createPiece('Q', 'L')],
+    [new Coordinates(4, 0), createPiece('K', 'L')],
+    [new Coordinates(5, 0), createPiece('B', 'L')],
+    [new Coordinates(6, 0), createPiece('N', 'L')],
+    [new Coordinates(7, 0), createPiece('R', 'L')],
+    [new Coordinates(0, 6), createPiece('P', 'D')],
+    [new Coordinates(1, 6), createPiece('P', 'D')],
+    [new Coordinates(2, 6), createPiece('P', 'D')],
+    [new Coordinates(3, 6), createPiece('P', 'D')],
+    [new Coordinates(4, 6), createPiece('P', 'D')],
+    [new Coordinates(5, 6), createPiece('P', 'D')],
+    [new Coordinates(6, 6), createPiece('P', 'D')],
+    [new Coordinates(7, 6), createPiece('P', 'D')],
+    [new Coordinates(0, 7), createPiece('R', 'D')],
+    [new Coordinates(1, 7), createPiece('N', 'D')],
+    [new Coordinates(2, 7), createPiece('B', 'D')],
+    [new Coordinates(3, 7), createPiece('Q', 'D')],
+    [new Coordinates(4, 7), createPiece('K', 'D')],
+    [new Coordinates(5, 7), createPiece('B', 'D')],
+    [new Coordinates(6, 7), createPiece('N', 'D')],
+    [new Coordinates(7, 7), createPiece('R', 'D')]
+  ]
+
+  return data.reduce<Board>((board, [coordinates, piece]) => {
+    board.set(coordinates.toString(), piece)
+    return board
+  }, new Map())
 }
 
-export const createPiece = (type: PieceType, color: Color, rank: number, file: number): Piece => {
-  return {
-    type,
-    color,
-    coordinates: { rank, file }
-  }
-}
-
-export const getStartingBoard = (): Piece[] => {
-  return JSON.parse(JSON.stringify(STARTING_BOARD))
-}
-
-export const applyMoves = (moves: Move[], board: Piece[]): void => {
+export const applyMoves = (moves: Move[], board: Board): void => {
   moves.forEach((move) => {
     applyMove(move, board)
   })
 }
 
-export const applyMove = (move: Move, board: Piece[]) => {
-  const piece = board.find((piece) => piecesEqual(piece, move.piece))
+export const applyMove = (move: Move, board: Board): void => {
+  const piece = board.get(move.from[0].toString())
 
   if (piece === undefined) {
-    throw new Error(`Invalid move: ${move}`)
+    throw new Error('Invalid move')
   }
 
   // Castle
-  if (piece.type === 'K' && Math.abs(move.to.file - piece.coordinates.file) === 2) {
-    const rooks = board.filter(({ type, color }) => color === piece.color && type === 'R')
-    const rook = move.to.file - piece.coordinates.file === -2 ?
-      rooks.find(({ coordinates }) => coordinates.file === 0) :
-      rooks.find(({ coordinates }) => coordinates.file === 7)
+  if (piece.type === 'K' && Math.abs(move.to[0].file - move.from[0].file) === 2) {
+    const rookCoords = move.to[0].file - move.from[0].file < 0
+      ? (move.from[1].color === 'L' ? new Coordinates('a1') : new Coordinates('a8'))
+      : (move.from[1].color === 'L' ? new Coordinates('h1') : new Coordinates('h8'))
 
-    if (rook === undefined) {
-      throw new Error(`Couldn't find rook to castle with: ${move}`)
+    const rook = board.get(rookCoords.toString())
+    if (rook === undefined || rook.type !== 'R') {
+      throw new Error('Couldn\'t find rook to castle with')
     }
 
-    rook.coordinates.file = move.to.file + (((move.to.file - piece.coordinates.file) / 2) * -1)
+    applyMove({
+      from: [rookCoords, rook],
+      to: [new Coordinates(move.to[0].file + (move.to[0].file - move.from[0].file / (-2)), move.from[0].rank), rook]
+    }, board)
   }
 
-  piece.coordinates = move.to
+  board.delete(move.from[0].toString())
+  board.set(move.to[0].toString(), move.to[1])
 }
-
-export const STARTING_BOARD: Piece[] = [
-  { color: 'L', type: 'P', coordinates: { rank: 1, file: 0 } },
-  { color: 'L', type: 'P', coordinates: { rank: 1, file: 1 } },
-  { color: 'L', type: 'P', coordinates: { rank: 1, file: 2 } },
-  { color: 'L', type: 'P', coordinates: { rank: 1, file: 3 } },
-  { color: 'L', type: 'P', coordinates: { rank: 1, file: 4 } },
-  { color: 'L', type: 'P', coordinates: { rank: 1, file: 5 } },
-  { color: 'L', type: 'P', coordinates: { rank: 1, file: 6 } },
-  { color: 'L', type: 'P', coordinates: { rank: 1, file: 7 } },
-  { color: 'L', type: 'R', coordinates: { rank: 0, file: 0 } },
-  { color: 'L', type: 'N', coordinates: { rank: 0, file: 1 } },
-  { color: 'L', type: 'B', coordinates: { rank: 0, file: 2 } },
-  { color: 'L', type: 'Q', coordinates: { rank: 0, file: 3 } },
-  { color: 'L', type: 'K', coordinates: { rank: 0, file: 4 } },
-  { color: 'L', type: 'B', coordinates: { rank: 0, file: 5 } },
-  { color: 'L', type: 'N', coordinates: { rank: 0, file: 6 } },
-  { color: 'L', type: 'R', coordinates: { rank: 0, file: 7 } },
-  { color: 'D', type: 'P', coordinates: { rank: 6, file: 0 } },
-  { color: 'D', type: 'P', coordinates: { rank: 6, file: 1 } },
-  { color: 'D', type: 'P', coordinates: { rank: 6, file: 2 } },
-  { color: 'D', type: 'P', coordinates: { rank: 6, file: 3 } },
-  { color: 'D', type: 'P', coordinates: { rank: 6, file: 4 } },
-  { color: 'D', type: 'P', coordinates: { rank: 6, file: 5 } },
-  { color: 'D', type: 'P', coordinates: { rank: 6, file: 6 } },
-  { color: 'D', type: 'P', coordinates: { rank: 6, file: 7 } },
-  { color: 'D', type: 'R', coordinates: { rank: 7, file: 0 } },
-  { color: 'D', type: 'N', coordinates: { rank: 7, file: 1 } },
-  { color: 'D', type: 'B', coordinates: { rank: 7, file: 2 } },
-  { color: 'D', type: 'Q', coordinates: { rank: 7, file: 3 } },
-  { color: 'D', type: 'K', coordinates: { rank: 7, file: 4 } },
-  { color: 'D', type: 'B', coordinates: { rank: 7, file: 5 } },
-  { color: 'D', type: 'N', coordinates: { rank: 7, file: 6 } },
-  { color: 'D', type: 'R', coordinates: { rank: 7, file: 7 } }
-]
