@@ -21,9 +21,9 @@ declare interface Move {
 }
 
 declare interface State {
-  board: Piece[]
+  board: Board
   dragging: boolean
-  selected: null | import('../lib/util').Coordinates
+  selected: null | string
 }
 
 declare interface Store {

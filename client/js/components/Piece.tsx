@@ -1,7 +1,8 @@
 import React, { FC, useCallback, useContext, useMemo, useState } from 'react'
-import { setDragging, selectPiece, removePiece, movePiece } from '../context/actions/app'
 
+import { setDragging, selectPiece, movePiece } from '../context/actions/app'
 import { AppContext } from '../context/app'
+import { Coordinates, coordinatesEqual } from '../lib/util'
 
 export interface PieceProps {
   color: 'D' | 'L'
@@ -47,21 +48,20 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
       if (tile.dataset.rank !== undefined && tile.dataset.file !== undefined) {
         const r = Number.parseInt(tile.dataset.rank)
         const f = Number.parseInt(tile.dataset.file)
-        dispatch(removePiece({ rank: r, file: f }))
-        dispatch(movePiece(coordinates, { rank: r, file: f }))
+        dispatch(movePiece(coordinates, new Coordinates(f, r)))
       }
     }
   }, [])
 
-  const selected = useMemo(() => {
-    return state.selected?.rank === coordinates.rank && state.selected?.file === coordinates.file
+  const isSelected = useMemo(() => {
+    return state.selected !== null && coordinatesEqual(new Coordinates(state.selected), coordinates)
   }, [state.selected])
 
   return (
     <img
       data-rank={coordinates.rank}
       data-file={coordinates.file}
-      style={selected && state.dragging ? {
+      style={isSelected && state.dragging ? {
         transform: `translate(calc(${dx}px - 5vmin), calc(${dy}px - 5vmin))`
       } : {}}
       draggable='false'

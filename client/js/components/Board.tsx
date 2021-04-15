@@ -3,6 +3,7 @@ import React, { FC, useContext, useCallback } from 'react'
 import { AppContext } from '../context/app'
 import { Tile, TileProps } from './index'
 import { deselectPiece } from '../context/actions/app'
+import { Coordinates } from '../lib/util'
 
 interface BoardProps {
   perspective: 'D' | 'L'
@@ -26,9 +27,10 @@ export const Board: FC<BoardProps> = (props) => {
     })
   })
 
-  state.board.forEach((piece) => {
-    tiles[piece.coordinates.rank][piece.coordinates.file].piece = piece
-  })
+  for (const [coord, piece] of Object.entries(state.board)) {
+    const c = new Coordinates(coord)
+    tiles[c.rank][c.file].piece = piece
+  }
 
   return (
     <div id='board' className={props.perspective === 'D' ? 'flipped' : ''} onMouseUp={handleMouseUp}>

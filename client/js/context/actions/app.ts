@@ -1,5 +1,6 @@
 import { Action } from './Action'
 // import { Thunk } from '../middlewares'
+import { Coordinates } from '../../lib/util'
 
 export class ResetBoardAction extends Action {}
 export const resetBoard = (): ResetBoardAction => (new ResetBoardAction())
@@ -17,7 +18,7 @@ export class SetDraggingAction extends Action {}
 export const setDragging = (dragging: boolean): SetDraggingAction => (new SetDraggingAction(dragging))
 
 export class SelectPieceAction extends Action {}
-export const selectPiece = (coordinates: Coordinates): SelectPieceAction => (new SelectPieceAction(coordinates))
+export const selectPiece = (coordinates: Coordinates): SelectPieceAction => (new SelectPieceAction(coordinates.toString()))
 
 export class DeselectPieceAction extends Action {}
 export const deselectPiece = (): DeselectPieceAction => (new DeselectPieceAction())
