@@ -113,7 +113,7 @@ export const applyMove = (move: Move, board: Board): Board => {
 
     newBoard = applyMove({
       from: [rookCoords, rook],
-      to: [new Coordinates(move.to[0].file + (move.to[0].file - move.from[0].file / (-2)), move.from[0].rank), rook]
+      to: [new Coordinates(move.to[0].file + ((move.to[0].file - move.from[0].file) / (-2)), move.from[0].rank), rook]
     }, newBoard)
   }
 
