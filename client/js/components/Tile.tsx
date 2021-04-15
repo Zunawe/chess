@@ -6,10 +6,7 @@ import { Piece } from './index'
 export interface TileProps {
   rank: number
   file: number
-  piece?: null | {
-    color: 'D' | 'L'
-    type: 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
-  }
+  piece?: null | Piece
 }
 
 export const Tile: FC<TileProps> = ({ rank, file, piece }) => {

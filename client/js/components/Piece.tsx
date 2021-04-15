@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useContext, useMemo, useState } from 'react'
 
-import { setDragging, selectPiece, movePiece } from '../context/actions/app'
+import { setDragging, selectPiece, makeMove } from '../context/actions/app'
 import { AppContext } from '../context/app'
 import { Coordinates, coordinatesEqual } from '../lib/util'
 
@@ -48,10 +48,13 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
       if (tile.dataset.rank !== undefined && tile.dataset.file !== undefined) {
         const r = Number.parseInt(tile.dataset.rank)
         const f = Number.parseInt(tile.dataset.file)
-        dispatch(movePiece(coordinates, new Coordinates(f, r)))
+        dispatch(makeMove({
+          from: [coordinates, { color, type }],
+          to: [new Coordinates(f, r), { color, type }]
+        }))
       }
     }
-  }, [])
+  }, [color, type])
 
   const isSelected = useMemo(() => {
     return state.selected !== null && coordinatesEqual(new Coordinates(state.selected), coordinates)

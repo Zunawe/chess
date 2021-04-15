@@ -3,6 +3,7 @@ import {
   RemovePieceAction,
   MovePieceAction,
   ResetBoardAction,
+  SetBoardAction,
   SetPieceAction,
   SetDraggingAction,
   SelectPieceAction,
@@ -48,6 +49,11 @@ export const reducer: Reducer = (state, action) => {
     return {
       ...state,
       board: getStartingBoard()
+    }
+  } else if (action instanceof SetBoardAction) {
+    return {
+      ...state,
+      board: action.payload
     }
   } else if (action instanceof SetDraggingAction) {
     return {

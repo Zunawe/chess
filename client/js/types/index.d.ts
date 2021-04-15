@@ -12,7 +12,7 @@ declare interface Piece {
 }
 
 declare interface Board {
-  [key: string]: Piece
+  [key: string]: Piece | undefined
 }
 
 declare interface Move {
