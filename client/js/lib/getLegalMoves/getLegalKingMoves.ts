@@ -1,12 +1,12 @@
 import { getAllKingMoves } from '../getAllMoves'
-import { Coordinates, coordinatesEqual, piecesEqual } from '../util'
+import { Coordinates, coordinatesEqual, isCastle, piecesEqual } from '../util'
 
 export const getLegalKingMoves = (from: [Coordinates, Piece], moves: Move[], board: Board): Move[] => {
   const legalMoves = getAllKingMoves(from).filter((possibleMove) => {
     const { from, to } = possibleMove
 
     // Castling
-    if (Math.abs(to[0].file - from[0].file) > 1) {
+    if (isCastle(possibleMove)) {
       const rank = from[1].color === 'L' ? 0 : 7
 
       // King must be in original position
