@@ -1,8 +1,8 @@
 import { getAllKingMoves } from '../getAllMoves'
-import { Coordinates, coordinatesEqual, movesEqual, piecesEqual } from '../util'
+import { Coordinates, coordinatesEqual, piecesEqual } from '../util'
 
-export const isLegalKingMove = (move: Move, moves: Move[], board: Board): boolean => {
-  const legalMoves = getAllKingMoves(move.from).filter((possibleMove) => {
+export const getLegalKingMoves = (from: [Coordinates, Piece], moves: Move[], board: Board): Move[] => {
+  const legalMoves = getAllKingMoves(from).filter((possibleMove) => {
     const { from, to } = possibleMove
 
     // Castling
@@ -52,5 +52,5 @@ export const isLegalKingMove = (move: Move, moves: Move[], board: Board): boolea
     }
   })
 
-  return legalMoves.some((legalMove) => movesEqual(legalMove, move))
+  return legalMoves
 }

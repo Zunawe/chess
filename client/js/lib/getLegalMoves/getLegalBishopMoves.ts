@@ -1,91 +1,89 @@
-import { movesEqual, Coordinates } from '../util'
+import { Coordinates } from '../util'
 
-export const isLegalRookMove = (move: Move, board: Board): boolean => {
-  const { from } = move
-
-  let eWall = false
-  let sWall = false
-  let wWall = false
-  let nWall = false
+export const getLegalBishopMoves = (from: [Coordinates, Piece], board: Board): Move[] => {
+  let neWall = false
+  let seWall = false
+  let swWall = false
+  let nwWall = false
 
   const legalMoves: Move[] = []
   for (let i = 1; i < 8; ++i) {
-    if (!eWall && from[0].file + i <= 7) {
+    if (!neWall && from[0].file + i <= 7 && from[0].rank + i <= 7) {
       const nePiece = board[(new Coordinates(
         from[0].file + i,
-        from[0].rank
+        from[0].rank + i
       )).toString()]
       if (nePiece === undefined || nePiece.color !== from[1].color) {
         legalMoves.push({
           from,
           to: [new Coordinates(
             from[0].file + i,
-            from[0].rank
+            from[0].rank + i
           ), from[1]]
         })
       }
       if (nePiece !== undefined) {
-        eWall = true
+        neWall = true
       }
     }
 
-    if (!sWall && from[0].rank - i >= 0) {
+    if (!seWall && from[0].file + i <= 7 && from[0].rank - i >= 0) {
       const sePiece = board[(new Coordinates(
-        from[0].file,
+        from[0].file + i,
         from[0].rank - i
       )).toString()]
       if (sePiece === undefined || sePiece.color !== from[1].color) {
         legalMoves.push({
           from,
           to: [new Coordinates(
-            from[0].file,
+            from[0].file + i,
             from[0].rank - i
           ), from[1]]
         })
       }
       if (sePiece !== undefined) {
-        sWall = true
+        seWall = true
       }
     }
 
-    if (!wWall && from[0].file - i >= 0) {
+    if (!swWall && from[0].file - i >= 0 && from[0].rank - i >= 0) {
       const swPiece = board[(new Coordinates(
         from[0].file - i,
-        from[0].rank
+        from[0].rank - i
       )).toString()]
       if (swPiece === undefined || swPiece.color !== from[1].color) {
         legalMoves.push({
           from,
           to: [new Coordinates(
             from[0].file - i,
-            from[0].rank
+            from[0].rank - i
           ), from[1]]
         })
       }
       if (swPiece !== undefined) {
-        wWall = true
+        swWall = true
       }
     }
 
-    if (!nWall && from[0].rank + i <= 7) {
+    if (!nwWall && from[0].file - i >= 0 && from[0].rank + i <= 7) {
       const nwPiece = board[(new Coordinates(
-        from[0].file,
+        from[0].file - i,
         from[0].rank + i
       )).toString()]
       if (nwPiece === undefined || nwPiece.color !== from[1].color) {
         legalMoves.push({
           from,
           to: [new Coordinates(
-            from[0].file,
+            from[0].file - i,
             from[0].rank + i
           ), from[1]]
         })
       }
       if (nwPiece !== undefined) {
-        nWall = true
+        nwWall = true
       }
     }
   }
 
-  return legalMoves.some((legalMove) => movesEqual(legalMove, move))
+  return legalMoves
 }

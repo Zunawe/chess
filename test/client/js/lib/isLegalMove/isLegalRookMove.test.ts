@@ -1,7 +1,7 @@
 import { createPiece, Coordinates } from '../../../../../client/js/lib/util'
-import { isLegalRookMove } from '../../../../../client/js/lib/isLegalMove'
+import { isLegalMove } from '../../../../../client/js/lib/isLegalMove'
 
-describe('isLegalRookMove', () => {
+describe('Rook', () => {
   it('should allow a bishop to move normally', () => {
     const board: Board = {}
     board['d4'] = createPiece('R', 'L')
@@ -10,25 +10,25 @@ describe('isLegalRookMove', () => {
       from: [new Coordinates('d4'), createPiece('R', 'L')],
       to: [new Coordinates('e4'), createPiece('R', 'L')]
     }
-    expect(isLegalRookMove(move1, board)).toBe(true)
+    expect(isLegalMove(move1, [], board)).toBe(true)
 
     const move2: Move = {
       from: [new Coordinates('d4'), createPiece('R', 'L')],
       to: [new Coordinates('d1'), createPiece('R', 'L')]
     }
-    expect(isLegalRookMove(move2, board)).toBe(true)
+    expect(isLegalMove(move2, [], board)).toBe(true)
 
     const move3: Move = {
       from: [new Coordinates('d4'), createPiece('R', 'L')],
       to: [new Coordinates('b4'), createPiece('R', 'L')]
     }
-    expect(isLegalRookMove(move3, board)).toBe(true)
+    expect(isLegalMove(move3, [], board)).toBe(true)
 
     const move4: Move = {
       from: [new Coordinates('d4'), createPiece('R', 'L')],
       to: [new Coordinates('d8'), createPiece('R', 'L')]
     }
-    expect(isLegalRookMove(move4, board)).toBe(true)
+    expect(isLegalMove(move4, [], board)).toBe(true)
   })
 
   it('should not allow a bishop to capture its own pieces', () => {
@@ -41,13 +41,13 @@ describe('isLegalRookMove', () => {
       from: [new Coordinates('d4'), createPiece('R', 'L')],
       to: [new Coordinates('d3'), createPiece('R', 'L')]
     }
-    expect(isLegalRookMove(move1, board)).toBe(false)
+    expect(isLegalMove(move1, [], board)).toBe(false)
 
     const move2: Move = {
       from: [new Coordinates('d4'), createPiece('R', 'L')],
       to: [new Coordinates('f4'), createPiece('R', 'L')]
     }
-    expect(isLegalRookMove(move2, board)).toBe(false)
+    expect(isLegalMove(move2, [], board)).toBe(false)
   })
 
   it('should not allow a bishop to move past pieces', () => {
@@ -60,12 +60,12 @@ describe('isLegalRookMove', () => {
       from: [new Coordinates('d4'), createPiece('R', 'L')],
       to: [new Coordinates('d1'), createPiece('R', 'L')]
     }
-    expect(isLegalRookMove(move1, board)).toBe(false)
+    expect(isLegalMove(move1, [], board)).toBe(false)
 
     const move2: Move = {
       from: [new Coordinates('d4'), createPiece('R', 'L')],
       to: [new Coordinates('h4'), createPiece('R', 'L')]
     }
-    expect(isLegalRookMove(move2, board)).toBe(false)
+    expect(isLegalMove(move2, [], board)).toBe(false)
   })
 })

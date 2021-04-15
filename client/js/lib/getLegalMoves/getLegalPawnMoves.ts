@@ -1,8 +1,7 @@
 import { getAllPawnMoves } from '../getAllMoves'
-import { Coordinates, movesEqual } from '../util'
+import { Coordinates } from '../util'
 
-export const isLegalPawnMove = (move: Move, moves: Move[], board: Board): boolean => {
-  const { from } = move
+export const getLegalPawnMoves = (from: [Coordinates, Piece], moves: Move[], board: Board): Move[] => {
   const isFirstMove = from[1].color === 'L' ? from[0].rank === 1 : from[0].rank === 6
   const direction = from[1].color === 'L' ? 1 : -1
   const legalMoves = getAllPawnMoves(from).filter((possibleMove) => {
@@ -68,5 +67,5 @@ export const isLegalPawnMove = (move: Move, moves: Move[], board: Board): boolea
     }
   })
 
-  return legalMoves.some((legalMove) => movesEqual(legalMove, move))
+  return legalMoves
 }

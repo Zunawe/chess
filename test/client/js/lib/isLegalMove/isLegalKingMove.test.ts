@@ -1,7 +1,7 @@
-import { applyMoves, createPiece, Coordinates } from '../../../../../client/js/lib/util'
-import { isLegalKingMove } from '../../../../../client/js/lib/isLegalMove'
+import { createPiece, Coordinates } from '../../../../../client/js/lib/util'
+import { isLegalMove } from '../../../../../client/js/lib/isLegalMove'
 
-describe('isLegalKingMove', () => {
+describe('King', () => {
   it('should allow the king to move normally', () => {
     const board: Board = {}
     board['e1'] = createPiece('K', 'L')
@@ -10,19 +10,19 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('e2'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move1, [], board)).toBe(true)
+    expect(isLegalMove(move1, [], board)).toBe(true)
 
     const move2: Move = {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('f2'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move2, [], board)).toBe(true)
+    expect(isLegalMove(move2, [], board)).toBe(true)
 
     const move3: Move = {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('d1'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move3, [], board)).toBe(true)
+    expect(isLegalMove(move3, [], board)).toBe(true)
   })
 
   it('should not allow the king to capture its own piece', () => {
@@ -34,7 +34,7 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('e2'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move, [], board)).toBe(false)
+    expect(isLegalMove(move, [], board)).toBe(false)
   })
 
   it('should allow the king to capture pieces', () => {
@@ -46,7 +46,7 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('e2'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move, [], board)).toBe(true)
+    expect(isLegalMove(move, [], board)).toBe(true)
   })
 
   it('should allow the white king to castle kingside', () => {
@@ -58,7 +58,7 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('g1'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move, [], board)).toBe(true)
+    expect(isLegalMove(move, [], board)).toBe(true)
   })
 
   it('should allow the white king to castle queenside', () => {
@@ -70,7 +70,7 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('c1'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move, [], board)).toBe(true)
+    expect(isLegalMove(move, [], board)).toBe(true)
   })
 
   it('should allow the black king to castle kingside', () => {
@@ -82,7 +82,7 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e8'), createPiece('K', 'D')],
       to: [new Coordinates('g8'), createPiece('K', 'D')]
     }
-    expect(isLegalKingMove(move, [], board)).toBe(true)
+    expect(isLegalMove(move, [], board)).toBe(true)
   })
 
   it('should allow the black king to castle queenside', () => {
@@ -94,7 +94,7 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e8'), createPiece('K', 'D')],
       to: [new Coordinates('c8'), createPiece('K', 'D')]
     }
-    expect(isLegalKingMove(move, [], board)).toBe(true)
+    expect(isLegalMove(move, [], board)).toBe(true)
   })
 
   it('should not allow the king to castle if there is a piece blocking', () => {
@@ -107,7 +107,7 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('c1'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move, [], board)).toBe(false)
+    expect(isLegalMove(move, [], board)).toBe(false)
   })
 
   it('should not allow the king to castle if the king has moved', () => {
@@ -130,7 +130,7 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('c1'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move, moves, board)).toBe(false)
+    expect(isLegalMove(move, moves, board)).toBe(false)
   })
 
   it('should not allow the king to castle if the rook has moved', () => {
@@ -153,7 +153,7 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('c1'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move, moves, board)).toBe(false)
+    expect(isLegalMove(move, moves, board)).toBe(false)
   })
 
   it('should not allow the king to castle if the rook is missing', () => {
@@ -164,7 +164,7 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('c1'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move, [], board)).toBe(false)
+    expect(isLegalMove(move, [], board)).toBe(false)
   })
 
   it('should not allow the king to castle if the rook is the wrong color', () => {
@@ -176,6 +176,6 @@ describe('isLegalKingMove', () => {
       from: [new Coordinates('e1'), createPiece('K', 'L')],
       to: [new Coordinates('c1'), createPiece('K', 'L')]
     }
-    expect(isLegalKingMove(move, [], board)).toBe(false)
+    expect(isLegalMove(move, [], board)).toBe(false)
   })
 })

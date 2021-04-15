@@ -84,14 +84,17 @@ export const getStartingBoard = (): Board => {
   }, {})
 }
 
-export const applyMoves = (moves: Move[], board: Board): void => {
-  moves.forEach((move) => {
-    applyMove(move, board)
-  })
+export const applyMoves = (moves: Move[], board: Board): Board => {
+  return moves.reduce((acc, move) => {
+    return applyMove(move, acc)
+  }, board)
 }
 
-export const applyMove = (move: Move, board: Board): void => {
-  const piece = board[move.from[0].toString()]
+export const applyMove = (move: Move, board: Board): Board => {
+  let newBoard: Board = {
+    ...board
+  }
+  const piece = newBoard[move.from[0].toString()]
 
   if (piece === undefined) {
     throw new Error('Invalid move')
@@ -103,17 +106,19 @@ export const applyMove = (move: Move, board: Board): void => {
       ? (move.from[1].color === 'L' ? new Coordinates('a1') : new Coordinates('a8'))
       : (move.from[1].color === 'L' ? new Coordinates('h1') : new Coordinates('h8'))
 
-    const rook = board[rookCoords.toString()]
+    const rook = newBoard[rookCoords.toString()]
     if (rook === undefined || rook.type !== 'R') {
       throw new Error('Couldn\'t find rook to castle with')
     }
 
-    applyMove({
+    newBoard = applyMove({
       from: [rookCoords, rook],
       to: [new Coordinates(move.to[0].file + (move.to[0].file - move.from[0].file / (-2)), move.from[0].rank), rook]
-    }, board)
+    }, newBoard)
   }
 
-  delete board[move.from[0].toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
-  board[move.to[0].toString()] = move.to[1]
+  delete newBoard[move.from[0].toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
+  newBoard[move.to[0].toString()] = move.to[1]
+
+  return newBoard
 }
