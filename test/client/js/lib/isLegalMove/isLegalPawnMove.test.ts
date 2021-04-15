@@ -165,4 +165,93 @@ describe('isLegalPawnMove', () => {
     }
     expect(isLegalPawnMove(move, moves, board)).toBe(false)
   })
+
+  it('should allow promotion to queen', () => {
+    const board: Board = {}
+    board['a7'] = createPiece('P', 'L')
+
+    const move: Move = {
+      from: [new Coordinates('a7'), createPiece('P', 'L')],
+      to: [new Coordinates('a8'), createPiece('Q', 'L')]
+    }
+    expect(isLegalPawnMove(move, [], board)).toBe(true)
+  })
+
+  it('should allow promotion to bishop', () => {
+    const board: Board = {}
+    board['a7'] = createPiece('P', 'L')
+
+    const move: Move = {
+      from: [new Coordinates('a7'), createPiece('P', 'L')],
+      to: [new Coordinates('a8'), createPiece('B', 'L')]
+    }
+    expect(isLegalPawnMove(move, [], board)).toBe(true)
+  })
+
+  it('should allow promotion to rook', () => {
+    const board: Board = {}
+    board['a7'] = createPiece('P', 'L')
+
+    const move: Move = {
+      from: [new Coordinates('a7'), createPiece('P', 'L')],
+      to: [new Coordinates('a8'), createPiece('R', 'L')]
+    }
+    expect(isLegalPawnMove(move, [], board)).toBe(true)
+  })
+
+  it('should allow promotion to knight', () => {
+    const board: Board = {}
+    board['a7'] = createPiece('P', 'L')
+
+    const move: Move = {
+      from: [new Coordinates('a7'), createPiece('P', 'L')],
+      to: [new Coordinates('a8'), createPiece('N', 'L')]
+    }
+    expect(isLegalPawnMove(move, [], board)).toBe(true)
+  })
+
+  it('should allow promotion of black pawns', () => {
+    const board: Board = {}
+    board['a2'] = createPiece('P', 'D')
+
+    const move: Move = {
+      from: [new Coordinates('a2'), createPiece('P', 'D')],
+      to: [new Coordinates('a1'), createPiece('Q', 'D')]
+    }
+    expect(isLegalPawnMove(move, [], board)).toBe(true)
+  })
+
+  it('should allow promotion while capturing', () => {
+    const board: Board = {}
+    board['a7'] = createPiece('P', 'L')
+    board['b8'] = createPiece('R', 'D')
+
+    const move: Move = {
+      from: [new Coordinates('a7'), createPiece('P', 'L')],
+      to: [new Coordinates('b8'), createPiece('Q', 'L')]
+    }
+    expect(isLegalPawnMove(move, [], board)).toBe(true)
+  })
+
+  it('should not allow promotion when not on the back rank', () => {
+    const board: Board = {}
+    board['a3'] = createPiece('P', 'L')
+
+    const move: Move = {
+      from: [new Coordinates('a3'), createPiece('P', 'L')],
+      to: [new Coordinates('a4'), createPiece('Q', 'L')]
+    }
+    expect(isLegalPawnMove(move, [], board)).toBe(false)
+  })
+
+  it('should require promotion on the back rank', () => {
+    const board: Board = {}
+    board['a7'] = createPiece('P', 'L')
+
+    const move: Move = {
+      from: [new Coordinates('a7'), createPiece('P', 'L')],
+      to: [new Coordinates('a8'), createPiece('P', 'L')]
+    }
+    expect(isLegalPawnMove(move, [], board)).toBe(false)
+  })
 })

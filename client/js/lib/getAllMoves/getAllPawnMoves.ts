@@ -45,6 +45,16 @@ export const getAllPawnMoves = (from: [Coordinates, Piece]): Move[] => {
       from,
       to: [new Coordinates(
         coordinates.file,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'N'
+      }]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file,
         coordinates.rank + direction + direction
       ), piece]
     },
@@ -58,9 +68,89 @@ export const getAllPawnMoves = (from: [Coordinates, Piece]): Move[] => {
     {
       from,
       to: [new Coordinates(
+        coordinates.file + 1,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'Q'
+      }]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file + 1,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'R'
+      }]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file + 1,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'B'
+      }]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file + 1,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'N'
+      }]
+    },
+    {
+      from,
+      to: [new Coordinates(
         coordinates.file - 1,
         coordinates.rank + direction
       ), piece]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file - 1,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'Q'
+      }]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file - 1,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'R'
+      }]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file - 1,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'B'
+      }]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file - 1,
+        coordinates.rank + direction
+      ), {
+        ...piece,
+        type: 'N'
+      }]
     }
   ]
 
