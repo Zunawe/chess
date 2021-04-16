@@ -7,13 +7,6 @@ import { getLegalRookMoves } from './getLegalRookMoves'
 import { getLegalBishopMoves } from './getLegalBishopMoves'
 import { getLegalQueenMoves } from './getLegalQueenMoves'
 
-export * from './getLegalPawnMoves'
-export * from './getLegalKnightMoves'
-export * from './getLegalKingMoves'
-export * from './getLegalBishopMoves'
-export * from './getLegalRookMoves'
-export * from './getLegalQueenMoves'
-
 export const getLegalMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
   switch (from[1].type) {
     case 'P':

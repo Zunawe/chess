@@ -1,10 +1,10 @@
-import { getAllKingMoves } from '../getAllMoves'
+import { getAllMoves } from '../getAllMoves'
 import { Coordinates, coordinatesEqual, isCastle, piecesEqual } from '../util'
 
 export const getLegalKingMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
   const { board, moves } = game
 
-  const legalMoves = getAllKingMoves(from).filter((possibleMove) => {
+  const legalMoves = getAllMoves(from).filter((possibleMove) => {
     const { from, to } = possibleMove
 
     // Castling

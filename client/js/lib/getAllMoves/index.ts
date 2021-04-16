@@ -7,13 +7,6 @@ import { getAllRookMoves } from './getAllRookMoves'
 import { getAllBishopMoves } from './getAllBishopMoves'
 import { getAllQueenMoves } from './getAllQueenMoves'
 
-export * from './getAllPawnMoves'
-export * from './getAllKnightMoves'
-export * from './getAllKingMoves'
-export * from './getAllRookMoves'
-export * from './getAllBishopMoves'
-export * from './getAllQueenMoves'
-
 export const getAllMoves = (from: [Coordinates, Piece]): Move[] => {
   switch (from[1].type) {
     case 'P':
