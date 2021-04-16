@@ -3,3 +3,7 @@
 
 npm test
 npm run lint
+
+cd packages/chess-utils
+npm test
+npm run lint
