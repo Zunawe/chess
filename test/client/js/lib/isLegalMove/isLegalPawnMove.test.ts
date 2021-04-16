@@ -216,6 +216,11 @@ describe('Pawn', () => {
   it('should allow promotion of black pawns', () => {
     game.board = {}
     game.board['a2'] = createPiece('P', 'D')
+    game.board['g8'] = createPiece('R', 'L')
+    game.moves = [{
+      from: [new Coordinates('g7'), createPiece('R', 'L')],
+      to: [new Coordinates('g8'), createPiece('R', 'L')]
+    }]
 
     const move: Move = {
       from: [new Coordinates('a2'), createPiece('P', 'D')],

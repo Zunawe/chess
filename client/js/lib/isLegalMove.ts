@@ -4,6 +4,12 @@ import { applyMove, movesEqual, isCastle, Coordinates } from './util'
 
 export const isLegalMove = (move: Move, game: Game): boolean => {
   const { board, moves } = game
+
+  const turn: Color = moves.length % 2 === 0 ? 'L' : 'D'
+  if (move.from[1].color !== turn) {
+    return false
+  }
+
   return getLegalMoves(move.from, game)
     .filter((legalMove) => !isInCheck(move.from[1].color, { board: applyMove(legalMove, board), moves: [...moves, legalMove] }))
     .filter((legalMove) => {

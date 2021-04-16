@@ -80,6 +80,11 @@ describe('King', () => {
   it('should allow the black king to castle kingside', () => {
     game.board['e8'] = createPiece('K', 'D')
     game.board['h8'] = createPiece('R', 'D')
+    game.board['a2'] = createPiece('R', 'L')
+    game.moves = [{
+      from: [new Coordinates('a1'), createPiece('R', 'L')],
+      to: [new Coordinates('a2'), createPiece('R', 'L')]
+    }]
 
     const move: Move = {
       from: [new Coordinates('e8'), createPiece('K', 'D')],
@@ -91,6 +96,11 @@ describe('King', () => {
   it('should allow the black king to castle queenside', () => {
     game.board['e8'] = createPiece('K', 'D')
     game.board['a8'] = createPiece('R', 'D')
+    game.board['a2'] = createPiece('R', 'L')
+    game.moves = [{
+      from: [new Coordinates('a1'), createPiece('R', 'L')],
+      to: [new Coordinates('a2'), createPiece('R', 'L')]
+    }]
 
     const move: Move = {
       from: [new Coordinates('e8'), createPiece('K', 'D')],
