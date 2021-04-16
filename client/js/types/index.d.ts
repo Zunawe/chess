@@ -1,32 +1,10 @@
-declare type Color = 'D' | 'L'
-declare type PieceType = 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
-
-declare interface Piece {
-  color: Color
-  type: PieceType
-}
-
-declare interface Board {
-  [key: string]: Piece
-}
-
-declare interface Move {
-  from: [import('../lib/chessUtils').Coordinates, Piece]
-  to: [import('../lib/chessUtils').Coordinates, Piece]
-}
-
-declare interface Game {
-  board: Board
-  moves: Move[]
-}
-
 declare abstract class Action {
   payload?: any
   constructor (payload?: any)
 }
 
 declare interface State {
-  game: Game
+  game: import('chess-utils').Game
   dragging: boolean
   selected: null | string
 }

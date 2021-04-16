@@ -3,7 +3,7 @@ import React, { FC, useContext, useCallback } from 'react'
 import { AppContext } from '../context/app'
 import { Tile, TileProps } from './index'
 import { deselectPiece } from '../context/actions/app'
-import { Coordinates } from '../lib/chessUtils'
+import * as Chess from 'chess-utils'
 
 interface BoardProps {
   perspective: 'D' | 'L'
@@ -28,7 +28,7 @@ export const Board: FC<BoardProps> = (props) => {
   })
 
   for (const [coord, piece] of Object.entries(state.game.board)) {
-    const c = new Coordinates(coord)
+    const c = new Chess.Coordinates(coord)
     tiles[c.rank][c.file].piece = piece
   }
 

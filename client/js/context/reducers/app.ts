@@ -1,4 +1,4 @@
-import { coordinatesEqual, getStartingBoard } from '../../lib/chessUtils'
+import * as Chess from 'chess-utils'
 import {
   RemovePieceAction,
   MovePieceAction,
@@ -24,7 +24,7 @@ export const reducer: Reducer = (state, action) => {
       }
     }
   } else if (action instanceof MovePieceAction) {
-    if (coordinatesEqual(action.payload.to, action.payload.from)) {
+    if (Chess.coordinatesEqual(action.payload.to, action.payload.from)) {
       return state
     }
 
@@ -68,7 +68,7 @@ export const reducer: Reducer = (state, action) => {
       ...state,
       game: {
         ...state.game,
-        board: getStartingBoard()
+        board: Chess.getStartingBoard()
       }
     }
   } else if (action instanceof SetBoardAction) {

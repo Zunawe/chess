@@ -2,12 +2,12 @@ import React, { FC, useCallback, useContext, useMemo, useState } from 'react'
 
 import { setDragging, selectPiece, makeMove } from '../context/actions/app'
 import { AppContext } from '../context/app'
-import { Coordinates, coordinatesEqual } from '../lib/chessUtils'
+import * as Chess from 'chess-utils'
 
 export interface PieceProps {
   color: 'D' | 'L'
   type: 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
-  coordinates: Coordinates
+  coordinates: Chess.Coordinates
 }
 
 export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
@@ -50,14 +50,14 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
         const f = Number.parseInt(tile.dataset.file)
         dispatch(makeMove({
           from: [coordinates, { color, type }],
-          to: [new Coordinates(f, r), { color, type }]
+          to: [new Chess.Coordinates(f, r), { color, type }]
         }))
       }
     }
   }, [color, type])
 
   const isSelected = useMemo(() => {
-    return state.selected !== null && coordinatesEqual(new Coordinates(state.selected), coordinates)
+    return state.selected !== null && Chess.coordinatesEqual(new Chess.Coordinates(state.selected), coordinates)
   }, [state.selected])
 
   return (

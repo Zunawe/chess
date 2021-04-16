@@ -1,0 +1,23 @@
+{
+  "name": "chess-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.ts",
+  "types": "lib/index.ts",
+  "scripts": {
+    "setup": "npm i && npx husky install",
+    "test": "jest",
+    "lint": "ts-standard lib",
+    "lint:fix": "ts-standard --fix lib"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "husky": "^6.0.0",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.5",
+    "ts-standard": "^10.0.0",
+    "typescript": "^4.2.4"
+  }
+}
