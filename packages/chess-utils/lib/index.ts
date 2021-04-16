@@ -1,5 +1,6 @@
 export * from './applyMove'
 export * from './Coordinates'
+export * from './copyMove'
 export * from './createPiece'
 export * from './getAllMoves'
 export * from './getAttackedSpaces'

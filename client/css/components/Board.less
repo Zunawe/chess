@@ -1,23 +1,26 @@
-#board {
+#boardContainer {
   width: 80vmin;
   height: 80vmin;
   margin: auto;
   border: 1px solid black;
-  display: flex;
-  flex-direction: column-reverse;
 
-  .rank {
-    height: 10vmin;
+  #board {
     display: flex;
-    flex-direction: row;
-    align-items: stretch;
-  }
-}
+    flex-direction: column-reverse;
 
-#board.flipped {
-  flex-direction: column;
+    .rank {
+      height: 10vmin;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+    }
 
-  .rank {
-    flex-direction: row-reverse;
+    &.flipped {
+      flex-direction: column;
+
+      .rank {
+        flex-direction: row-reverse;
+      }
+    }
   }
 }

@@ -12,6 +12,6 @@ export const App: FC = () => {
   }, [])
 
   return (
-    <Board perspective='L' />
+    <Board />
   )
 }

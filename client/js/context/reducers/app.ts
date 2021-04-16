@@ -5,7 +5,10 @@ import {
   SetDraggingAction,
   SelectPieceAction,
   DeselectPieceAction,
-  AddMoveAction
+  AddMoveAction,
+  SetPromotingAction,
+  UndoLastMoveAction,
+  ReplaceLastMoveAction
 } from '../actions/app'
 
 export const reducer: Reducer = (state, action) => {
@@ -15,6 +18,28 @@ export const reducer: Reducer = (state, action) => {
       game: {
         ...state.game,
         moves: [...state.game.moves, action.payload]
+      }
+    }
+  } else if (action instanceof UndoLastMoveAction) {
+    const newMoves = state.game.moves.slice(0, -1)
+    const newBoard = Chess.applyMoves(newMoves, Chess.getStartingBoard())
+    return {
+      ...state,
+      game: {
+        ...state.game,
+        moves: newMoves,
+        board: newBoard
+      }
+    }
+  } else if (action instanceof ReplaceLastMoveAction) {
+    const newMoves = [...state.game.moves.slice(0, -1), action.payload]
+    const newBoard = Chess.applyMoves(newMoves, Chess.getStartingBoard())
+    return {
+      ...state,
+      game: {
+        ...state.game,
+        moves: newMoves,
+        board: newBoard
       }
     }
   } else if (action instanceof ResetBoardAction) {
@@ -47,6 +72,11 @@ export const reducer: Reducer = (state, action) => {
     return {
       ...state,
       selected: null
+    }
+  } else if (action instanceof SetPromotingAction) {
+    return {
+      ...state,
+      promoting: action.payload
     }
   }
   return state

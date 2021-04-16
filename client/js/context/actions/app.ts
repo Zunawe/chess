@@ -11,6 +11,12 @@ export const setBoard = (board: Chess.Board): SetBoardAction => (new SetBoardAct
 export class AddMoveAction extends Action {}
 export const addMove = (move: Chess.Move): AddMoveAction => (new AddMoveAction(move))
 
+export class UndoLastMoveAction extends Action {}
+export const undoLastMove = (): UndoLastMoveAction => (new UndoLastMoveAction())
+
+export class ReplaceLastMoveAction extends Action {}
+export const replaceLastMove = (move: Chess.Move): ReplaceLastMoveAction => (new ReplaceLastMoveAction(move))
+
 export class SetDraggingAction extends Action {}
 export const setDragging = (dragging: boolean): SetDraggingAction => (new SetDraggingAction(dragging))
 
@@ -20,6 +26,9 @@ export const selectPiece = (coordinates: Chess.Coordinates): SelectPieceAction =
 export class DeselectPieceAction extends Action {}
 export const deselectPiece = (): DeselectPieceAction => (new DeselectPieceAction())
 
+export class SetPromotingAction extends Action {}
+export const setPromoting = (value: boolean): SetPromotingAction => (new SetPromotingAction(value))
+
 export const makeMove: (move: Chess.Move) => Thunk = (move: Chess.Move) => {
   return (dispatch, getState) => {
     const { game } = getState()
@@ -27,5 +36,32 @@ export const makeMove: (move: Chess.Move) => Thunk = (move: Chess.Move) => {
       dispatch(setBoard(Chess.applyMove(move, game.board)))
       dispatch(addMove(move))
     }
+  }
+}
+
+export const attemptPromotion: (move: Chess.Move) => Thunk = (move: Chess.Move) => {
+  return (dispatch, getState) => {
+    const { game } = getState()
+
+    const testMove: Chess.Move = Chess.copyMove(move)
+    testMove.to[1].type = 'Q'
+    if (Chess.isLegalMove(testMove, game)) {
+      dispatch(setBoard(Chess.applyMove(move, game.board)))
+      dispatch(addMove(move))
+      dispatch(setPromoting(true))
+    }
+  }
+}
+
+export const stopPromotion: () => Thunk = () => {
+  return (dispatch, getState) => {
+    const { promoting } = getState()
+
+    if (!promoting) {
+      return
+    }
+
+    dispatch(undoLastMove())
+    dispatch(setPromoting(false))
   }
 }

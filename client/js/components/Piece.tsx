@@ -1,12 +1,12 @@
 import React, { FC, useCallback, useContext, useMemo, useState } from 'react'
 
-import { setDragging, selectPiece, makeMove } from '../context/actions/app'
+import { setDragging, selectPiece, makeMove, attemptPromotion } from '../context/actions/app'
 import { AppContext } from '../context/app'
 import * as Chess from 'chess-utils'
 
 export interface PieceProps {
-  color: 'D' | 'L'
-  type: 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
+  color: Chess.Color
+  type: Chess.PieceType
   coordinates: Chess.Coordinates
 }
 
@@ -48,10 +48,17 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
       if (tile.dataset.rank !== undefined && tile.dataset.file !== undefined) {
         const r = Number.parseInt(tile.dataset.rank)
         const f = Number.parseInt(tile.dataset.file)
-        dispatch(makeMove({
+
+        const move: Chess.Move = {
           from: [coordinates, { color, type }],
           to: [new Chess.Coordinates(f, r), { color, type }]
-        }))
+        }
+
+        if (type === 'P' && (r === 0 || r === 7)) {
+          dispatch(attemptPromotion(move))
+        } else {
+          dispatch(makeMove(move))
+        }
       }
     }
   }, [color, type])

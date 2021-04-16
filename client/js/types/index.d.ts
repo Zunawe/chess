@@ -7,6 +7,8 @@ declare interface State {
   game: import('chess-utils').Game
   dragging: boolean
   selected: null | string
+  promoting: boolean
+  perspective: import('chess-utils').Color
 }
 
 declare interface Store {

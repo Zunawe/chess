@@ -10,7 +10,9 @@ const initialState: State = {
     moves: []
   },
   dragging: false,
-  selected: null
+  selected: null,
+  promoting: false,
+  perspective: 'L'
 }
 
 export const AppContext = createContext<[State, Dispatch, () => State]>([initialState, () => {}, () => initialState])

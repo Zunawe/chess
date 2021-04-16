@@ -1,19 +1,16 @@
 import React, { FC, useContext, useCallback } from 'react'
-
-import { AppContext } from '../context/app'
-import { Tile, TileProps } from './index'
-import { deselectPiece } from '../context/actions/app'
 import * as Chess from 'chess-utils'
 
-interface BoardProps {
-  perspective: 'D' | 'L'
-}
+import { AppContext } from '../context/app'
+import { deselectPiece, stopPromotion } from '../context/actions/app'
+import { PromotionSelector, Tile, TileProps } from './index'
 
-export const Board: FC<BoardProps> = (props) => {
+export const Board: FC = () => {
   const [state, dispatch] = useContext(AppContext)
   const handleMouseUp = useCallback(() => {
     if (!state.dragging) {
       dispatch(deselectPiece())
+      dispatch(stopPromotion())
     }
   }, [state.dragging])
 
@@ -33,18 +30,22 @@ export const Board: FC<BoardProps> = (props) => {
   }
 
   return (
-    <div id='board' className={props.perspective === 'D' ? 'flipped' : ''} onMouseUp={handleMouseUp}>
-      {tiles.map((rank, r) => {
-        return (
-          <div className='rank' key={r}>
-            {rank.map((tile) => {
-              return (
-                <Tile {...tile} key={`${tile.rank}${tile.file}`} />
-              )
-            })}
-          </div>
-        )
-      })}
+    <div id='boardContainer'>
+      <div id='board' className={state.perspective === 'D' ? 'flipped' : ''} onMouseUp={handleMouseUp}>
+        {tiles.map((rank, r) => {
+          return (
+            <div className='rank' key={r}>
+              {rank.map((tile) => {
+                return (
+                  <Tile {...tile} key={`${tile.rank}${tile.file}`} />
+                )
+              })}
+            </div>
+          )
+        })}
+      </div>
+      <PromotionSelector />
     </div>
+
   )
 }
