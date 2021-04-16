@@ -7,7 +7,7 @@ import { PromotionSelector, Tile, TileProps } from './index'
 
 export const Board: FC = () => {
   const [state, dispatch] = useContext(AppContext)
-  const handleMouseUp = useCallback(() => {
+  const handleClick = useCallback(() => {
     if (!state.dragging) {
       dispatch(deselectPiece())
       dispatch(stopPromotion())
@@ -31,7 +31,7 @@ export const Board: FC = () => {
 
   return (
     <div id='boardContainer'>
-      <div id='board' className={state.perspective === 'D' ? 'flipped' : ''} onMouseUp={handleMouseUp}>
+      <div id='board' className={state.perspective === 'D' ? 'flipped' : ''} onClick={handleClick}>
         {tiles.map((rank, r) => {
           return (
             <div className='rank' key={r}>

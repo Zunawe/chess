@@ -68,17 +68,17 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
   }, [state.selected])
 
   return (
-    <img
+    <div
       data-rank={coordinates.rank}
       data-file={coordinates.file}
       style={isSelected && state.dragging ? {
         transform: `translate(calc(${dx}px - 5vmin), calc(${dy}px - 5vmin))`
       } : {}}
       draggable='false'
-      className={`piece ${state.dragging ? 'dragging' : ''}`}
-      src={`/images/${color}${type}.svg`}
+      className={`piece piece--${color}${type} ${state.dragging ? 'dragging' : ''}`}
       onMouseDown={startDrag}
       onMouseMove={drag}
+      onMouseLeave={drag}
       onMouseUp={endDrag}
     />
   )
