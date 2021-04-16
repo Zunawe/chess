@@ -11,15 +11,6 @@ export const setBoard = (board: Chess.Board): SetBoardAction => (new SetBoardAct
 export class AddMoveAction extends Action {}
 export const addMove = (move: Chess.Move): AddMoveAction => (new AddMoveAction(move))
 
-export class MovePieceAction extends Action {}
-export const movePiece = (from: Chess.Coordinates, to: Chess.Coordinates): MovePieceAction => (new MovePieceAction({ from, to }))
-
-export class RemovePieceAction extends Action {}
-export const removePiece = (from: Chess.Coordinates): RemovePieceAction => (new RemovePieceAction(from))
-
-export class SetPieceAction extends Action {}
-export const setPiece = (at: Chess.Coordinates, piece: Chess.Piece): SetPieceAction => (new SetPieceAction({ at, piece }))
-
 export class SetDraggingAction extends Action {}
 export const setDragging = (dragging: boolean): SetDraggingAction => (new SetDraggingAction(dragging))
 

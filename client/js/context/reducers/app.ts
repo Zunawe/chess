@@ -1,10 +1,7 @@
 import * as Chess from 'chess-utils'
 import {
-  RemovePieceAction,
-  MovePieceAction,
   ResetBoardAction,
   SetBoardAction,
-  SetPieceAction,
   SetDraggingAction,
   SelectPieceAction,
   DeselectPieceAction,
@@ -12,50 +9,7 @@ import {
 } from '../actions/app'
 
 export const reducer: Reducer = (state, action) => {
-  if (action instanceof RemovePieceAction) {
-    const newBoard = { ...state.game.board }
-    delete newBoard[action.payload.toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
-
-    return {
-      ...state,
-      game: {
-        ...state.game,
-        board: newBoard
-      }
-    }
-  } else if (action instanceof MovePieceAction) {
-    if (Chess.coordinatesEqual(action.payload.to, action.payload.from)) {
-      return state
-    }
-
-    const newBoard = {
-      ...state.game.board
-    }
-    newBoard[action.payload.to.toString()] = state.game.board[action.payload.from.toString()]
-    delete newBoard[action.payload.from.toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
-
-    return {
-      ...state,
-      game: {
-        ...state.game,
-        board: newBoard
-      },
-      selected: null
-    }
-  } else if (action instanceof SetPieceAction) {
-    const newBoard = {
-      ...state.game.board
-    }
-
-    newBoard[action.payload.from.toString()] = action.payload.piece
-    return {
-      ...state,
-      game: {
-        ...state.game,
-        board: newBoard
-      }
-    }
-  } else if (action instanceof AddMoveAction) {
+  if (action instanceof AddMoveAction) {
     return {
       ...state,
       game: {
