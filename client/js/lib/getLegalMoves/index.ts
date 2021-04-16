@@ -14,20 +14,20 @@ export * from './getLegalBishopMoves'
 export * from './getLegalRookMoves'
 export * from './getLegalQueenMoves'
 
-export const getLegalMoves = (from: [Coordinates, Piece], moves: Move[], board: Board): Move[] => {
+export const getLegalMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
   switch (from[1].type) {
     case 'P':
-      return getLegalPawnMoves(from, moves, board)
+      return getLegalPawnMoves(from, game)
     case 'R':
-      return getLegalRookMoves(from, board)
+      return getLegalRookMoves(from, game)
     case 'N':
-      return getLegalKnightMoves(from, board)
+      return getLegalKnightMoves(from, game)
     case 'B':
-      return getLegalBishopMoves(from, board)
+      return getLegalBishopMoves(from, game)
     case 'Q':
-      return getLegalQueenMoves(from, board)
+      return getLegalQueenMoves(from, game)
     case 'K':
-      return getLegalKingMoves(from, moves, board)
+      return getLegalKingMoves(from, game)
     default:
       throw new Error('Invalid piece type')
   }

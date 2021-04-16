@@ -27,7 +27,7 @@ export const Board: FC<BoardProps> = (props) => {
     })
   })
 
-  for (const [coord, piece] of Object.entries(state.board)) {
+  for (const [coord, piece] of Object.entries(state.game.board)) {
     const c = new Coordinates(coord)
     tiles[c.rank][c.file].piece = piece
   }

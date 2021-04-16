@@ -14,20 +14,20 @@ export * from './getRookAttackedSpaces'
 export * from './getBishopAttackedSpaces'
 export * from './getQueenAttackedSpaces'
 
-export const getAttackedSpaces = (from: [Coordinates, Piece], moves: Move[], board: Board): Coordinates[] => {
+export const getAttackedSpaces = (from: [Coordinates, Piece], game: Game): Coordinates[] => {
   switch (from[1].type) {
     case 'P':
-      return getPawnAttackedSpaces(from, moves, board)
+      return getPawnAttackedSpaces(from, game)
     case 'R':
-      return getRookAttackedSpaces(from, moves, board)
+      return getRookAttackedSpaces(from, game)
     case 'N':
-      return getKnightAttackedSpaces(from, moves, board)
+      return getKnightAttackedSpaces(from, game)
     case 'B':
-      return getBishopAttackedSpaces(from, moves, board)
+      return getBishopAttackedSpaces(from, game)
     case 'Q':
-      return getQueenAttackedSpaces(from, moves, board)
+      return getQueenAttackedSpaces(from, game)
     case 'K':
-      return getKingAttackedSpaces(from, moves, board)
+      return getKingAttackedSpaces(from, game)
     default:
       throw new Error('Invalid piece type')
   }

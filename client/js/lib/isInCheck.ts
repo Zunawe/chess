@@ -1,11 +1,12 @@
 import { getAttackedSpaces } from './getAttackedSpaces'
 import { Coordinates, coordinatesEqual } from './util'
 
-export const isInCheck = (color: Color, moves: Move[], board: Board): boolean => {
+export const isInCheck = (color: Color, game: Game): boolean => {
+  const { board } = game
   const attackedSpaces = Object.entries(board)
     .filter(([, p]) => p.color !== color)
     .reduce<Coordinates[]>((acc, [c, p]) => {
-    return [...acc, ...getAttackedSpaces([new Coordinates(c), p], moves, board)]
+    return [...acc, ...getAttackedSpaces([new Coordinates(c), p], game)]
   }, [])
 
   const kingLocation = Object.entries(board)

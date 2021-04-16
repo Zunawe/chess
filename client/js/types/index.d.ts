@@ -1,8 +1,3 @@
-declare abstract class Action {
-  payload?: any
-  constructor (payload?: any)
-}
-
 declare type Color = 'D' | 'L'
 declare type PieceType = 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
 
@@ -20,8 +15,18 @@ declare interface Move {
   to: [import('../lib/util').Coordinates, Piece]
 }
 
-declare interface State {
+declare interface Game {
   board: Board
+  moves: Move[]
+}
+
+declare abstract class Action {
+  payload?: any
+  constructor (payload?: any)
+}
+
+declare interface State {
+  game: Game
   dragging: boolean
   selected: null | string
 }

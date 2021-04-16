@@ -5,7 +5,10 @@ import { thunkMiddleware } from './middlewares'
 import { reducer } from './reducers/app'
 
 const initialState: State = {
-  board: {},
+  game: {
+    board: {},
+    moves: []
+  },
   dragging: false,
   selected: null
 }

@@ -1,7 +1,8 @@
 import { getAllPawnMoves } from '../getAllMoves'
 import { Coordinates } from '../util'
 
-export const getLegalPawnMoves = (from: [Coordinates, Piece], moves: Move[], board: Board): Move[] => {
+export const getLegalPawnMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
+  const { board, moves } = game
   const isFirstMove = from[1].color === 'L' ? from[0].rank === 1 : from[0].rank === 6
   const direction = from[1].color === 'L' ? 1 : -1
   const legalMoves = getAllPawnMoves(from).filter((possibleMove) => {

@@ -29,9 +29,9 @@ export const deselectPiece = (): DeselectPieceAction => (new DeselectPieceAction
 
 export const makeMove: (move: Move) => Thunk = (move: Move) => {
   return (dispatch, getState) => {
-    const { board } = getState()
-    if (isLegalMove(move, [], board)) {
-      dispatch(setBoard(applyMove(move, board)))
+    const { game } = getState()
+    if (isLegalMove(move, game)) {
+      dispatch(setBoard(applyMove(move, game.board)))
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Coordinates } from '../util'
 
-export const getLegalBishopMoves = (from: [Coordinates, Piece], board: Board): Move[] => {
+export const getLegalBishopMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
+  const { board } = game
   let neWall = false
   let seWall = false
   let swWall = false

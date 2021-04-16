@@ -12,12 +12,15 @@ import {
 
 export const reducer: Reducer = (state, action) => {
   if (action instanceof RemovePieceAction) {
-    const newBoard = { ...state.board }
+    const newBoard = { ...state.game.board }
     delete newBoard[action.payload.toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
 
     return {
       ...state,
-      board: newBoard
+      game: {
+        ...state.game,
+        board: newBoard
+      }
     }
   } else if (action instanceof MovePieceAction) {
     if (coordinatesEqual(action.payload.to, action.payload.from)) {
@@ -25,35 +28,47 @@ export const reducer: Reducer = (state, action) => {
     }
 
     const newBoard = {
-      ...state.board
+      ...state.game.board
     }
-    newBoard[action.payload.to.toString()] = state.board[action.payload.from.toString()]
+    newBoard[action.payload.to.toString()] = state.game.board[action.payload.from.toString()]
     delete newBoard[action.payload.from.toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
 
     return {
       ...state,
-      board: newBoard,
+      game: {
+        ...state.game,
+        board: newBoard
+      },
       selected: null
     }
   } else if (action instanceof SetPieceAction) {
     const newBoard = {
-      ...state.board
+      ...state.game.board
     }
 
     newBoard[action.payload.from.toString()] = action.payload.piece
     return {
       ...state,
-      board: newBoard
+      game: {
+        ...state.game,
+        board: newBoard
+      }
     }
   } else if (action instanceof ResetBoardAction) {
     return {
       ...state,
-      board: getStartingBoard()
+      game: {
+        ...state.game,
+        board: getStartingBoard()
+      }
     }
   } else if (action instanceof SetBoardAction) {
     return {
       ...state,
-      board: action.payload
+      game: {
+        ...state.game,
+        board: action.payload
+      }
     }
   } else if (action instanceof SetDraggingAction) {
     return {
