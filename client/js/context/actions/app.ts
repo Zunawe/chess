@@ -9,6 +9,9 @@ export const resetBoard = (): ResetBoardAction => (new ResetBoardAction())
 export class SetBoardAction extends Action {}
 export const setBoard = (board: Board): SetBoardAction => (new SetBoardAction(board))
 
+export class AddMoveAction extends Action {}
+export const addMove = (move: Move): AddMoveAction => (new AddMoveAction(move))
+
 export class MovePieceAction extends Action {}
 export const movePiece = (from: Coordinates, to: Coordinates): MovePieceAction => (new MovePieceAction({ from, to }))
 
@@ -32,6 +35,7 @@ export const makeMove: (move: Move) => Thunk = (move: Move) => {
     const { game } = getState()
     if (isLegalMove(move, game)) {
       dispatch(setBoard(applyMove(move, game.board)))
+      dispatch(addMove(move))
     }
   }
 }

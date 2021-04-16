@@ -117,6 +117,12 @@ export const applyMove = (move: Move, board: Board): Board => {
     }, newBoard)
   }
 
+  // En Passant
+  if (piece.type === 'P' && move.to[0].file !== move.from[0].file && newBoard[move.to[0].toString()] === undefined) {
+    const takenPawnCoords = new Coordinates(move.to[0].file, move.from[0].rank)
+    delete newBoard[takenPawnCoords.toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
+  }
+
   delete newBoard[move.from[0].toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
   newBoard[move.to[0].toString()] = move.to[1]
 

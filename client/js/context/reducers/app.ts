@@ -7,7 +7,8 @@ import {
   SetPieceAction,
   SetDraggingAction,
   SelectPieceAction,
-  DeselectPieceAction
+  DeselectPieceAction,
+  AddMoveAction
 } from '../actions/app'
 
 export const reducer: Reducer = (state, action) => {
@@ -52,6 +53,14 @@ export const reducer: Reducer = (state, action) => {
       game: {
         ...state.game,
         board: newBoard
+      }
+    }
+  } else if (action instanceof AddMoveAction) {
+    return {
+      ...state,
+      game: {
+        ...state.game,
+        moves: [...state.game.moves, action.payload]
       }
     }
   } else if (action instanceof ResetBoardAction) {
