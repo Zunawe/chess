@@ -1,4 +1,4 @@
-import { coordinatesEqual, getStartingBoard } from '../../lib/util'
+import { coordinatesEqual, getStartingBoard } from '../../lib/chessUtils'
 import {
   RemovePieceAction,
   MovePieceAction,

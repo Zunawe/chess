@@ -1,5 +1,4 @@
-import { getAttackedSpaces } from './getAttackedSpaces'
-import { Coordinates, coordinatesEqual } from './util'
+import { getAttackedSpaces, Coordinates, coordinatesEqual } from './index'
 
 export const isInCheck = (color: Color, game: Game): boolean => {
   const { board } = game

@@ -1,4 +1,4 @@
-import { Coordinates } from '../util'
+import { Coordinates } from '../index'
 
 import { getAllPawnMoves } from './getAllPawnMoves'
 import { getAllKnightMoves } from './getAllKnightMoves'

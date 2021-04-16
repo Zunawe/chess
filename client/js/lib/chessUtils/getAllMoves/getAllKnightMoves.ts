@@ -1,61 +1,19 @@
-import { Coordinates } from '../util'
+import { Coordinates } from '../index'
 
-export const getAllKingMoves = (from: [Coordinates, Piece]): Move[] => {
+export const getAllKnightMoves = (from: [Coordinates, Piece]): Move[] => {
   const [coordinates, piece] = from
   const possibleMoves: Move[] = [
     {
       from,
       to: [new Coordinates(
         coordinates.file + 1,
-        coordinates.rank + 0
+        coordinates.rank + 2
       ), piece]
     },
     {
       from,
       to: [new Coordinates(
-        coordinates.file + 1,
-        coordinates.rank - 1
-      ), piece]
-    },
-    {
-      from,
-      to: [new Coordinates(
-        coordinates.file + 0,
-        coordinates.rank - 1
-      ), piece]
-    },
-    {
-      from,
-      to: [new Coordinates(
-        coordinates.file - 1,
-        coordinates.rank - 1
-      ), piece]
-    },
-    {
-      from,
-      to: [new Coordinates(
-        coordinates.file - 1,
-        coordinates.rank + 0
-      ), piece]
-    },
-    {
-      from,
-      to: [new Coordinates(
-        coordinates.file - 1,
-        coordinates.rank + 1
-      ), piece]
-    },
-    {
-      from,
-      to: [new Coordinates(
-        coordinates.file + 0,
-        coordinates.rank + 1
-      ), piece]
-    },
-    {
-      from,
-      to: [new Coordinates(
-        coordinates.file + 1,
+        coordinates.file + 2,
         coordinates.rank + 1
       ), piece]
     },
@@ -63,14 +21,42 @@ export const getAllKingMoves = (from: [Coordinates, Piece]): Move[] => {
       from,
       to: [new Coordinates(
         coordinates.file + 2,
-        coordinates.rank + 0
+        coordinates.rank - 1
+      ), piece]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file + 1,
+        coordinates.rank - 2
+      ), piece]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file - 1,
+        coordinates.rank - 2
       ), piece]
     },
     {
       from,
       to: [new Coordinates(
         coordinates.file - 2,
-        coordinates.rank + 0
+        coordinates.rank - 1
+      ), piece]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file - 2,
+        coordinates.rank + 1
+      ), piece]
+    },
+    {
+      from,
+      to: [new Coordinates(
+        coordinates.file - 1,
+        coordinates.rank + 2
       ), piece]
     }
   ]

@@ -1,4 +1,4 @@
-import { Coordinates } from '../util'
+import { Coordinates } from '../index'
 
 export const getLegalBishopMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
   const { board } = game

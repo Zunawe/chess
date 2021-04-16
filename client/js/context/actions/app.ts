@@ -1,7 +1,6 @@
 import { Action } from './Action'
 import { Thunk } from '../middlewares'
-import { applyMove, Coordinates } from '../../lib/util'
-import { isLegalMove } from '../../lib/isLegalMove'
+import { applyMove, Coordinates, isLegalMove } from '../../lib/chessUtils'
 
 export class ResetBoardAction extends Action {}
 export const resetBoard = (): ResetBoardAction => (new ResetBoardAction())

@@ -1,6 +1,11 @@
-import { getLegalMoves } from './getLegalMoves'
-import { isInCheck } from './isInCheck'
-import { applyMove, movesEqual, isCastle, Coordinates } from './util'
+import {
+  applyMove,
+  movesEqual,
+  isCastle,
+  Coordinates,
+  isInCheck,
+  getLegalMoves
+} from './index'
 
 export const isLegalMove = (move: Move, game: Game): boolean => {
   const { board, moves } = game

@@ -3,7 +3,7 @@ import React, { FC, useContext, useCallback } from 'react'
 import { AppContext } from '../context/app'
 import { Tile, TileProps } from './index'
 import { deselectPiece } from '../context/actions/app'
-import { Coordinates } from '../lib/util'
+import { Coordinates } from '../lib/chessUtils'
 
 interface BoardProps {
   perspective: 'D' | 'L'

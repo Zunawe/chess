@@ -1,4 +1,5 @@
-import { Coordinates } from '../util'
+import { Coordinates } from '../index'
+
 import { getAllRookMoves } from './getAllRookMoves'
 import { getAllBishopMoves } from './getAllBishopMoves'
 

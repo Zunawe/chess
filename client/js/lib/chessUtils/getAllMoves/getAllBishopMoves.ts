@@ -1,4 +1,4 @@
-import { Coordinates } from '../util'
+import { Coordinates } from '../index'
 
 export const getAllBishopMoves = (from: [Coordinates, Piece]): Move[] => {
   const [coordinates, piece] = from

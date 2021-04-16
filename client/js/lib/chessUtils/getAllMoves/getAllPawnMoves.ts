@@ -1,4 +1,4 @@
-import { Coordinates } from '../util'
+import { Coordinates } from '../index'
 
 export const getAllPawnMoves = (from: [Coordinates, Piece]): Move[] => {
   const [coordinates, piece] = from

@@ -2,7 +2,7 @@ import React, { FC, useCallback, useContext, useMemo, useState } from 'react'
 
 import { setDragging, selectPiece, makeMove } from '../context/actions/app'
 import { AppContext } from '../context/app'
-import { Coordinates, coordinatesEqual } from '../lib/util'
+import { Coordinates, coordinatesEqual } from '../lib/chessUtils'
 
 export interface PieceProps {
   color: 'D' | 'L'

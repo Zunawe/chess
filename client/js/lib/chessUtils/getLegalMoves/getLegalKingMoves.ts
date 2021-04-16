@@ -1,5 +1,4 @@
-import { getAllMoves } from '../getAllMoves'
-import { Coordinates, coordinatesEqual, isCastle, piecesEqual } from '../util'
+import { Coordinates, getAllMoves, coordinatesEqual, isCastle, piecesEqual } from '../index'
 
 export const getLegalKingMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
   const { board, moves } = game

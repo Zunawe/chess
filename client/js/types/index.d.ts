@@ -11,8 +11,8 @@ declare interface Board {
 }
 
 declare interface Move {
-  from: [import('../lib/util').Coordinates, Piece]
-  to: [import('../lib/util').Coordinates, Piece]
+  from: [import('../lib/chessUtils').Coordinates, Piece]
+  to: [import('../lib/chessUtils').Coordinates, Piece]
 }
 
 declare interface Game {

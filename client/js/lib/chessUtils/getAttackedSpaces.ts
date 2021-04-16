@@ -1,5 +1,4 @@
-import { Coordinates } from './util'
-import { getLegalMoves } from './getLegalMoves'
+import { Coordinates, getLegalMoves } from './index'
 
 export const getAttackedSpaces = (from: [Coordinates, Piece], game: Game): Coordinates[] => {
   switch (from[1].type) {

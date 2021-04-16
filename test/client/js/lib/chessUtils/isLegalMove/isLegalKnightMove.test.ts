@@ -1,5 +1,4 @@
-import { getStartingBoard, createPiece, Coordinates } from '../../../../../client/js/lib/util'
-import { isLegalMove } from '../../../../../client/js/lib/isLegalMove'
+import { createPiece, Coordinates, isLegalMove, getStartingBoard } from '../../../../../../client/js/lib/chessUtils'
 
 describe('Knight', () => {
   let game: Game

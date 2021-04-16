@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Coordinates } from '../lib/util'
+import { Coordinates } from '../lib/chessUtils'
 
 import { Piece } from './index'
 

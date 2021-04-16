@@ -1,5 +1,4 @@
-import { getAllMoves } from '../getAllMoves'
-import { Coordinates } from '../util'
+import { Coordinates, getAllMoves } from '../index'
 
 export const getLegalPawnMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
   const { board, moves } = game

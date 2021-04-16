@@ -1,4 +1,4 @@
-import { Coordinates } from '../util'
+import { Coordinates } from '../index'
 
 import { getLegalPawnMoves } from './getLegalPawnMoves'
 import { getLegalKnightMoves } from './getLegalKnightMoves'
