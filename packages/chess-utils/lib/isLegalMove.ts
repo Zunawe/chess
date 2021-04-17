@@ -28,7 +28,7 @@ export const isLegalMove = (move: Move, game: Game): boolean => {
           to: [new Coordinates(legalMove.from[0].file + direction, legalMove.to[0].rank), legalMove.to[1]]
         }
 
-        return !isInCheck(move.from[1].color, applyMove(legalMove, game))
+        return !isInCheck(move.from[1].color, applyMove(testMove, game))
       }
 
       return true

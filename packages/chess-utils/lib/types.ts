@@ -15,7 +15,6 @@ export interface Board {
 export interface Move {
   from: [Coordinates, Piece]
   to: [Coordinates, Piece]
-  taken?: [Coordinates, Piece]
 }
 
 export interface Game {
