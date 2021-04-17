@@ -8,6 +8,9 @@ export const resetBoard = (): ResetBoardAction => (new ResetBoardAction())
 export class SetBoardAction extends Action {}
 export const setBoard = (board: Chess.Board): SetBoardAction => (new SetBoardAction(board))
 
+export class SetGameAction extends Action {}
+export const setGame = (game: Chess.Game): SetGameAction => (new SetGameAction(game))
+
 export class AddMoveAction extends Action {}
 export const addMove = (move: Chess.Move): AddMoveAction => (new AddMoveAction(move))
 
@@ -33,8 +36,7 @@ export const makeMove: (move: Chess.Move) => Thunk = (move: Chess.Move) => {
   return (dispatch, getState) => {
     const { game } = getState()
     if (Chess.isLegalMove(move, game)) {
-      dispatch(setBoard(Chess.applyMove(move, game.board)))
-      dispatch(addMove(move))
+      dispatch(setGame(Chess.applyMove(move, game)))
     }
   }
 }
@@ -46,8 +48,7 @@ export const attemptPromotion: (move: Chess.Move) => Thunk = (move: Chess.Move) 
     const testMove: Chess.Move = Chess.copyMove(move)
     testMove.to[1].type = 'Q'
     if (Chess.isLegalMove(testMove, game)) {
-      dispatch(setBoard(Chess.applyMove(move, game.board)))
-      dispatch(addMove(move))
+      dispatch(setGame(Chess.applyMove(move, game)))
       dispatch(setPromoting(true))
     }
   }

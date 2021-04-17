@@ -2,6 +2,7 @@ import * as Chess from 'chess-utils'
 import {
   ResetBoardAction,
   SetBoardAction,
+  SetGameAction,
   SetDraggingAction,
   SelectPieceAction,
   DeselectPieceAction,
@@ -22,25 +23,23 @@ export const reducer: Reducer = (state, action) => {
     }
   } else if (action instanceof UndoLastMoveAction) {
     const newMoves = state.game.moves.slice(0, -1)
-    const newBoard = Chess.applyMoves(newMoves, Chess.getStartingBoard())
+    const newGame = Chess.applyMoves(newMoves, {
+      board: Chess.getStartingBoard(),
+      moves: []
+    })
     return {
       ...state,
-      game: {
-        ...state.game,
-        moves: newMoves,
-        board: newBoard
-      }
+      game: newGame
     }
   } else if (action instanceof ReplaceLastMoveAction) {
     const newMoves = [...state.game.moves.slice(0, -1), action.payload]
-    const newBoard = Chess.applyMoves(newMoves, Chess.getStartingBoard())
+    const newGame = Chess.applyMoves(newMoves, {
+      board: Chess.getStartingBoard(),
+      moves: []
+    })
     return {
       ...state,
-      game: {
-        ...state.game,
-        moves: newMoves,
-        board: newBoard
-      }
+      game: newGame
     }
   } else if (action instanceof ResetBoardAction) {
     return {
@@ -57,6 +56,11 @@ export const reducer: Reducer = (state, action) => {
         ...state.game,
         board: action.payload
       }
+    }
+  } else if (action instanceof SetGameAction) {
+    return {
+      ...state,
+      game: action.payload
     }
   } else if (action instanceof SetDraggingAction) {
     return {

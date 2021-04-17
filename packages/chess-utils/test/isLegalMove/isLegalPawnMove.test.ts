@@ -31,7 +31,7 @@ describe('Pawn', () => {
       from: [new Coordinates('a2'), createPiece('P', 'L')],
       to: [new Coordinates('a3'), createPiece('P', 'L')]
     }]
-    game.board = applyMoves(game.moves, game.board)
+    game = applyMoves(game.moves, game)
 
     const move: Move = {
       from: [new Coordinates('a3'), createPiece('P', 'L')],
@@ -131,7 +131,7 @@ describe('Pawn', () => {
         to: [new Coordinates('b5'), createPiece('P', 'D')]
       }
     ]
-    game.board = applyMoves(game.moves, game.board)
+    game = applyMoves(game.moves, game)
 
     const move: Move = {
       from: [new Coordinates('a5'), createPiece('P', 'L')],
@@ -159,7 +159,7 @@ describe('Pawn', () => {
         to: [new Coordinates('h6'), createPiece('P', 'D')]
       }
     ]
-    game.board = applyMoves(game.moves, game.board)
+    game = applyMoves(game.moves, game)
 
     const move: Move = {
       from: [new Coordinates('a5'), createPiece('P', 'L')],

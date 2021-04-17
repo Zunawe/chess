@@ -1,10 +1,12 @@
-import { Coordinates, Move, Board } from './index'
+import { Coordinates, Move, Game, copyMove } from './index'
 
-export const applyMove = (move: Move, board: Board): Board => {
-  let newBoard: Board = {
-    ...board
+export const applyMove = (move: Move, game: Game): Game => {
+  let newGame: Game = {
+    moves: game.moves.map(copyMove),
+    board: { ...game.board }
   }
-  const piece = newBoard[move.from[0].toString()]
+
+  const piece = newGame.board[move.from[0].toString()]
 
   if (piece === undefined) {
     throw new Error('Invalid move')
@@ -16,31 +18,38 @@ export const applyMove = (move: Move, board: Board): Board => {
       ? (move.from[1].color === 'L' ? new Coordinates('a1') : new Coordinates('a8'))
       : (move.from[1].color === 'L' ? new Coordinates('h1') : new Coordinates('h8'))
 
-    const rook = newBoard[rookCoords.toString()]
+    const rook = newGame.board[rookCoords.toString()]
     if (rook === undefined || rook.type !== 'R') {
       throw new Error('Couldn\'t find rook to castle with')
     }
 
-    newBoard = applyMove({
+    newGame = applyMove({
       from: [rookCoords, rook],
       to: [new Coordinates(move.to[0].file + ((move.to[0].file - move.from[0].file) / (-2)), move.from[0].rank), rook]
-    }, newBoard)
+    }, newGame)
   }
 
   // En Passant
-  if (piece.type === 'P' && move.to[0].file !== move.from[0].file && newBoard[move.to[0].toString()] === undefined) {
+  if (piece.type === 'P' && move.to[0].file !== move.from[0].file && newGame.board[move.to[0].toString()] === undefined) {
     const takenPawnCoords = new Coordinates(move.to[0].file, move.from[0].rank)
-    delete newBoard[takenPawnCoords.toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
+    const takenPawn = newGame.board[takenPawnCoords.toString()]
+    move.taken = [takenPawnCoords, takenPawn]
+    delete newGame.board[takenPawnCoords.toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
   }
 
-  delete newBoard[move.from[0].toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
-  newBoard[move.to[0].toString()] = move.to[1]
+  if (newGame.board[move.to[0].toString()] !== undefined) {
+    move.taken = [move.to[0], newGame.board[move.to[0].toString()]]
+  }
+  delete newGame.board[move.from[0].toString()] /* eslint-disable-line @typescript-eslint/no-dynamic-delete */
+  newGame.board[move.to[0].toString()] = move.to[1]
 
-  return newBoard
+  newGame.moves.push(move)
+
+  return newGame
 }
 
-export const applyMoves = (moves: Move[], board: Board): Board => {
+export const applyMoves = (moves: Move[], game: Game): Game => {
   return moves.reduce((acc, move) => {
     return applyMove(move, acc)
-  }, board)
+  }, game)
 }

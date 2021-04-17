@@ -11,7 +11,7 @@ import {
 } from './index'
 
 export const isLegalMove = (move: Move, game: Game): boolean => {
-  const { board, moves } = game
+  const { moves } = game
 
   const turn: Color = moves.length % 2 === 0 ? 'L' : 'D'
   if (move.from[1].color !== turn) {
@@ -19,7 +19,7 @@ export const isLegalMove = (move: Move, game: Game): boolean => {
   }
 
   return getLegalMoves(move.from, game)
-    .filter((legalMove) => !isInCheck(move.from[1].color, { board: applyMove(legalMove, board), moves: [...moves, legalMove] }))
+    .filter((legalMove) => !isInCheck(move.from[1].color, applyMove(legalMove, game)))
     .filter((legalMove) => {
       if (isCastle(move)) {
         const direction = (legalMove.to[0].file - legalMove.from[0].file) / 2
@@ -28,7 +28,7 @@ export const isLegalMove = (move: Move, game: Game): boolean => {
           to: [new Coordinates(legalMove.from[0].file + direction, legalMove.to[0].rank), legalMove.to[1]]
         }
 
-        return !isInCheck(move.from[1].color, { board: applyMove(testMove, board), moves: [...moves, testMove] })
+        return !isInCheck(move.from[1].color, applyMove(legalMove, game))
       }
 
       return true
