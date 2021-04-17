@@ -9,7 +9,9 @@ import {
   AddMoveAction,
   SetPromotingAction,
   UndoLastMoveAction,
-  ReplaceLastMoveAction
+  ReplaceLastMoveAction,
+  SetRoomAction,
+  SetPerspectiveAction
 } from '../actions/app'
 
 export const reducer: Reducer = (state, action) => {
@@ -81,6 +83,16 @@ export const reducer: Reducer = (state, action) => {
     return {
       ...state,
       promoting: action.payload
+    }
+  } else if (action instanceof SetRoomAction) {
+    return {
+      ...state,
+      room: action.payload
+    }
+  } else if (action instanceof SetPerspectiveAction) {
+    return {
+      ...state,
+      perspective: action.payload
     }
   }
   return state

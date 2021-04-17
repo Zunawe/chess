@@ -32,11 +32,19 @@ export const deselectPiece = (): DeselectPieceAction => (new DeselectPieceAction
 export class SetPromotingAction extends Action {}
 export const setPromoting = (value: boolean): SetPromotingAction => (new SetPromotingAction(value))
 
-export const makeMove: (move: Chess.Move) => Thunk = (move: Chess.Move) => {
+export class SetRoomAction extends Action {}
+export const setRoom = (code: string): SetRoomAction => (new SetRoomAction(code))
+
+export class SetPerspectiveAction extends Action {}
+export const setPerspective = (color: Chess.Color): SetPerspectiveAction => (new SetPerspectiveAction(color))
+
+export const makeMove: (move: Chess.Move, callback?: (newGame: Chess.Game) => void) => Thunk = (move: Chess.Move, callback?: (newGame: Chess.Game) => void) => {
   return (dispatch, getState) => {
     const { game } = getState()
     if (Chess.isLegalMove(move, game)) {
-      dispatch(setGame(Chess.applyMove(move, game)))
+      const newGame = Chess.applyMove(move, game)
+      dispatch(setGame(newGame))
+      callback?.(newGame)
     }
   }
 }

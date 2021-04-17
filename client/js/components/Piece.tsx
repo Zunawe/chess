@@ -3,6 +3,7 @@ import React, { FC, useCallback, useContext, useMemo, useState } from 'react'
 import { setDragging, selectPiece, makeMove, attemptPromotion } from '../context/actions/app'
 import { AppContext } from '../context/app'
 import * as Chess from 'chess-utils'
+import { useSocket } from '../hooks/useSocket'
 
 export interface PieceProps {
   color: Chess.Color
@@ -14,6 +15,7 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
   const [state, dispatch] = useContext(AppContext)
   const [dx, setDx] = useState(0)
   const [dy, setDy] = useState(0)
+  const socket = useSocket()
 
   const startDrag = useCallback((e) => {
     dispatch(setDragging(true))
@@ -39,6 +41,10 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
   const endDrag = useCallback((e) => {
     dispatch(setDragging(false))
 
+    if (Chess.whoseTurn(state.game) !== state.perspective) {
+      return
+    }
+
     e.target.hidden = true
     const hoveredTile = document.elementFromPoint(e.clientX, e.clientY)
     e.target.hidden = false
@@ -57,11 +63,13 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
         if (type === 'P' && (r === 0 || r === 7)) {
           dispatch(attemptPromotion(move))
         } else {
-          dispatch(makeMove(move))
+          dispatch(makeMove(move, (newGame) => {
+            if (state.room !== '') socket.emit('move', state.room, Chess.encodeMove(newGame.moves.length - 1, newGame.moves))
+          }))
         }
       }
     }
-  }, [color, type])
+  }, [color, type, state.room, state.game])
 
   const isSelected = useMemo(() => {
     return state.selected !== null && Chess.coordinatesEqual(new Chess.Coordinates(state.selected), coordinates)

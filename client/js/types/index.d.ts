@@ -9,6 +9,7 @@ declare interface State {
   selected: null | string
   promoting: boolean
   perspective: import('chess-utils').Color
+  room: string
 }
 
 declare interface Store {
