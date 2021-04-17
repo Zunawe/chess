@@ -67,6 +67,7 @@ describe('encodeMove', () => {
       },
     ]
   })
+
   describe('Regular Moves', () => {
     it('should encode a pawn moving forward', () => {
       expect(encodeMove(0, moves)).toBe('a4')
@@ -91,7 +92,7 @@ describe('encodeMove', () => {
 
   describe('Castling', () => {
     it('should encode a queenside castle', () => {
-      expect(encodeMove(9, moves)).toBe('0-0-0')
+      expect(encodeMove(9, moves)).toBe('O-O-O')
     })
   })
 
@@ -104,6 +105,50 @@ describe('encodeMove', () => {
   describe('Pawn Promotion', () => {
     it('should encode promotion to queen', () => {
       expect(encodeMove(14, moves)).toBe('bxc8=Q+')
+    })
+  })
+
+  describe('Ambiguous Moves', () => {
+    it('should encode ambiguous moves', () => {
+      moves = [
+        {
+          from: [new Coordinates('a2'), createPiece('P', 'L')],
+          to: [new Coordinates('a4'), createPiece('P', 'L')]
+        },
+        {
+          from: [new Coordinates('d7'), createPiece('P', 'D')],
+          to: [new Coordinates('d6'), createPiece('P', 'D')]
+        },
+        {
+          from: [new Coordinates('a1'), createPiece('R', 'L')],
+          to: [new Coordinates('a3'), createPiece('R', 'L')]
+        },
+        {
+          from: [new Coordinates('d6'), createPiece('P', 'D')],
+          to: [new Coordinates('d5'), createPiece('P', 'D')]
+        },
+        {
+          from: [new Coordinates('h2'), createPiece('P', 'L')],
+          to: [new Coordinates('h4'), createPiece('P', 'L')]
+        },
+        {
+          from: [new Coordinates('d5'), createPiece('P', 'D')],
+          to: [new Coordinates('d4'), createPiece('P', 'D')]
+        },
+        {
+          from: [new Coordinates('h1'), createPiece('R', 'L')],
+          to: [new Coordinates('h3'), createPiece('R', 'L')]
+        },
+        {
+          from: [new Coordinates('d4'), createPiece('P', 'D')],
+          to: [new Coordinates('d3'), createPiece('P', 'D')]
+        },
+        {
+          from: [new Coordinates('a3'), createPiece('R', 'L')],
+          to: [new Coordinates('d3'), createPiece('R', 'L')]
+        }
+      ]
+      expect(encodeMove(8, moves)).toBe('Raxd3')
     })
   })
 })

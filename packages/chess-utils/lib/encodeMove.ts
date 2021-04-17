@@ -2,15 +2,21 @@ import { Move, isCastle, gameFromMoves, getLegalMoves, Coordinates } from '.'
 import { isInCheck } from './isInCheck'
 import { isInCheckmate } from './isInCheckmate'
 import { whoseTurn } from './whoseTurn'
+import { coordinatesEqual } from './Coordinates'
+import { piecesEqual } from './piecesEqual'
 
 export const encodeMove = (i: number, moves: Move[]): string => {
   const move = moves[i]
+  if (move === undefined) {
+    throw new Error(`Index out of bounds for provided moves: ${i}`)
+  }
+
   const gameBeforeMove = gameFromMoves(moves.slice(0, i))
   const currentGame = gameFromMoves(moves.slice(0, i + 1))
 
   // Castling
   if (isCastle(move)) {
-    return move.to[0].file === 6 ? '0-0' : '0-0-0'
+    return move.to[0].file === 6 ? 'O-O' : 'O-O-O'
   }
 
   // En Passant
@@ -23,13 +29,13 @@ export const encodeMove = (i: number, moves: Move[]): string => {
   // Disambiguation
   const otherPieceLocations = Object.entries(gameBeforeMove.board)
     .filter(([c, p]) => {
-      return c !== move.from[0].toString() && p.color === whoseTurn(moves) && p.type === move.from[1].type
+      return c !== move.from[0].toString() && p.color === move.from[1].color && p.type === move.from[1].type
     })
     .filter(([c, p]) => {
-      return getLegalMoves([new Coordinates(c), p], gameBeforeMove).includes({
-        from: [move.from[0], p],
-        to: move.to
-      })
+      return getLegalMoves([new Coordinates(c), p], gameBeforeMove)
+        .some((legalMove) => {
+          return coordinatesEqual(legalMove.to[0], move.to[0]) && piecesEqual(legalMove.to[1], move.to[1])
+        })
     })
     .map(([c]) => new Coordinates(c))
 
