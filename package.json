@@ -65,7 +65,7 @@
     "lint:fix": "npm run lint:server -- --fix && npm run lint:client -- --fix",
     "lint:client": "ts-standard -p client/tsconfig.json \"client/js/**/\"",
     "lint:server": "ts-standard -p tsconfig.json \"server/**/\"",
-    "build": "npm run build:client && npm run build:server",
+    "build": "cd packages/chess-utils && npm run build && cd ../.. && npm run build:client && npm run build:server",
     "build:dist": "node scripts/build-dist.js",
     "build:client": "webpack --config webpack.prod.js",
     "build:server": "tsc"
