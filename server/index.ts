@@ -58,7 +58,7 @@ const init = async (): Promise<void> => {
   }
 
   // Routes
-  app.use('/', routes.root)
+  app.use('/chess', routes.chess)
 
   app.use(errorLogger)
 

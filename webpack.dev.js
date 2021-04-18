@@ -6,7 +6,7 @@ const { mergeWithRules } = require('webpack-merge')
 const config = {
   entry: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&quiet=true'],
   mode: 'development',
-  devtool: 'eval-source-map',
+  devtool: 'cheap-module-source-map',
   watchOptions: {
     ignored: /node_modules/
   },

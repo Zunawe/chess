@@ -1,1 +1,1 @@
-export { router as root } from './root'
+export { router as chess } from './chess'

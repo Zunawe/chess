@@ -1,1 +1,1 @@
-export * as root from './root'
+export * as chess from './chess'
