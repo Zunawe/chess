@@ -83,7 +83,7 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
         transform: `translate(calc(${dx}px - 5vmin), calc(${dy}px - 5vmin))`
       } : {}}
       draggable='false'
-      className={`piece piece--${color}${type} ${state.dragging ? 'dragging' : ''}`}
+      className={`piece ${color}${type} ${state.dragging ? 'dragging' : ''}`}
       onMouseDown={startDrag}
       onMouseMove={drag}
       onMouseLeave={drag}

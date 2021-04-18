@@ -28,9 +28,10 @@ export const PromotionSelector: FC = () => {
       ].join(' ')}
     >
       {promotionPieces.map((piece) => (
-        <img
+        <div
           key={piece}
-          src={`/images/${lastMove.from[1].color}${piece}.svg`}
+          className={`pieceButton ${lastMove.from[1].color}${piece}`}
+          // src={`/images/${lastMove.from[1].color}${piece}.svg`}
           onClick={handleClick(piece)}
         />
       ))}
