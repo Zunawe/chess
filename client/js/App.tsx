@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useContext, useEffect, useState } from 'react'
 import * as Chess from 'chess-utils'
 
-import { resetBoard, setGame, setRoom, setPerspective } from './context/actions/app'
+import { resetGame, setGame, setRoom, setPerspective } from './context/actions/app'
 import { Board, Button, TextInput } from './components'
 import { AppContext } from './context/app'
 import { useSocket } from './hooks/useSocket'
@@ -11,7 +11,7 @@ export const App: FC = () => {
   const [, dispatch] = useContext(AppContext)
 
   useEffect(() => {
-    dispatch(resetBoard())
+    dispatch(resetGame())
   }, [])
 
   const socket = useSocket()
@@ -20,7 +20,7 @@ export const App: FC = () => {
 
     socket.on('joined', (code: string, color: Chess.Color) => {
       console.log(`Joined room ${code}`)
-      dispatch(resetBoard())
+      dispatch(resetGame())
       dispatch(setRoom(code))
       dispatch(setPerspective(color))
     })
@@ -36,7 +36,7 @@ export const App: FC = () => {
     socket.on('disconnect', () => {
       dispatch(setRoom(''))
       dispatch(setPerspective('L'))
-      dispatch(resetBoard())
+      dispatch(resetGame())
     })
   }, [socket, inputValue])
 

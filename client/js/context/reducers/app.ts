@@ -1,12 +1,10 @@
 import * as Chess from 'chess-utils'
 import {
-  ResetBoardAction,
-  SetBoardAction,
+  ResetGameAction,
   SetGameAction,
   SetDraggingAction,
   SelectPieceAction,
   DeselectPieceAction,
-  AddMoveAction,
   SetPromotingAction,
   UndoLastMoveAction,
   ReplaceLastMoveAction,
@@ -15,49 +13,20 @@ import {
 } from '../actions/app'
 
 export const reducer: Reducer = (state, action) => {
-  if (action instanceof AddMoveAction) {
+  if (action instanceof UndoLastMoveAction) {
     return {
       ...state,
-      game: {
-        ...state.game,
-        moves: [...state.game.moves, action.payload]
-      }
-    }
-  } else if (action instanceof UndoLastMoveAction) {
-    const newMoves = state.game.moves.slice(0, -1)
-    const newGame = Chess.applyMoves(newMoves, {
-      board: Chess.getStartingBoard(),
-      moves: []
-    })
-    return {
-      ...state,
-      game: newGame
+      game: Chess.gameFromMoves(state.game.moves.slice(0, -1))
     }
   } else if (action instanceof ReplaceLastMoveAction) {
-    const newMoves = [...state.game.moves.slice(0, -1), action.payload]
-    const newGame = Chess.applyMoves(newMoves, {
-      board: Chess.getStartingBoard(),
-      moves: []
-    })
     return {
       ...state,
-      game: newGame
+      game: Chess.gameFromMoves([...state.game.moves.slice(0, -1), action.payload])
     }
-  } else if (action instanceof ResetBoardAction) {
+  } else if (action instanceof ResetGameAction) {
     return {
       ...state,
-      game: {
-        ...state.game,
-        board: Chess.getStartingBoard()
-      }
-    }
-  } else if (action instanceof SetBoardAction) {
-    return {
-      ...state,
-      game: {
-        ...state.game,
-        board: action.payload
-      }
+      game: Chess.gameFromMoves([])
     }
   } else if (action instanceof SetGameAction) {
     return {
