@@ -54,6 +54,7 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "scripts": {
+    "preinstall": "cd packages/chess-utils && npm install",
     "postinstall": "npx husky install",
     "clean": "rm -rf dist",
     "clean:all": "rm -rf dist node_modules .husky/_",
