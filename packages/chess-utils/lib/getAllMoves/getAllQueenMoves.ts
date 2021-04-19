@@ -1,8 +1,8 @@
-import { Coordinates, Piece, Move } from '../index'
+import { MovePart, Move } from '../index'
 
 import { getAllRookMoves } from './getAllRookMoves'
 import { getAllBishopMoves } from './getAllBishopMoves'
 
-export const getAllQueenMoves = (from: [Coordinates, Piece]): Move[] => {
+export const getAllQueenMoves = (from: MovePart): Move[] => {
   return [...getAllRookMoves(from), ...getAllBishopMoves(from)]
 }

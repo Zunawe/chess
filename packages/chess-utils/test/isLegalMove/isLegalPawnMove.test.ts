@@ -1,263 +1,264 @@
-import { createPiece, Coordinates, isLegalMove, getStartingBoard, applyMoves, Game, Move } from '../../lib'
+import { createPiece, Coordinates, isLegalMove, getStartingBoard, Board, Game, Move, createGame } from '../../lib'
 
 describe('Pawn', () => {
-  let game: Game
-
-  beforeEach(() => {
-    game = {
-      board: getStartingBoard(),
-      moves: []
-    }
-  })
-
   it('should allow a pawn to move forward one space', () => {
     const move: Move = {
-      from: [new Coordinates('a2'), createPiece('P', 'L')],
-      to: [new Coordinates('a3'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a3'), piece: createPiece('P', 'L') }
     }
-    expect(isLegalMove(move, game)).toBe(true)
+    expect(isLegalMove(move, createGame())).toBe(true)
   })
 
   it('should allow a pawn to move forward two spaces on its first turn', () => {
     const move: Move = {
-      from: [new Coordinates('a2'), createPiece('P', 'L')],
-      to: [new Coordinates('a4'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
     }
-    expect(isLegalMove(move, game)).toBe(true)
+    expect(isLegalMove(move, createGame())).toBe(true)
   })
 
   it('should not allow a pawn to move forward two spaces on its second turn', () => {
-    game.moves = [{
-      from: [new Coordinates('a2'), createPiece('P', 'L')],
-      to: [new Coordinates('a3'), createPiece('P', 'L')]
-    }]
-    game = applyMoves(game.moves, game)
+    const game = createGame([{
+      from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a3'), piece: createPiece('P', 'L') }
+    }])
 
     const move: Move = {
-      from: [new Coordinates('a3'), createPiece('P', 'L')],
-      to: [new Coordinates('a5'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('a3'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a5'), piece: createPiece('P', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(false)
   })
 
   it('should allow a pawn to capture left', () => {
-    game.board = {}
-    game.board.b2 = createPiece('P', 'L')
-    game.board.a3 = createPiece('P', 'D')
+    const board: Board = {}
+    board.b2 = createPiece('P', 'L')
+    board.a3 = createPiece('P', 'D')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('b2'), createPiece('P', 'L')],
-      to: [new Coordinates('a3'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('b2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a3'), piece: createPiece('P', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(true)
   })
 
   it('should allow a pawn to capture right', () => {
-    game.board = {}
-    game.board.b2 = createPiece('P', 'L')
-    game.board.c3 = createPiece('P', 'D')
+    const board: Board = {}
+    board.b2 = createPiece('P', 'L')
+    board.c3 = createPiece('P', 'D')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('b2'), createPiece('P', 'L')],
-      to: [new Coordinates('c3'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('b2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('c3'), piece: createPiece('P', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(true)
   })
 
   it('should not allow a pawn to capture its own pieces', () => {
-    game.board = {}
-    game.board.b2 = createPiece('P', 'L')
-    game.board.c3 = createPiece('P', 'L')
+    const board: Board = {}
+    board.b2 = createPiece('P', 'L')
+    board.c3 = createPiece('P', 'L')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('b2'), createPiece('P', 'L')],
-      to: [new Coordinates('c3'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('b2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('c3'), piece: createPiece('P', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(false)
   })
 
   it('should not allow a pawn to move when it is blocked', () => {
-    game.board = {}
-    game.board.a2 = createPiece('P', 'L')
-    game.board.a3 = createPiece('P', 'D')
+    const board: Board = {}
+    board.a2 = createPiece('P', 'L')
+    board.a3 = createPiece('P', 'D')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('a2'), createPiece('P', 'L')],
-      to: [new Coordinates('a3'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a3'), piece: createPiece('P', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(false)
   })
 
   it('should not allow a pawn to move two spaces when it is blocked', () => {
-    game.board = {}
-    game.board.a2 = createPiece('P', 'L')
-    game.board.a4 = createPiece('P', 'D')
+    const board: Board = {}
+    board.a2 = createPiece('P', 'L')
+    board.a4 = createPiece('P', 'D')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('a2'), createPiece('P', 'L')],
-      to: [new Coordinates('a4'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(false)
   })
 
   it('should not allow a pawn to move two spaces when it is blocked from moving one', () => {
-    game.board = {}
-    game.board.a2 = createPiece('P', 'L')
-    game.board.a3 = createPiece('P', 'D')
+    const board: Board = {}
+    board.a2 = createPiece('P', 'L')
+    board.a3 = createPiece('P', 'D')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('a2'), createPiece('P', 'L')],
-      to: [new Coordinates('a4'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(false)
   })
 
   it('should allow en passant when applicable', () => {
-    game.moves = [
+    const game = createGame([
       {
-        from: [new Coordinates('a2'), createPiece('P', 'L')],
-        to: [new Coordinates('a4'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('h7'), createPiece('P', 'D')],
-        to: [new Coordinates('h6'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('h7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('h6'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('a4'), createPiece('P', 'L')],
-        to: [new Coordinates('a5'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('a5'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('b7'), createPiece('P', 'D')],
-        to: [new Coordinates('b5'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('b7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('b5'), piece: createPiece('P', 'D') }
       }
-    ]
-    game = applyMoves(game.moves, game)
+    ])
 
     const move: Move = {
-      from: [new Coordinates('a5'), createPiece('P', 'L')],
-      to: [new Coordinates('b6'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('a5'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('b6'), piece: createPiece('P', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(true)
   })
 
   it('should not allow en passant if previous move was not relevant', () => {
-    game.moves = [
+    const game = createGame([
       {
-        from: [new Coordinates('a2'), createPiece('P', 'L')],
-        to: [new Coordinates('a4'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('b7'), createPiece('P', 'D')],
-        to: [new Coordinates('b5'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('b7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('b5'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('a4'), createPiece('P', 'L')],
-        to: [new Coordinates('a5'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('a5'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('h7'), createPiece('P', 'D')],
-        to: [new Coordinates('h6'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('h7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('h6'), piece: createPiece('P', 'D') }
       }
-    ]
-    game = applyMoves(game.moves, game)
+    ])
 
     const move: Move = {
-      from: [new Coordinates('a5'), createPiece('P', 'L')],
-      to: [new Coordinates('b6'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('a5'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('b6'), piece: createPiece('P', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(false)
   })
 
   it('should allow promotion to queen', () => {
-    game.board = {}
-    game.board.a7 = createPiece('P', 'L')
+    const board: Board = {}
+    board.a7 = createPiece('P', 'L')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('a7'), createPiece('P', 'L')],
-      to: [new Coordinates('a8'), createPiece('Q', 'L')]
+      from: { coordinates: new Coordinates('a7'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a8'), piece: createPiece('Q', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(true)
   })
 
   it('should allow promotion to bishop', () => {
-    game.board = {}
-    game.board.a7 = createPiece('P', 'L')
+    const board: Board = {}
+    board.a7 = createPiece('P', 'L')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('a7'), createPiece('P', 'L')],
-      to: [new Coordinates('a8'), createPiece('B', 'L')]
+      from: { coordinates: new Coordinates('a7'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a8'), piece: createPiece('B', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(true)
   })
 
   it('should allow promotion to rook', () => {
-    game.board = {}
-    game.board.a7 = createPiece('P', 'L')
+    const board: Board = {}
+    board.a7 = createPiece('P', 'L')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('a7'), createPiece('P', 'L')],
-      to: [new Coordinates('a8'), createPiece('R', 'L')]
+      from: { coordinates: new Coordinates('a7'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a8'), piece: createPiece('R', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(true)
   })
 
   it('should allow promotion to knight', () => {
-    game.board = {}
-    game.board.a7 = createPiece('P', 'L')
+    const board: Board = {}
+    board.a7 = createPiece('P', 'L')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('a7'), createPiece('P', 'L')],
-      to: [new Coordinates('a8'), createPiece('N', 'L')]
+      from: { coordinates: new Coordinates('a7'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a8'), piece: createPiece('N', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(true)
   })
 
   it('should allow promotion of black pawns', () => {
-    game.board = {}
-    game.board.a2 = createPiece('P', 'D')
-    game.board.g8 = createPiece('R', 'L')
-    game.moves = [{
-      from: [new Coordinates('g7'), createPiece('R', 'L')],
-      to: [new Coordinates('g8'), createPiece('R', 'L')]
-    }]
+    const board: Board = {}
+    board.a2 = createPiece('P', 'D')
+    board.g7 = createPiece('R', 'L')
+    const game = createGame([{
+      from: { coordinates: new Coordinates('g7'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('g8'), piece: createPiece('R', 'L') }
+    }], board)
 
     const move: Move = {
-      from: [new Coordinates('a2'), createPiece('P', 'D')],
-      to: [new Coordinates('a1'), createPiece('Q', 'D')]
+      from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'D') },
+      to: { coordinates: new Coordinates('a1'), piece: createPiece('Q', 'D') }
     }
     expect(isLegalMove(move, game)).toBe(true)
   })
 
   it('should allow promotion while capturing', () => {
-    game.board = {}
-    game.board.a7 = createPiece('P', 'L')
-    game.board.b8 = createPiece('R', 'D')
+    const board: Board = {}
+    board.a7 = createPiece('P', 'L')
+    board.b8 = createPiece('R', 'D')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('a7'), createPiece('P', 'L')],
-      to: [new Coordinates('b8'), createPiece('Q', 'L')]
+      from: { coordinates: new Coordinates('a7'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('b8'), piece: createPiece('Q', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(true)
   })
 
   it('should not allow promotion when not on the back rank', () => {
-    game.board = {}
-    game.board.a3 = createPiece('P', 'L')
+    const board: Board = {}
+    board.a3 = createPiece('P', 'L')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('a3'), createPiece('P', 'L')],
-      to: [new Coordinates('a4'), createPiece('Q', 'L')]
+      from: { coordinates: new Coordinates('a3'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a4'), piece: createPiece('Q', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(false)
   })
 
   it('should require promotion on the back rank', () => {
-    game.board = {}
-    game.board.a7 = createPiece('P', 'L')
+    const board: Board = {}
+    board.a7 = createPiece('P', 'L')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('a7'), createPiece('P', 'L')],
-      to: [new Coordinates('a8'), createPiece('P', 'L')]
+      from: { coordinates: new Coordinates('a7'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a8'), piece: createPiece('P', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(false)
   })

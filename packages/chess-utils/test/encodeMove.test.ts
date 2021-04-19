@@ -1,154 +1,155 @@
-import { encodeMove, Coordinates, Move, createPiece } from '../lib'
+import { encodeMove, Coordinates, Game, createPiece, getStartingBoard } from '../lib'
+import { createGame } from '../lib/createGame'
 
 describe('encodeMove', () => {
-  let moves: Move[]
+  let game: Game
 
   beforeEach(() => {
-    moves = [
+    game = createGame([
       {
-        from: [new Coordinates('a2'), createPiece('P', 'L')],
-        to: [new Coordinates('a4'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('d7'), createPiece('P', 'D')],
-        to: [new Coordinates('d5'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d5'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('a1'), createPiece('R', 'L')],
-        to: [new Coordinates('a3'), createPiece('R', 'L')]
+        from: { coordinates: new Coordinates('a1'), piece: createPiece('R', 'L') },
+        to: { coordinates: new Coordinates('a3'), piece: createPiece('R', 'L') }
       },
       {
-        from: [new Coordinates('d8'), createPiece('Q', 'D')],
-        to: [new Coordinates('d6'), createPiece('Q', 'D')]
+        from: { coordinates: new Coordinates('d8'), piece: createPiece('Q', 'D') },
+        to: { coordinates: new Coordinates('d6'), piece: createPiece('Q', 'D') }
       },
       {
-        from: [new Coordinates('b1'), createPiece('N', 'L')],
-        to: [new Coordinates('c3'), createPiece('N', 'L')]
+        from: { coordinates: new Coordinates('b1'), piece: createPiece('N', 'L') },
+        to: { coordinates: new Coordinates('c3'), piece: createPiece('N', 'L') }
       },
       {
-        from: [new Coordinates('c8'), createPiece('B', 'D')],
-        to: [new Coordinates('g4'), createPiece('B', 'D')]
+        from: { coordinates: new Coordinates('c8'), piece: createPiece('B', 'D') },
+        to: { coordinates: new Coordinates('g4'), piece: createPiece('B', 'D') }
       },
       {
-        from: [new Coordinates('a4'), createPiece('P', 'L')],
-        to: [new Coordinates('a5'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('a5'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('b8'), createPiece('N', 'D')],
-        to: [new Coordinates('c6'), createPiece('N', 'D')]
+        from: { coordinates: new Coordinates('b8'), piece: createPiece('N', 'D') },
+        to: { coordinates: new Coordinates('c6'), piece: createPiece('N', 'D') }
       },
       {
-        from: [new Coordinates('a5'), createPiece('P', 'L')],
-        to: [new Coordinates('a6'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a5'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('a6'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('e8'), createPiece('K', 'D')],
-        to: [new Coordinates('c8'), createPiece('K', 'D')]
+        from: { coordinates: new Coordinates('e8'), piece: createPiece('K', 'D') },
+        to: { coordinates: new Coordinates('c8'), piece: createPiece('K', 'D') }
       },
       {
-        from: [new Coordinates('a6'), createPiece('P', 'L')],
-        to: [new Coordinates('b7'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a6'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('b7'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('c8'), createPiece('K', 'D')],
-        to: [new Coordinates('b8'), createPiece('K', 'D')]
+        from: { coordinates: new Coordinates('c8'), piece: createPiece('K', 'D') },
+        to: { coordinates: new Coordinates('b8'), piece: createPiece('K', 'D') }
       },
       {
-        from: [new Coordinates('b2'), createPiece('P', 'L')],
-        to: [new Coordinates('b3'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('b2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('b3'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('g4'), createPiece('B', 'D')],
-        to: [new Coordinates('c8'), createPiece('B', 'D')]
+        from: { coordinates: new Coordinates('g4'), piece: createPiece('B', 'D') },
+        to: { coordinates: new Coordinates('c8'), piece: createPiece('B', 'D') }
       },
       {
-        from: [new Coordinates('b7'), createPiece('P', 'L')],
-        to: [new Coordinates('c8'), createPiece('Q', 'L')]
+        from: { coordinates: new Coordinates('b7'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('c8'), piece: createPiece('Q', 'L') }
       },
-    ]
+    ])
   })
 
   describe('Regular Moves', () => {
     it('should encode a pawn moving forward', () => {
-      expect(encodeMove(0, moves)).toBe('a4')
+      expect(encodeMove(0, game)).toBe('a4')
     })
 
     it('should encode a rook move', () => {
-      expect(encodeMove(2, moves)).toBe('Ra3')
+      expect(encodeMove(2, game)).toBe('Ra3')
     })
 
     it('should encode a queen move', () => {
-      expect(encodeMove(3, moves)).toBe('Qd6')
+      expect(encodeMove(3, game)).toBe('Qd6')
     })
 
     it('should encode a knight move', () => {
-      expect(encodeMove(4, moves)).toBe('Nc3')
+      expect(encodeMove(4, game)).toBe('Nc3')
     })
 
     it('should encode a bishop move', () => {
-      expect(encodeMove(5, moves)).toBe('Bg4')
+      expect(encodeMove(5, game)).toBe('Bg4')
     })
   })
 
   describe('Castling', () => {
     it('should encode a queenside castle', () => {
-      expect(encodeMove(9, moves)).toBe('O-O-O')
+      expect(encodeMove(9, game)).toBe('O-O-O')
     })
   })
 
   describe('Check', () => {
     it('should encode checking the king', () => {
-      expect(encodeMove(10, moves)).toBe('axb7+')
+      expect(encodeMove(10, game)).toBe('axb7+')
     })
   })
 
   describe('Pawn Promotion', () => {
     it('should encode promotion to queen', () => {
-      expect(encodeMove(14, moves)).toBe('bxc8=Q+')
+      expect(encodeMove(14, game)).toBe('bxc8=Q+')
     })
   })
 
   describe('Ambiguous Moves', () => {
-    it('should encode ambiguous moves', () => {
-      moves = [
+    it('should encode ambiguous game', () => {
+      game = createGame([
         {
-          from: [new Coordinates('a2'), createPiece('P', 'L')],
-          to: [new Coordinates('a4'), createPiece('P', 'L')]
+          from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+          to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
         },
         {
-          from: [new Coordinates('d7'), createPiece('P', 'D')],
-          to: [new Coordinates('d6'), createPiece('P', 'D')]
+          from: { coordinates: new Coordinates('d7'), piece: createPiece('P', 'D') },
+          to: { coordinates: new Coordinates('d6'), piece: createPiece('P', 'D') }
         },
         {
-          from: [new Coordinates('a1'), createPiece('R', 'L')],
-          to: [new Coordinates('a3'), createPiece('R', 'L')]
+          from: { coordinates: new Coordinates('a1'), piece: createPiece('R', 'L') },
+          to: { coordinates: new Coordinates('a3'), piece: createPiece('R', 'L') }
         },
         {
-          from: [new Coordinates('d6'), createPiece('P', 'D')],
-          to: [new Coordinates('d5'), createPiece('P', 'D')]
+          from: { coordinates: new Coordinates('d6'), piece: createPiece('P', 'D') },
+          to: { coordinates: new Coordinates('d5'), piece: createPiece('P', 'D') }
         },
         {
-          from: [new Coordinates('h2'), createPiece('P', 'L')],
-          to: [new Coordinates('h4'), createPiece('P', 'L')]
+          from: { coordinates: new Coordinates('h2'), piece: createPiece('P', 'L') },
+          to: { coordinates: new Coordinates('h4'), piece: createPiece('P', 'L') }
         },
         {
-          from: [new Coordinates('d5'), createPiece('P', 'D')],
-          to: [new Coordinates('d4'), createPiece('P', 'D')]
+          from: { coordinates: new Coordinates('d5'), piece: createPiece('P', 'D') },
+          to: { coordinates: new Coordinates('d4'), piece: createPiece('P', 'D') }
         },
         {
-          from: [new Coordinates('h1'), createPiece('R', 'L')],
-          to: [new Coordinates('h3'), createPiece('R', 'L')]
+          from: { coordinates: new Coordinates('h1'), piece: createPiece('R', 'L') },
+          to: { coordinates: new Coordinates('h3'), piece: createPiece('R', 'L') }
         },
         {
-          from: [new Coordinates('d4'), createPiece('P', 'D')],
-          to: [new Coordinates('d3'), createPiece('P', 'D')]
+          from: { coordinates: new Coordinates('d4'), piece: createPiece('P', 'D') },
+          to: { coordinates: new Coordinates('d3'), piece: createPiece('P', 'D') }
         },
         {
-          from: [new Coordinates('a3'), createPiece('R', 'L')],
-          to: [new Coordinates('d3'), createPiece('R', 'L')]
+          from: { coordinates: new Coordinates('a3'), piece: createPiece('R', 'L') },
+          to: { coordinates: new Coordinates('d3'), piece: createPiece('R', 'L') }
         }
-      ]
-      expect(encodeMove(8, moves)).toBe('Raxd3')
+      ])
+      expect(encodeMove(8, game)).toBe('Raxd3')
     })
   })
 })

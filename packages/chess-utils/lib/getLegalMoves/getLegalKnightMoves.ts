@@ -1,14 +1,14 @@
-import { Coordinates, getAllMoves, Piece, Move, Game } from '../index'
+import { getAllMoves, MovePart, Move, Game, getBoard } from '../index'
 
-export const getLegalKnightMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
-  const { board } = game
+export const getLegalKnightMoves = (from: MovePart, game: Game): Move[] => {
+  const board = getBoard(game)
 
   const legalMoves = getAllMoves(from).filter((move) => {
-    const pieceAtDestination = board[move.to[0].toString()]
+    const pieceAtDestination = board[move.to.coordinates.toString()]
     if (pieceAtDestination === undefined) {
       return true
     } else {
-      return pieceAtDestination.color !== from[1].color
+      return pieceAtDestination.color !== from.piece.color
     }
   })
 

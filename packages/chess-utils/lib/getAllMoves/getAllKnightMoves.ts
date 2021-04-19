@@ -1,67 +1,91 @@
-import { Coordinates, Piece, Move } from '../index'
+import { Coordinates, MovePart, Move } from '../index'
 
-export const getAllKnightMoves = (from: [Coordinates, Piece]): Move[] => {
-  const [coordinates, piece] = from
+export const getAllKnightMoves = (from: MovePart): Move[] => {
+  const { coordinates } = from
   const possibleMoves: Move[] = [
     {
       from,
-      to: [new Coordinates(
-        coordinates.file + 1,
-        coordinates.rank + 2
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file + 1,
+          coordinates.rank + 2
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file + 2,
-        coordinates.rank + 1
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file + 2,
+          coordinates.rank + 1
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file + 2,
-        coordinates.rank - 1
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file + 2,
+          coordinates.rank - 1
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file + 1,
-        coordinates.rank - 2
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file + 1,
+          coordinates.rank - 2
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file - 1,
-        coordinates.rank - 2
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file - 1,
+          coordinates.rank - 2
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file - 2,
-        coordinates.rank - 1
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file - 2,
+          coordinates.rank - 1
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file - 2,
-        coordinates.rank + 1
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file - 2,
+          coordinates.rank + 1
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file - 1,
-        coordinates.rank + 2
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file - 1,
+          coordinates.rank + 2
+        )
+      }
     }
   ]
 
   return possibleMoves.filter((move) => {
-    return move.to[0].file <= 7 && move.to[0].file >= 0 && move.to[0].rank <= 7 && move.to[0].rank >= 0
+    return move.to.coordinates.file <= 7 && move.to.coordinates.file >= 0 && move.to.coordinates.rank <= 7 && move.to.coordinates.rank >= 0
   })
 }

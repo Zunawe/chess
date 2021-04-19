@@ -1,4 +1,4 @@
-import { Coordinates, Piece, Move, Game } from '../index'
+import { MovePart, Move, Game } from '../index'
 
 import { getLegalPawnMoves } from './getLegalPawnMoves'
 import { getLegalKnightMoves } from './getLegalKnightMoves'
@@ -7,8 +7,8 @@ import { getLegalRookMoves } from './getLegalRookMoves'
 import { getLegalBishopMoves } from './getLegalBishopMoves'
 import { getLegalQueenMoves } from './getLegalQueenMoves'
 
-export const getLegalMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
-  switch (from[1].type) {
+export const getLegalMoves = (from: MovePart, game: Game): Move[] => {
+  switch (from.piece.type) {
     case 'P':
       return getLegalPawnMoves(from, game)
     case 'R':

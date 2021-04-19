@@ -1,19 +1,16 @@
-import { createPiece, Coordinates, isLegalMove, getStartingBoard, Game, Move } from '../../lib'
+import { createPiece, Coordinates, isLegalMove, Board, Game, Move, createGame } from '../../lib'
 
 describe('Knight', () => {
   let game: Game
 
   beforeEach(() => {
-    game = {
-      board: getStartingBoard(),
-      moves: []
-    }
+    game = createGame()
   })
 
   it('should allow a knight to move normally', () => {
     const move: Move = {
-      from: [new Coordinates('b1'), createPiece('N', 'L')],
-      to: [new Coordinates('c3'), createPiece('N', 'L')]
+      from: { coordinates: new Coordinates('b1'), piece: createPiece('N', 'L') },
+      to: { coordinates: new Coordinates('c3'), piece: createPiece('N', 'L') }
     }
 
     expect(isLegalMove(move, game)).toBe(true)
@@ -21,20 +18,21 @@ describe('Knight', () => {
 
   it('should not allow a knight to land on its own piece', () => {
     const move: Move = {
-      from: [new Coordinates('b1'), createPiece('N', 'L')],
-      to: [new Coordinates('d2'), createPiece('N', 'L')]
+      from: { coordinates: new Coordinates('b1'), piece: createPiece('N', 'L') },
+      to: { coordinates: new Coordinates('d2'), piece: createPiece('N', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(false)
   })
 
   it('should allow a knight to capture', () => {
-    game.board = {}
-    game.board.d4 = createPiece('N', 'L')
-    game.board.e6 = createPiece('P', 'D')
+    const board: Board = {}
+    board.d4 = createPiece('N', 'L')
+    board.e6 = createPiece('P', 'D')
+    const game = createGame([], board)
 
     const move: Move = {
-      from: [new Coordinates('d4'), createPiece('N', 'L')],
-      to: [new Coordinates('e6'), createPiece('N', 'L')]
+      from: { coordinates: new Coordinates('d4'), piece: createPiece('N', 'L') },
+      to: { coordinates: new Coordinates('e6'), piece: createPiece('N', 'L') }
     }
     expect(isLegalMove(move, game)).toBe(true)
   })

@@ -1,40 +1,52 @@
-import { Coordinates, Piece, Move } from '../index'
+import { Coordinates, MovePart, Move } from '../index'
 
-export const getAllBishopMoves = (from: [Coordinates, Piece]): Move[] => {
-  const [coordinates, piece] = from
+export const getAllBishopMoves = (from: MovePart): Move[] => {
+  const { coordinates } = from
   const possibleMoves: Move[] = []
   for (let i = 1; i < 8; ++i) {
     possibleMoves.push({
       from,
-      to: [new Coordinates(
-        coordinates.file + i,
-        coordinates.rank + i
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file + i,
+          coordinates.rank + i
+        )
+      }
     })
     possibleMoves.push({
       from,
-      to: [new Coordinates(
-        coordinates.file + i,
-        coordinates.rank - i
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file + i,
+          coordinates.rank - i
+        )
+      }
     })
     possibleMoves.push({
       from,
-      to: [new Coordinates(
-        coordinates.file - i,
-        coordinates.rank - i
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file - i,
+          coordinates.rank - i
+        )
+      }
     })
     possibleMoves.push({
       from,
-      to: [new Coordinates(
-        coordinates.file - i,
-        coordinates.rank + i
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file - i,
+          coordinates.rank + i
+        )
+      }
     })
   }
 
   return possibleMoves.filter((move) => {
-    return move.to[0].file <= 7 && move.to[0].file >= 0 && move.to[0].rank <= 7 && move.to[0].rank >= 0
+    return move.to.coordinates.file <= 7 && move.to.coordinates.file >= 0 && move.to.coordinates.rank <= 7 && move.to.coordinates.rank >= 0
   })
 }

@@ -1,10 +1,11 @@
-import { applyMove, Game } from '.'
+import { Game, Board } from '.'
+import { createGame } from './createGame'
 import { decodeMove } from './decodeMove'
-import { gameFromMoves } from './gameFromMoves'
 
-export const decodeGame = (encodedGame: string): Game => {
+export const decodeGame = (encodedGame: string, initialBoard?: Board): Game => {
   return encodedGame.split(' ')
-    .reduce((game, encodedMove) => {
-      return applyMove(decodeMove(encodedMove, game.moves), game)
-    }, gameFromMoves([]))
+    .reduce<Game>((game, encodedMove) => ({
+    ...game,
+    moves: [...game.moves, decodeMove(encodedMove, game)]
+  }), createGame([], initialBoard))
 }

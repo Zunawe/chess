@@ -1,25 +1,31 @@
-import { Coordinates, Piece, Move } from '../index'
+import { Coordinates, MovePart, Move } from '../index'
 
-export const getAllRookMoves = (from: [Coordinates, Piece]): Move[] => {
-  const [coordinates, piece] = from
+export const getAllRookMoves = (from: MovePart): Move[] => {
+  const { coordinates } = from
   const possibleMoves: Move[] = []
   for (let i = 0; i < 8; ++i) {
     if (i !== coordinates.file) {
       possibleMoves.push({
         from,
-        to: [new Coordinates(
-          i,
-          coordinates.rank
-        ), piece]
+        to: {
+          ...from,
+          coordinates: new Coordinates(
+            i,
+            coordinates.rank
+          )
+        }
       })
     }
     if (i !== coordinates.rank) {
       possibleMoves.push({
         from,
-        to: [new Coordinates(
-          coordinates.file,
-          i
-        ), piece]
+        to: {
+          ...from,
+          coordinates: new Coordinates(
+            coordinates.file,
+            i
+          )
+        }
       })
     }
   }

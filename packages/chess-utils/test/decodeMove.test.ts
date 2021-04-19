@@ -1,172 +1,174 @@
-import { decodeMove, Coordinates, Move, createPiece } from '../lib'
+import { decodeMove, Coordinates, Game, createPiece, getStartingBoard } from '../lib'
+import { createGame } from '../lib/createGame'
 
 describe('decodeMove', () => {
   it('should decode a pawn moving forward', () => {
-    expect(decodeMove('a4', [])).toStrictEqual({
-      from: [new Coordinates('a2'), createPiece('P', 'L')],
-      to: [new Coordinates('a4'), createPiece('P', 'L')]
+    const game: Game = createGame()
+    expect(decodeMove('a4', game)).toStrictEqual({
+      from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
     })
-    expect(decodeMove('a3', [])).toStrictEqual({
-      from: [new Coordinates('a2'), createPiece('P', 'L')],
-      to: [new Coordinates('a3'), createPiece('P', 'L')]
+    expect(decodeMove('a3', game)).toStrictEqual({
+      from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+      to: { coordinates: new Coordinates('a3'), piece: createPiece('P', 'L') }
     })
   })
 
   it('should decode a rook move', () => {
-    const moves: Move[] = [
+    const game = createGame([
       {
-        from: [new Coordinates('a2'), createPiece('P', 'L')],
-        to: [new Coordinates('a4'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('d7'), createPiece('P', 'D')],
-        to: [new Coordinates('d5'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d5'), piece: createPiece('P', 'D') }
       }
-    ]
-    expect(decodeMove('Ra3', moves)).toStrictEqual({
-      from: [new Coordinates('a1'), createPiece('R', 'L')],
-      to: [new Coordinates('a3'), createPiece('R', 'L')]
+    ])
+    expect(decodeMove('Ra3', game)).toStrictEqual({
+      from: { coordinates: new Coordinates('a1'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('a3'), piece: createPiece('R', 'L') }
     })
   })
 
   it('should decode checkmate', () => {
-    const moves: Move[] = [
+    const game = createGame([
       {
-        from: [new Coordinates('f2'), createPiece('P', 'L')],
-        to: [new Coordinates('f3'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('f2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('f3'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('e7'), createPiece('P', 'D')],
-        to: [new Coordinates('e6'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('e7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('e6'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('g2'), createPiece('P', 'L')],
-        to: [new Coordinates('g4'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('g2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('g4'), piece: createPiece('P', 'L') }
       },
-    ]
-    expect(decodeMove('Qh4#', moves)).toStrictEqual({
-      from: [new Coordinates('d8'), createPiece('Q', 'D')],
-      to: [new Coordinates('h4'), createPiece('Q', 'D')]
+    ])
+    expect(decodeMove('Qh4#', game)).toStrictEqual({
+      from: { coordinates: new Coordinates('d8'), piece: createPiece('Q', 'D') },
+      to: { coordinates: new Coordinates('h4'), piece: createPiece('Q', 'D') }
     })
   })
 
-  it('should decode ambiguous moves', () => {
-    const moves: Move[] = [
+  it('should decode ambiguous game', () => {
+    const game = createGame([
       {
-        from: [new Coordinates('a2'), createPiece('P', 'L')],
-        to: [new Coordinates('a4'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('d7'), createPiece('P', 'D')],
-        to: [new Coordinates('d6'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d6'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('a1'), createPiece('R', 'L')],
-        to: [new Coordinates('a3'), createPiece('R', 'L')]
+        from: { coordinates: new Coordinates('a1'), piece: createPiece('R', 'L') },
+        to: { coordinates: new Coordinates('a3'), piece: createPiece('R', 'L') }
       },
       {
-        from: [new Coordinates('d6'), createPiece('P', 'D')],
-        to: [new Coordinates('d5'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d6'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d5'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('h2'), createPiece('P', 'L')],
-        to: [new Coordinates('h4'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('h2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('h4'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('d5'), createPiece('P', 'D')],
-        to: [new Coordinates('d4'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d5'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d4'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('h1'), createPiece('R', 'L')],
-        to: [new Coordinates('h3'), createPiece('R', 'L')]
+        from: { coordinates: new Coordinates('h1'), piece: createPiece('R', 'L') },
+        to: { coordinates: new Coordinates('h3'), piece: createPiece('R', 'L') }
       },
       {
-        from: [new Coordinates('d4'), createPiece('P', 'D')],
-        to: [new Coordinates('d3'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d4'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d3'), piece: createPiece('P', 'D') }
       },
-    ]
-    expect(decodeMove('Raxd3', moves)).toStrictEqual({
-      from: [new Coordinates('a3'), createPiece('R', 'L')],
-      to: [new Coordinates('d3'), createPiece('R', 'L')]
+    ])
+    expect(decodeMove('Raxd3', game)).toStrictEqual({
+      from: { coordinates: new Coordinates('a3'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('d3'), piece: createPiece('R', 'L') }
     })
   })
 
   it('should throw an error when move is not disambiguated', () => {
-    const moves: Move[] = [
+    const game = createGame([
       {
-        from: [new Coordinates('a2'), createPiece('P', 'L')],
-        to: [new Coordinates('a4'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('a2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('a4'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('d7'), createPiece('P', 'D')],
-        to: [new Coordinates('d6'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d6'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('a1'), createPiece('R', 'L')],
-        to: [new Coordinates('a3'), createPiece('R', 'L')]
+        from: { coordinates: new Coordinates('a1'), piece: createPiece('R', 'L') },
+        to: { coordinates: new Coordinates('a3'), piece: createPiece('R', 'L') }
       },
       {
-        from: [new Coordinates('d6'), createPiece('P', 'D')],
-        to: [new Coordinates('d5'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d6'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d5'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('h2'), createPiece('P', 'L')],
-        to: [new Coordinates('h4'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('h2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('h4'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('d5'), createPiece('P', 'D')],
-        to: [new Coordinates('d4'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d5'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d4'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('h1'), createPiece('R', 'L')],
-        to: [new Coordinates('h3'), createPiece('R', 'L')]
+        from: { coordinates: new Coordinates('h1'), piece: createPiece('R', 'L') },
+        to: { coordinates: new Coordinates('h3'), piece: createPiece('R', 'L') }
       },
       {
-        from: [new Coordinates('d4'), createPiece('P', 'D')],
-        to: [new Coordinates('d3'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d4'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d3'), piece: createPiece('P', 'D') }
       },
-    ]
-    expect(() => decodeMove('Rxd3', moves)).toThrowError('Could not disambiguate between multiple valid pieces')
+    ])
+    expect(() => decodeMove('Rxd3', game)).toThrowError('Could not disambiguate between multiple valid pieces')
   })
 
   it('should decode a queenside castle', () => {
-    const moves: Move[] = [
+    const game = createGame([
       {
-        from: [new Coordinates('d2'), createPiece('P', 'L')],
-        to: [new Coordinates('d4'), createPiece('P', 'L')]
+        from: { coordinates: new Coordinates('d2'), piece: createPiece('P', 'L') },
+        to: { coordinates: new Coordinates('d4'), piece: createPiece('P', 'L') }
       },
       {
-        from: [new Coordinates('d7'), createPiece('P', 'D')],
-        to: [new Coordinates('d6'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d6'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('d1'), createPiece('Q', 'L')],
-        to: [new Coordinates('d3'), createPiece('Q', 'L')]
+        from: { coordinates: new Coordinates('d1'), piece: createPiece('Q', 'L') },
+        to: { coordinates: new Coordinates('d3'), piece: createPiece('Q', 'L') }
       },
       {
-        from: [new Coordinates('d6'), createPiece('P', 'D')],
-        to: [new Coordinates('d5'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('d6'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('d5'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('c1'), createPiece('B', 'L')],
-        to: [new Coordinates('d2'), createPiece('B', 'L')]
+        from: { coordinates: new Coordinates('c1'), piece: createPiece('B', 'L') },
+        to: { coordinates: new Coordinates('d2'), piece: createPiece('B', 'L') }
       },
       {
-        from: [new Coordinates('e7'), createPiece('P', 'D')],
-        to: [new Coordinates('e6'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('e7'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('e6'), piece: createPiece('P', 'D') }
       },
       {
-        from: [new Coordinates('b1'), createPiece('N', 'L')],
-        to: [new Coordinates('c3'), createPiece('N', 'L')]
+        from: { coordinates: new Coordinates('b1'), piece: createPiece('N', 'L') },
+        to: { coordinates: new Coordinates('c3'), piece: createPiece('N', 'L') }
       },
       {
-        from: [new Coordinates('e6'), createPiece('P', 'D')],
-        to: [new Coordinates('e5'), createPiece('P', 'D')]
+        from: { coordinates: new Coordinates('e6'), piece: createPiece('P', 'D') },
+        to: { coordinates: new Coordinates('e5'), piece: createPiece('P', 'D') }
       },
-    ]
-    expect(decodeMove('O-O-O', moves)).toStrictEqual({
-      from: [new Coordinates('e1'), createPiece('K', 'L')],
-      to: [new Coordinates('c1'), createPiece('K', 'L')]
+    ])
+    expect(decodeMove('O-O-O', game)).toStrictEqual({
+      from: { coordinates: new Coordinates('e1'), piece: createPiece('K', 'L') },
+      to: { coordinates: new Coordinates('c1'), piece: createPiece('K', 'L') }
     })
   })
 })

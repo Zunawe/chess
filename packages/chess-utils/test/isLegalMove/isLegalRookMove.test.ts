@@ -1,76 +1,72 @@
-import { createPiece, Coordinates, isLegalMove, Game, Move } from '../../lib'
+import { createPiece, Coordinates, isLegalMove, Board, Move, createGame } from '../../lib'
 
 describe('Rook', () => {
-  let game: Game
-
-  beforeEach(() => {
-    game = {
-      board: {},
-      moves: []
-    }
-  })
-
   it('should allow a bishop to move normally', () => {
-    game.board = {}
-    game.board.d4 = createPiece('R', 'L')
+    const board: Board = {}
+    board.d4 = createPiece('R', 'L')
+    const game = createGame([], board)
 
     const move1: Move = {
-      from: [new Coordinates('d4'), createPiece('R', 'L')],
-      to: [new Coordinates('e4'), createPiece('R', 'L')]
+      from: { coordinates: new Coordinates('d4'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('e4'), piece: createPiece('R', 'L') }
     }
     expect(isLegalMove(move1, game)).toBe(true)
 
     const move2: Move = {
-      from: [new Coordinates('d4'), createPiece('R', 'L')],
-      to: [new Coordinates('d1'), createPiece('R', 'L')]
+      from: { coordinates: new Coordinates('d4'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('d1'), piece: createPiece('R', 'L') }
     }
     expect(isLegalMove(move2, game)).toBe(true)
 
     const move3: Move = {
-      from: [new Coordinates('d4'), createPiece('R', 'L')],
-      to: [new Coordinates('b4'), createPiece('R', 'L')]
+      from: { coordinates: new Coordinates('d4'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('b4'), piece: createPiece('R', 'L') }
     }
     expect(isLegalMove(move3, game)).toBe(true)
 
     const move4: Move = {
-      from: [new Coordinates('d4'), createPiece('R', 'L')],
-      to: [new Coordinates('d8'), createPiece('R', 'L')]
+      from: { coordinates: new Coordinates('d4'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('d8'), piece: createPiece('R', 'L') }
     }
     expect(isLegalMove(move4, game)).toBe(true)
   })
 
   it('should not allow a bishop to capture its own pieces', () => {
-    game.board.d4 = createPiece('R', 'L')
-    game.board.d3 = createPiece('P', 'L')
-    game.board.f4 = createPiece('P', 'L')
+    const board: Board = {}
+    board.d4 = createPiece('R', 'L')
+    board.d3 = createPiece('P', 'L')
+    board.f4 = createPiece('P', 'L')
+    const game = createGame([], board)
 
     const move1: Move = {
-      from: [new Coordinates('d4'), createPiece('R', 'L')],
-      to: [new Coordinates('d3'), createPiece('R', 'L')]
+      from: { coordinates: new Coordinates('d4'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('d3'), piece: createPiece('R', 'L') }
     }
     expect(isLegalMove(move1, game)).toBe(false)
 
     const move2: Move = {
-      from: [new Coordinates('d4'), createPiece('R', 'L')],
-      to: [new Coordinates('f4'), createPiece('R', 'L')]
+      from: { coordinates: new Coordinates('d4'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('f4'), piece: createPiece('R', 'L') }
     }
     expect(isLegalMove(move2, game)).toBe(false)
   })
 
   it('should not allow a bishop to move past pieces', () => {
-    game.board.d4 = createPiece('R', 'L')
-    game.board.d3 = createPiece('P', 'L')
-    game.board.f4 = createPiece('P', 'D')
+    const board: Board = {}
+    board.d4 = createPiece('R', 'L')
+    board.d3 = createPiece('P', 'L')
+    board.f4 = createPiece('P', 'D')
+    const game = createGame([], board)
 
     const move1: Move = {
-      from: [new Coordinates('d4'), createPiece('R', 'L')],
-      to: [new Coordinates('d1'), createPiece('R', 'L')]
+      from: { coordinates: new Coordinates('d4'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('d1'), piece: createPiece('R', 'L') }
     }
     expect(isLegalMove(move1, game)).toBe(false)
 
     const move2: Move = {
-      from: [new Coordinates('d4'), createPiece('R', 'L')],
-      to: [new Coordinates('h4'), createPiece('R', 'L')]
+      from: { coordinates: new Coordinates('d4'), piece: createPiece('R', 'L') },
+      to: { coordinates: new Coordinates('h4'), piece: createPiece('R', 'L') }
     }
     expect(isLegalMove(move2, game)).toBe(false)
   })

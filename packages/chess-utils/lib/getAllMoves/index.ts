@@ -1,4 +1,4 @@
-import { Coordinates, Piece, Move } from '../index'
+import { MovePart, Move } from '../index'
 
 import { getAllPawnMoves } from './getAllPawnMoves'
 import { getAllKnightMoves } from './getAllKnightMoves'
@@ -7,8 +7,8 @@ import { getAllRookMoves } from './getAllRookMoves'
 import { getAllBishopMoves } from './getAllBishopMoves'
 import { getAllQueenMoves } from './getAllQueenMoves'
 
-export const getAllMoves = (from: [Coordinates, Piece]): Move[] => {
-  switch (from[1].type) {
+export const getAllMoves = (from: MovePart): Move[] => {
+  switch (from.piece.type) {
     case 'P':
       return getAllPawnMoves(from)
     case 'R':

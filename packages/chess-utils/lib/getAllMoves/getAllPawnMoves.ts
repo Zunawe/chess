@@ -1,160 +1,208 @@
-import { Coordinates, Piece, Move } from '../index'
+import { Coordinates, MovePart, Move } from '../index'
 
-export const getAllPawnMoves = (from: [Coordinates, Piece]): Move[] => {
-  const [coordinates, piece] = from
+export const getAllPawnMoves = (from: MovePart): Move[] => {
+  const { coordinates, piece } = from
   const direction = piece.color === 'L' ? 1 : -1
   const possibleMoves: Move[] = [
     {
       from,
-      to: [new Coordinates(
-        coordinates.file,
-        coordinates.rank + direction
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file,
+          coordinates.rank + direction
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'Q'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'Q'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'R'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'R'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'B'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'B'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'N'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'N'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file,
-        coordinates.rank + direction + direction
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file,
+          coordinates.rank + direction + direction
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file + 1,
-        coordinates.rank + direction
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file + 1,
+          coordinates.rank + direction
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file + 1,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'Q'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file + 1,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'Q'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file + 1,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'R'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file + 1,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'R'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file + 1,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'B'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file + 1,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'B'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file + 1,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'N'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file + 1,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'N'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file - 1,
-        coordinates.rank + direction
-      ), piece]
+      to: {
+        ...from,
+        coordinates: new Coordinates(
+          coordinates.file - 1,
+          coordinates.rank + direction
+        )
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file - 1,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'Q'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file - 1,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'Q'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file - 1,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'R'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file - 1,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'R'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file - 1,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'B'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file - 1,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'B'
+        }
+      }
     },
     {
       from,
-      to: [new Coordinates(
-        coordinates.file - 1,
-        coordinates.rank + direction
-      ), {
-        ...piece,
-        type: 'N'
-      }]
+      to: {
+        coordinates: new Coordinates(
+          coordinates.file - 1,
+          coordinates.rank + direction
+        ),
+        piece: {
+          ...piece,
+          type: 'N'
+        }
+      }
     }
   ]
 
   return possibleMoves.filter((move) => {
-    return move.to[0].file <= 7 && move.to[0].file >= 0 && move.to[0].rank <= 7 && move.to[0].rank >= 0
+    return move.to.coordinates.file <= 7 && move.to.coordinates.file >= 0 && move.to.coordinates.rank <= 7 && move.to.coordinates.rank >= 0
   })
 }

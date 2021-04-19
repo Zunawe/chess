@@ -12,12 +12,17 @@ export interface Board {
   [key: string]: Piece
 }
 
+export interface MovePart {
+  coordinates: Coordinates
+  piece: Piece
+}
+
 export interface Move {
-  from: [Coordinates, Piece]
-  to: [Coordinates, Piece]
+  from: MovePart
+  to: MovePart
 }
 
 export interface Game {
-  board: Board
   moves: Move[]
+  initialBoard: Board
 }

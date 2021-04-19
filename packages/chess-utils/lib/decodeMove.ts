@@ -1,19 +1,19 @@
-import { Move, PieceType, gameFromMoves, Piece, Coordinates } from '.'
+import { Move, PieceType, Game, MovePart, Coordinates, getBoard } from '.'
 import { createPiece } from './createPiece'
 import { getLegalMoves } from './getLegalMoves'
 import { movesEqual } from './movesEqual'
 import { whoseTurn } from './whoseTurn'
 
-export const decodeMove = (encodedMove: string, moves: Move[]): Move => {
-  const currentGame = gameFromMoves(moves)
-  const color = whoseTurn(moves)
+export const decodeMove = (encodedMove: string, game: Game): Move => {
+  const board = getBoard(game)
+  const color = whoseTurn(game)
 
   const [castleMatch, queenSide] = encodedMove.match(/^O-O(-O)?$/) ?? []
   if (castleMatch !== undefined) {
     const piece = createPiece('K', color)
     return {
-      from: [new Coordinates(4, color === 'L' ? 0 : 7), piece],
-      to: [new Coordinates(queenSide === undefined ? 6 : 2, color === 'L' ? 0 : 7), piece]
+      from: { coordinates: new Coordinates(4, color === 'L' ? 0 : 7), piece },
+      to: { coordinates: new Coordinates(queenSide === undefined ? 6 : 2, color === 'L' ? 0 : 7), piece }
     }
   }
 
@@ -32,32 +32,32 @@ export const decodeMove = (encodedMove: string, moves: Move[]): Move => {
     pieceType = 'P'
   }
 
-  const matchingPieces = Object.entries(currentGame.board)
+  const matchingPieces = Object.entries(board)
     .filter(([, p]) => {
       return p.type === pieceType && p.color === color
     })
     .map<Move>(([c, p]) => ({
-    from: [new Coordinates(c), p],
-    to: [
-      new Coordinates(toCoordinates),
-      {
+    from: { coordinates: new Coordinates(c), piece: p },
+    to: {
+      coordinates: new Coordinates(toCoordinates),
+      piece: {
         color,
         type: (promotion === undefined ? pieceType : promotion[1]) as PieceType
       }
-    ]
+    }
   }))
     .filter((testMove) => {
-      return getLegalMoves(testMove.from, currentGame).some((legalMove) => movesEqual(legalMove, testMove))
+      return getLegalMoves(testMove.from, game).some((legalMove) => movesEqual(legalMove, testMove))
     })
     .map(({ from }) => from)
 
-  let matchingPiece: [Coordinates, Piece]
+  let matchingPiece: MovePart
   if (matchingPieces.length === 0) {
     throw new Error(`Could not find any valid pieces to reach square ${toCoordinates}`)
   } else {
     const disambiguatedPieces = matchingPieces.filter((match) => {
-      const matchesFile = dFile === undefined || dFile === match[0].toString()[0]
-      const matchesRank = dRank === undefined || dRank === match[0].toString()[1]
+      const matchesFile = dFile === undefined || dFile === match.coordinates.toString()[0]
+      const matchesRank = dRank === undefined || dRank === match.coordinates.toString()[1]
 
       return matchesFile && matchesRank
     })
@@ -73,12 +73,12 @@ export const decodeMove = (encodedMove: string, moves: Move[]): Move => {
 
   return {
     from: matchingPiece,
-    to: [
-      new Coordinates(toCoordinates),
-      {
+    to: {
+      coordinates: new Coordinates(toCoordinates),
+      piece: {
         color,
         type: (promotion === undefined ? pieceType : promotion[1]) as PieceType
       }
-    ]
+    }
   }
 }

@@ -1,7 +1,7 @@
-import { Coordinates, Piece, Move, Game } from '../index'
+import { Coordinates, MovePart, Move, Game, getBoard } from '../index'
 
-export const getLegalRookMoves = (from: [Coordinates, Piece], game: Game): Move[] => {
-  const { board } = game
+export const getLegalRookMoves = (from: MovePart, game: Game): Move[] => {
+  const board = getBoard(game)
 
   let eWall = false
   let sWall = false
@@ -10,18 +10,21 @@ export const getLegalRookMoves = (from: [Coordinates, Piece], game: Game): Move[
 
   const legalMoves: Move[] = []
   for (let i = 1; i < 8; ++i) {
-    if (!eWall && from[0].file + i <= 7) {
+    if (!eWall && from.coordinates.file + i <= 7) {
       const nePiece = board[(new Coordinates(
-        from[0].file + i,
-        from[0].rank
+        from.coordinates.file + i,
+        from.coordinates.rank
       )).toString()]
-      if (nePiece === undefined || nePiece.color !== from[1].color) {
+      if (nePiece === undefined || nePiece.color !== from.piece.color) {
         legalMoves.push({
           from,
-          to: [new Coordinates(
-            from[0].file + i,
-            from[0].rank
-          ), from[1]]
+          to: {
+            ...from,
+            coordinates: new Coordinates(
+              from.coordinates.file + i,
+              from.coordinates.rank
+            )
+          }
         })
       }
       if (nePiece !== undefined) {
@@ -29,18 +32,21 @@ export const getLegalRookMoves = (from: [Coordinates, Piece], game: Game): Move[
       }
     }
 
-    if (!sWall && from[0].rank - i >= 0) {
+    if (!sWall && from.coordinates.rank - i >= 0) {
       const sePiece = board[(new Coordinates(
-        from[0].file,
-        from[0].rank - i
+        from.coordinates.file,
+        from.coordinates.rank - i
       )).toString()]
-      if (sePiece === undefined || sePiece.color !== from[1].color) {
+      if (sePiece === undefined || sePiece.color !== from.piece.color) {
         legalMoves.push({
           from,
-          to: [new Coordinates(
-            from[0].file,
-            from[0].rank - i
-          ), from[1]]
+          to: {
+            ...from,
+            coordinates: new Coordinates(
+              from.coordinates.file,
+              from.coordinates.rank - i
+            )
+          }
         })
       }
       if (sePiece !== undefined) {
@@ -48,18 +54,21 @@ export const getLegalRookMoves = (from: [Coordinates, Piece], game: Game): Move[
       }
     }
 
-    if (!wWall && from[0].file - i >= 0) {
+    if (!wWall && from.coordinates.file - i >= 0) {
       const swPiece = board[(new Coordinates(
-        from[0].file - i,
-        from[0].rank
+        from.coordinates.file - i,
+        from.coordinates.rank
       )).toString()]
-      if (swPiece === undefined || swPiece.color !== from[1].color) {
+      if (swPiece === undefined || swPiece.color !== from.piece.color) {
         legalMoves.push({
           from,
-          to: [new Coordinates(
-            from[0].file - i,
-            from[0].rank
-          ), from[1]]
+          to: {
+            ...from,
+            coordinates: new Coordinates(
+              from.coordinates.file - i,
+              from.coordinates.rank
+            )
+          }
         })
       }
       if (swPiece !== undefined) {
@@ -67,18 +76,21 @@ export const getLegalRookMoves = (from: [Coordinates, Piece], game: Game): Move[
       }
     }
 
-    if (!nWall && from[0].rank + i <= 7) {
+    if (!nWall && from.coordinates.rank + i <= 7) {
       const nwPiece = board[(new Coordinates(
-        from[0].file,
-        from[0].rank + i
+        from.coordinates.file,
+        from.coordinates.rank + i
       )).toString()]
-      if (nwPiece === undefined || nwPiece.color !== from[1].color) {
+      if (nwPiece === undefined || nwPiece.color !== from.piece.color) {
         legalMoves.push({
           from,
-          to: [new Coordinates(
-            from[0].file,
-            from[0].rank + i
-          ), from[1]]
+          to: {
+            ...from,
+            coordinates: new Coordinates(
+              from.coordinates.file,
+              from.coordinates.rank + i
+            )
+          }
         })
       }
       if (nwPiece !== undefined) {
