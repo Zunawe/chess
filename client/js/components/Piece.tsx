@@ -8,7 +8,7 @@ import { useSocket } from '../hooks/useSocket'
 export interface PieceProps {
   color: Chess.Color
   type: Chess.PieceType
-  coordinates: Chess.Coordinates
+  coordinates: number
 }
 
 export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
@@ -56,15 +56,15 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
         const f = Number.parseInt(tile.dataset.file)
 
         const move: Chess.Move = {
-          from: [coordinates, { color, type }],
-          to: [new Chess.Coordinates(f, r), { color, type }]
+          from: { coords: coordinates, piece: { color, type } },
+          to: { coords: Chess.toCoords(f, r), piece: { color, type } }
         }
 
         if (type === 'P' && (r === 0 || r === 7)) {
           dispatch(attemptPromotion(move))
         } else {
           dispatch(makeMove(move, (newGame) => {
-            if (state.room !== '') socket.emit('move', state.room, Chess.encodeMove(newGame.moves.length - 1, newGame.moves))
+            if (state.room !== '') socket.emit('move', state.room, Chess.encodeMove(newGame.moves.length - 1, newGame))
           }))
         }
       }
@@ -72,13 +72,13 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
   }, [color, type, state.room, state.game])
 
   const isSelected = useMemo(() => {
-    return state.selected !== null && Chess.coordinatesEqual(new Chess.Coordinates(state.selected), coordinates)
+    return state.selected !== null && state.selected === coordinates
   }, [state.selected])
 
   return (
     <div
-      data-rank={coordinates.rank}
-      data-file={coordinates.file}
+      data-rank={Chess.getRank(coordinates)}
+      data-file={Chess.getFile(coordinates)}
       style={isSelected && state.dragging ? {
         transform: `translate(calc(${dx}px - 5vmin), calc(${dy}px - 5vmin))`
       } : {}}

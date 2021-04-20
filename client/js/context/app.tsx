@@ -6,7 +6,7 @@ import { reducer } from './reducers/app'
 
 const initialState: State = {
   game: {
-    board: {},
+    initialBoard: [],
     moves: []
   },
   dragging: false,

@@ -1,4 +1,4 @@
-import React, { FC, useContext, useCallback } from 'react'
+import React, { FC, useContext, useCallback, useMemo } from 'react'
 import * as Chess from 'chess-utils'
 
 import { AppContext } from '../context/app'
@@ -13,6 +13,9 @@ export const Board: FC = () => {
       dispatch(stopPromotion())
     }
   }, [state.dragging])
+  const board = useMemo(() => {
+    return Chess.getBoard(state.game)
+  }, [state.game])
 
   const tiles: TileProps[][] = Array(8).fill(null).map((_, r) => {
     return Array(8).fill(null).map((_, c) => {
@@ -24,9 +27,9 @@ export const Board: FC = () => {
     })
   })
 
-  for (const [coord, piece] of Object.entries(state.game.board)) {
-    const c = new Chess.Coordinates(coord)
-    tiles[c.rank][c.file].piece = piece
+  for (const [coord, piece] of board.entries()) {
+    if (piece === null) continue
+    tiles[Chess.getRank(coord)][Chess.getFile(coord)].piece = piece
   }
 
   return (

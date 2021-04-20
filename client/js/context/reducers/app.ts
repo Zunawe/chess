@@ -16,17 +16,17 @@ export const reducer: Reducer = (state, action) => {
   if (action instanceof UndoLastMoveAction) {
     return {
       ...state,
-      game: Chess.gameFromMoves(state.game.moves.slice(0, -1))
+      game: Chess.createGame(state.game.moves.slice(0, -1))
     }
   } else if (action instanceof ReplaceLastMoveAction) {
     return {
       ...state,
-      game: Chess.gameFromMoves([...state.game.moves.slice(0, -1), action.payload])
+      game: Chess.createGame([...state.game.moves.slice(0, -1), action.payload])
     }
   } else if (action instanceof ResetGameAction) {
     return {
       ...state,
-      game: Chess.gameFromMoves([])
+      game: Chess.createGame()
     }
   } else if (action instanceof SetGameAction) {
     return {

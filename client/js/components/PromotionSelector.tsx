@@ -9,7 +9,7 @@ export const PromotionSelector: FC = () => {
 
   const handleClick = useCallback((piece) => () => {
     const promotion = Chess.copyMove(lastMove)
-    promotion.to[1].type = piece
+    promotion.to.piece.type = piece
     dispatch(setPromoting(false))
     dispatch(replaceLastMove(promotion))
   }, [lastMove])
@@ -23,14 +23,14 @@ export const PromotionSelector: FC = () => {
     <div
       className={[
         'promotionSelector',
-        `${state.perspective === lastMove.from[1].color ? 'top' : 'bottom'}`,
-        `col-${state.perspective === 'L' ? lastMove.to[0].file : 7 - lastMove.to[0].file}`
+        `${state.perspective === lastMove.from.piece.color ? 'top' : 'bottom'}`,
+        `col-${state.perspective === 'L' ? Chess.getFile(lastMove.to.coords) : 7 - Chess.getFile(lastMove.to.coords)}`
       ].join(' ')}
     >
       {promotionPieces.map((piece) => (
         <div
           key={piece}
-          className={`pieceButton ${lastMove.from[1].color}${piece}`}
+          className={`pieceButton ${lastMove.from.piece.color}${piece}`}
           // src={`/images/${lastMove.from[1].color}${piece}.svg`}
           onClick={handleClick(piece)}
         />

@@ -15,7 +15,7 @@ export class ReplaceLastMoveAction extends Action {}
 export const replaceLastMove = (move: Chess.Move): ReplaceLastMoveAction => (new ReplaceLastMoveAction(move))
 
 export class SelectPieceAction extends Action {}
-export const selectPiece = (coordinates: Chess.Coordinates): SelectPieceAction => (new SelectPieceAction(coordinates.toString()))
+export const selectPiece = (coords: number): SelectPieceAction => (new SelectPieceAction(coords))
 
 export class DeselectPieceAction extends Action {}
 export const deselectPiece = (): DeselectPieceAction => (new DeselectPieceAction())
@@ -36,7 +36,7 @@ export const makeMove: (move: Chess.Move, callback?: (newGame: Chess.Game) => vo
   return (dispatch, getState) => {
     const { game } = getState()
     if (Chess.isLegalMove(move, game)) {
-      const newGame = Chess.applyMove(move, game)
+      const newGame = Chess.createGame([...game.moves, move])
       dispatch(setGame(newGame))
       callback?.(newGame)
     }
@@ -48,9 +48,9 @@ export const attemptPromotion: (move: Chess.Move) => Thunk = (move: Chess.Move) 
     const { game } = getState()
 
     const testMove: Chess.Move = Chess.copyMove(move)
-    testMove.to[1].type = 'Q'
+    testMove.to.piece.type = 'Q'
     if (Chess.isLegalMove(testMove, game)) {
-      dispatch(setGame(Chess.applyMove(move, game)))
+      dispatch(setGame(Chess.createGame([...game.moves, move])))
       dispatch(setPromoting(true))
     }
   }

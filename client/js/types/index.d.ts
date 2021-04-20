@@ -6,7 +6,7 @@ declare abstract class Action {
 declare interface State {
   game: import('chess-utils').Game
   dragging: boolean
-  selected: null | string
+  selected: null | number
   promoting: boolean
   perspective: import('chess-utils').Color
   room: string
