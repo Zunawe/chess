@@ -1,12 +1,14 @@
 import {
   movesEqual,
   isCastle,
-  Coordinates,
-  isInCheck,
+  isCheck,
   getLegalMoves,
   Move,
   Game,
-  whoseTurn
+  whoseTurn,
+  getFile,
+  getRank,
+  toCoords
 } from '.'
 
 export const isLegalMove = (move: Move, game: Game): boolean => {
@@ -17,24 +19,24 @@ export const isLegalMove = (move: Move, game: Game): boolean => {
 
   return getLegalMoves(move.from, game)
     // Move can't leave king in check
-    .filter((legalMove) => !isInCheck(color, { ...game, moves: [...game.moves, legalMove] }))
+    .filter((legalMove) => !isCheck({ ...game, moves: [...game.moves, legalMove] }))
     .filter((legalMove) => {
       if (isCastle(move)) {
         // King can't castle while in check
-        if (isInCheck(color, game)) {
+        if (isCheck(game)) {
           return false
         }
 
         // King can't cross a space that would put him in check during castle
-        const direction = (legalMove.to.coordinates.file - legalMove.from.coordinates.file) / 2
+        const direction = (getFile(legalMove.to.coords) - getFile(legalMove.from.coords)) / 2
         const testMove: Move = {
           from: legalMove.from,
           to: {
             ...legalMove.to,
-            coordinates: new Coordinates(legalMove.from.coordinates.file + direction, legalMove.to.coordinates.rank)
+            coords: toCoords(getFile(legalMove.from.coords) + direction, getRank(legalMove.to.coords))
           }
         }
-        return !isInCheck(color, { ...game, moves: [...game.moves, testMove] })
+        return !isCheck({ ...game, moves: [...game.moves, testMove] })
       }
 
       return true

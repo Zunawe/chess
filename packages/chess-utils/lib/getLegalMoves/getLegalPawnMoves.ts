@@ -1,30 +1,31 @@
-import { Coordinates, getAllMoves, MovePart, Move, Game, getBoard } from '../index'
+import { getAllMoves, MovePart, Move, Game, getBoard, getRank, getFile } from '..'
+import { toCoords } from '../coordinates'
 
 export const getLegalPawnMoves = (from: MovePart, game: Game): Move[] => {
   const board = getBoard(game)
-  const isFirstMove = from.piece.color === 'L' ? from.coordinates.rank === 1 : from.coordinates.rank === 6
+  const isFirstMove = from.piece.color === 'L' ? getRank(from.coords) === 1 : getRank(from.coords) === 6
   const direction = from.piece.color === 'L' ? 1 : -1
   const legalMoves = getAllMoves(from).filter((possibleMove) => {
     const { from, to } = possibleMove
 
     // Double move on first turn
-    if (Math.abs(to.coordinates.rank - from.coordinates.rank) === 2) {
+    if (Math.abs(getRank(to.coords) - getRank(from.coords)) === 2) {
       if (!isFirstMove) {
         return false
       }
 
-      return board[(new Coordinates(from.coordinates.file, from.coordinates.rank + direction)).toString()] === undefined &&
-        board[to.coordinates.toString()] === undefined
+      return board[toCoords(getFile(from.coords), getRank(from.coords) + direction)] === null &&
+        board[to.coords] === null
     }
 
     // Capturing a piece diagonally
-    if (to.coordinates.file - from.coordinates.file !== 0) {
-      const pieceAtDestination = board[to.coordinates.toString()]
-      if (pieceAtDestination === undefined) {
+    if (getFile(to.coords) - getFile(from.coords) !== 0) {
+      const pieceAtDestination = board[to.coords]
+      if (pieceAtDestination === null) {
         // Checking for en passant
         const prevMove = game.moves[game.moves.length - 1]
-        if (prevMove !== undefined && prevMove.from.piece.type === 'P' && prevMove.to.coordinates.file === to.coordinates.file) {
-          if (Math.abs(prevMove.to.coordinates.rank - prevMove.from.coordinates.rank) === 2) {
+        if (prevMove !== undefined && prevMove.from.piece.type === 'P' && getFile(prevMove.to.coords) === getFile(to.coords)) {
+          if (Math.abs(getRank(prevMove.to.coords) - getRank(prevMove.from.coords)) === 2) {
             return true
           }
         }
@@ -32,7 +33,7 @@ export const getLegalPawnMoves = (from: MovePart, game: Game): Move[] => {
       } else {
         // Checking for regular capture
         // If on the last rank
-        if ((to.coordinates.rank - 3.5) / 3.5 === direction) {
+        if ((getRank(to.coords) - 3.5) / 3.5 === direction) {
           // Must promote to queen, rook, bishop, or knight
           if (['Q', 'R', 'B', 'N'].includes(to.piece.type)) {
             // If there is a capturable piece
@@ -51,11 +52,11 @@ export const getLegalPawnMoves = (from: MovePart, game: Game): Move[] => {
     }
 
     // If on the last rank
-    if ((to.coordinates.rank - 3.5) / 3.5 === direction) {
+    if ((getRank(to.coords) - 3.5) / 3.5 === direction) {
       // Must promote to queen, rook, bishop, or knight
       if (['Q', 'R', 'B', 'N'].includes(to.piece.type)) {
         // If the space is empty
-        return board[to.coordinates.toString()] === undefined
+        return board[to.coords] === null
       }
       return false
     } else {
@@ -63,7 +64,7 @@ export const getLegalPawnMoves = (from: MovePart, game: Game): Move[] => {
       if (to.piece.type !== 'P') {
         return false
       }
-      return board[to.coordinates.toString()] === undefined
+      return board[to.coords] === null
     }
   })
 

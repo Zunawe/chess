@@ -1,8 +1,8 @@
-import { coordinatesEqual, piecesEqual, Move } from './index'
+import { piecesEqual, Move } from './index'
 
 export const movesEqual = (a: Move, b: Move): boolean => {
-  return coordinatesEqual(a.from.coordinates, b.from.coordinates) &&
-    coordinatesEqual(a.to.coordinates, b.to.coordinates) &&
+  return a.from.coords === b.from.coords &&
+    a.to.coords === b.to.coords &&
     piecesEqual(a.from.piece, b.from.piece) &&
     piecesEqual(a.to.piece, b.to.piece)
 }

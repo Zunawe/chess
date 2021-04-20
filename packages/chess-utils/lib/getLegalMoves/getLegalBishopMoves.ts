@@ -1,4 +1,5 @@
-import { Coordinates, MovePart, Move, Game, getBoard } from '../index'
+import { toCoords, validCoords } from '../coordinates'
+import { MovePart, Move, Game, getBoard, getFile, getRank } from '../index'
 
 export const getLegalBishopMoves = (from: MovePart, game: Game): Move[] => {
   const board = getBoard(game)
@@ -9,90 +10,90 @@ export const getLegalBishopMoves = (from: MovePart, game: Game): Move[] => {
 
   const legalMoves: Move[] = []
   for (let i = 1; i < 8; ++i) {
-    if (!neWall && from.coordinates.file + i <= 7 && from.coordinates.rank + i <= 7) {
-      const nePiece = board[(new Coordinates(
-        from.coordinates.file + i,
-        from.coordinates.rank + i
-      )).toString()]
-      if (nePiece === undefined || nePiece.color !== from.piece.color) {
+    if (!neWall && validCoords(getFile(from.coords) + i, getRank(from.coords) + i)) {
+      const nePiece = board[toCoords(
+        getFile(from.coords) + i,
+        getRank(from.coords) + i
+      )]
+      if (nePiece === null || nePiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coordinates: new Coordinates(
-              from.coordinates.file + i,
-              from.coordinates.rank + i
+            coords: toCoords(
+              getFile(from.coords) + i,
+              getRank(from.coords) + i
             )
           }
         })
       }
-      if (nePiece !== undefined) {
+      if (nePiece !== null) {
         neWall = true
       }
     }
 
-    if (!seWall && from.coordinates.file + i <= 7 && from.coordinates.rank - i >= 0) {
-      const sePiece = board[(new Coordinates(
-        from.coordinates.file + i,
-        from.coordinates.rank - i
-      )).toString()]
-      if (sePiece === undefined || sePiece.color !== from.piece.color) {
+    if (!seWall && validCoords(getFile(from.coords) + i, getRank(from.coords) - i)) {
+      const sePiece = board[toCoords(
+        getFile(from.coords) + i,
+        getRank(from.coords) - i
+      )]
+      if (sePiece === null || sePiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coordinates: new Coordinates(
-              from.coordinates.file + i,
-              from.coordinates.rank - i
+            coords: toCoords(
+              getFile(from.coords) + i,
+              getRank(from.coords) - i
             )
           }
         })
       }
-      if (sePiece !== undefined) {
+      if (sePiece !== null) {
         seWall = true
       }
     }
 
-    if (!swWall && from.coordinates.file - i >= 0 && from.coordinates.rank - i >= 0) {
-      const swPiece = board[(new Coordinates(
-        from.coordinates.file - i,
-        from.coordinates.rank - i
-      )).toString()]
-      if (swPiece === undefined || swPiece.color !== from.piece.color) {
+    if (!swWall && validCoords(getFile(from.coords) - i, getRank(from.coords) - i)) {
+      const swPiece = board[toCoords(
+        getFile(from.coords) - i,
+        getRank(from.coords) - i
+      )]
+      if (swPiece === null || swPiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coordinates: new Coordinates(
-              from.coordinates.file - i,
-              from.coordinates.rank - i
+            coords: toCoords(
+              getFile(from.coords) - i,
+              getRank(from.coords) - i
             )
           }
         })
       }
-      if (swPiece !== undefined) {
+      if (swPiece !== null) {
         swWall = true
       }
     }
 
-    if (!nwWall && from.coordinates.file - i >= 0 && from.coordinates.rank + i <= 7) {
-      const nwPiece = board[(new Coordinates(
-        from.coordinates.file - i,
-        from.coordinates.rank + i
-      )).toString()]
-      if (nwPiece === undefined || nwPiece.color !== from.piece.color) {
+    if (!nwWall && validCoords(getFile(from.coords) - i, getRank(from.coords) + i)) {
+      const nwPiece = board[toCoords(
+        getFile(from.coords) - i,
+        getRank(from.coords) + i
+      )]
+      if (nwPiece === null || nwPiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coordinates: new Coordinates(
-              from.coordinates.file - i,
-              from.coordinates.rank + i
+            coords: toCoords(
+              getFile(from.coords) - i,
+              getRank(from.coords) + i
             )
           }
         })
       }
-      if (nwPiece !== undefined) {
+      if (nwPiece !== null) {
         nwWall = true
       }
     }

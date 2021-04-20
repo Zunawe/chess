@@ -1,6 +1,6 @@
-import { Move } from './index'
+import { Move, getFile } from '.'
 
 export const isCastle = (move: Move): boolean => {
   return move.from.piece.type === 'K' &&
-    Math.abs(move.to.coordinates.file - move.from.coordinates.file) === 2
+    Math.abs(getFile(move.to.coords) - getFile(move.from.coords)) === 2
 }

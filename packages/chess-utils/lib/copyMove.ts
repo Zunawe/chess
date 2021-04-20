@@ -1,13 +1,13 @@
-import { Move, Coordinates, createPiece } from '.'
+import { Move, createPiece } from '.'
 
 export const copyMove = (move: Move): Move => {
   return {
     from: {
-      coordinates: new Coordinates(move.from.coordinates.file, move.from.coordinates.rank),
+      coords: move.from.coords,
       piece: createPiece(move.from.piece.type, move.from.piece.color)
     },
     to: {
-      coordinates: new Coordinates(move.to.coordinates.file, move.to.coordinates.rank),
+      coords: move.to.coords,
       piece: createPiece(move.to.piece.type, move.to.piece.color)
     }
   }

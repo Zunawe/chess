@@ -1,208 +1,214 @@
-import { Coordinates, MovePart, Move } from '../index'
+import { getFile, getRank, toCoords, validCoords } from '../coordinates'
+import { MovePart, Move } from '../index'
 
 export const getAllPawnMoves = (from: MovePart): Move[] => {
-  const { coordinates, piece } = from
+  const { coords, piece } = from
   const direction = piece.color === 'L' ? 1 : -1
-  const possibleMoves: Move[] = [
-    {
+  const possibleMoves: Move[] = []
+  if (validCoords(getRank(coords) + direction)) {
+    possibleMoves.push({
       from,
       to: {
         ...from,
-        coordinates: new Coordinates(
-          coordinates.file,
-          coordinates.rank + direction
+        coords: toCoords(
+          getFile(coords),
+          getRank(coords) + direction
         )
       }
-    },
-    {
+    })
+    possibleMoves.push({
       from,
       to: {
-        coordinates: new Coordinates(
-          coordinates.file,
-          coordinates.rank + direction
+        coords: toCoords(
+          getFile(coords),
+          getRank(coords) + direction
         ),
         piece: {
           ...piece,
           type: 'Q'
         }
       }
-    },
-    {
+    })
+    possibleMoves.push({
       from,
       to: {
-        coordinates: new Coordinates(
-          coordinates.file,
-          coordinates.rank + direction
+        coords: toCoords(
+          getFile(coords),
+          getRank(coords) + direction
         ),
         piece: {
           ...piece,
           type: 'R'
         }
       }
-    },
-    {
+    })
+    possibleMoves.push({
       from,
       to: {
-        coordinates: new Coordinates(
-          coordinates.file,
-          coordinates.rank + direction
+        coords: toCoords(
+          getFile(coords),
+          getRank(coords) + direction
         ),
         piece: {
           ...piece,
           type: 'B'
         }
       }
-    },
-    {
+    })
+    possibleMoves.push({
       from,
       to: {
-        coordinates: new Coordinates(
-          coordinates.file,
-          coordinates.rank + direction
+        coords: toCoords(
+          getFile(coords),
+          getRank(coords) + direction
         ),
         piece: {
           ...piece,
           type: 'N'
         }
       }
-    },
-    {
-      from,
-      to: {
-        ...from,
-        coordinates: new Coordinates(
-          coordinates.file,
-          coordinates.rank + direction + direction
-        )
-      }
-    },
-    {
-      from,
-      to: {
-        ...from,
-        coordinates: new Coordinates(
-          coordinates.file + 1,
-          coordinates.rank + direction
-        )
-      }
-    },
-    {
-      from,
-      to: {
-        coordinates: new Coordinates(
-          coordinates.file + 1,
-          coordinates.rank + direction
-        ),
-        piece: {
-          ...piece,
-          type: 'Q'
+    })
+    if (validCoords(getFile(coords) + 1)) {
+      possibleMoves.push({
+        from,
+        to: {
+          ...from,
+          coords: toCoords(
+            getFile(coords) + 1,
+            getRank(coords) + direction
+          )
         }
-      }
-    },
-    {
-      from,
-      to: {
-        coordinates: new Coordinates(
-          coordinates.file + 1,
-          coordinates.rank + direction
-        ),
-        piece: {
-          ...piece,
-          type: 'R'
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(
+            getFile(coords) + 1,
+            getRank(coords) + direction
+          ),
+          piece: {
+            ...piece,
+            type: 'Q'
+          }
         }
-      }
-    },
-    {
-      from,
-      to: {
-        coordinates: new Coordinates(
-          coordinates.file + 1,
-          coordinates.rank + direction
-        ),
-        piece: {
-          ...piece,
-          type: 'B'
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(
+            getFile(coords) + 1,
+            getRank(coords) + direction
+          ),
+          piece: {
+            ...piece,
+            type: 'R'
+          }
         }
-      }
-    },
-    {
-      from,
-      to: {
-        coordinates: new Coordinates(
-          coordinates.file + 1,
-          coordinates.rank + direction
-        ),
-        piece: {
-          ...piece,
-          type: 'N'
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(
+            getFile(coords) + 1,
+            getRank(coords) + direction
+          ),
+          piece: {
+            ...piece,
+            type: 'B'
+          }
         }
-      }
-    },
-    {
-      from,
-      to: {
-        ...from,
-        coordinates: new Coordinates(
-          coordinates.file - 1,
-          coordinates.rank + direction
-        )
-      }
-    },
-    {
-      from,
-      to: {
-        coordinates: new Coordinates(
-          coordinates.file - 1,
-          coordinates.rank + direction
-        ),
-        piece: {
-          ...piece,
-          type: 'Q'
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(
+            getFile(coords) + 1,
+            getRank(coords) + direction
+          ),
+          piece: {
+            ...piece,
+            type: 'N'
+          }
         }
-      }
-    },
-    {
-      from,
-      to: {
-        coordinates: new Coordinates(
-          coordinates.file - 1,
-          coordinates.rank + direction
-        ),
-        piece: {
-          ...piece,
-          type: 'R'
-        }
-      }
-    },
-    {
-      from,
-      to: {
-        coordinates: new Coordinates(
-          coordinates.file - 1,
-          coordinates.rank + direction
-        ),
-        piece: {
-          ...piece,
-          type: 'B'
-        }
-      }
-    },
-    {
-      from,
-      to: {
-        coordinates: new Coordinates(
-          coordinates.file - 1,
-          coordinates.rank + direction
-        ),
-        piece: {
-          ...piece,
-          type: 'N'
-        }
-      }
+      })
     }
-  ]
+    if (validCoords(getFile(coords) - 1)) {
+      possibleMoves.push({
+        from,
+        to: {
+          ...from,
+          coords: toCoords(
+            getFile(coords) - 1,
+            getRank(coords) + direction
+          )
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(
+            getFile(coords) - 1,
+            getRank(coords) + direction
+          ),
+          piece: {
+            ...piece,
+            type: 'Q'
+          }
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(
+            getFile(coords) - 1,
+            getRank(coords) + direction
+          ),
+          piece: {
+            ...piece,
+            type: 'R'
+          }
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(
+            getFile(coords) - 1,
+            getRank(coords) + direction
+          ),
+          piece: {
+            ...piece,
+            type: 'B'
+          }
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(
+            getFile(coords) - 1,
+            getRank(coords) + direction
+          ),
+          piece: {
+            ...piece,
+            type: 'N'
+          }
+        }
+      })
+    }
+  }
+  if (validCoords(getRank(coords) + direction + direction)) {
+    possibleMoves.push({
+      from,
+      to: {
+        ...from,
+        coords: toCoords(
+          getFile(coords),
+          getRank(coords) + direction + direction
+        )
+      }
+    })
+  }
 
-  return possibleMoves.filter((move) => {
-    return move.to.coordinates.file <= 7 && move.to.coordinates.file >= 0 && move.to.coordinates.rank <= 7 && move.to.coordinates.rank >= 0
-  })
+  return possibleMoves
 }

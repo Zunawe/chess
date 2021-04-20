@@ -1,5 +1,4 @@
-import { getStartingBoard } from './getStartingBoard'
-import { Move, Board, Game } from '.'
+import { Move, Board, Game, getStartingBoard } from '.'
 
 export const createGame = (moves?: Move[], initialBoard?: Board): Game => ({
   moves: moves ?? [],

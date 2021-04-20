@@ -1,4 +1,4 @@
-import { Coordinates, MovePart, Move, Game, getBoard } from '../index'
+import { MovePart, Move, Game, getBoard, getFile, getRank, toCoords } from '../index'
 
 export const getLegalRookMoves = (from: MovePart, game: Game): Move[] => {
   const board = getBoard(game)
@@ -10,90 +10,87 @@ export const getLegalRookMoves = (from: MovePart, game: Game): Move[] => {
 
   const legalMoves: Move[] = []
   for (let i = 1; i < 8; ++i) {
-    if (!eWall && from.coordinates.file + i <= 7) {
-      const nePiece = board[(new Coordinates(
-        from.coordinates.file + i,
-        from.coordinates.rank
-      )).toString()]
-      if (nePiece === undefined || nePiece.color !== from.piece.color) {
+    if (!eWall && getFile(from.coords) + i <= 7) {
+      const nePiece = board[toCoords(getFile(from.coords) + i, getRank(from.coords))]
+      if (nePiece === null || nePiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coordinates: new Coordinates(
-              from.coordinates.file + i,
-              from.coordinates.rank
+            coords: toCoords(
+              getFile(from.coords) + i,
+              getRank(from.coords)
             )
           }
         })
       }
-      if (nePiece !== undefined) {
+      if (nePiece !== null) {
         eWall = true
       }
     }
 
-    if (!sWall && from.coordinates.rank - i >= 0) {
-      const sePiece = board[(new Coordinates(
-        from.coordinates.file,
-        from.coordinates.rank - i
-      )).toString()]
-      if (sePiece === undefined || sePiece.color !== from.piece.color) {
+    if (!sWall && getRank(from.coords) - i >= 0) {
+      const sePiece = board[(toCoords(
+        getFile(from.coords),
+        getRank(from.coords) - i
+      ))]
+      if (sePiece === null || sePiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coordinates: new Coordinates(
-              from.coordinates.file,
-              from.coordinates.rank - i
+            coords: toCoords(
+              getFile(from.coords),
+              getRank(from.coords) - i
             )
           }
         })
       }
-      if (sePiece !== undefined) {
+      if (sePiece !== null) {
         sWall = true
       }
     }
 
-    if (!wWall && from.coordinates.file - i >= 0) {
-      const swPiece = board[(new Coordinates(
-        from.coordinates.file - i,
-        from.coordinates.rank
-      )).toString()]
-      if (swPiece === undefined || swPiece.color !== from.piece.color) {
+    if (!wWall && getFile(from.coords) - i >= 0) {
+      const swPiece = board[(toCoords(
+        getFile(from.coords) - i,
+        getRank(from.coords)
+      ))]
+      if (swPiece === null || swPiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coordinates: new Coordinates(
-              from.coordinates.file - i,
-              from.coordinates.rank
+            coords: toCoords(
+              getFile(from.coords) - i,
+              getRank(from.coords)
             )
           }
         })
       }
-      if (swPiece !== undefined) {
+      if (swPiece !== null) {
         wWall = true
       }
     }
 
-    if (!nWall && from.coordinates.rank + i <= 7) {
-      const nwPiece = board[(new Coordinates(
-        from.coordinates.file,
-        from.coordinates.rank + i
-      )).toString()]
-      if (nwPiece === undefined || nwPiece.color !== from.piece.color) {
+    if (!nWall && getRank(from.coords) + i <= 7) {
+      const nwPiece = board[(toCoords(
+        getFile(from.coords),
+        getRank(from.coords) + i
+      ))]
+      if (nwPiece === null || nwPiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coordinates: new Coordinates(
-              from.coordinates.file,
-              from.coordinates.rank + i
+            coords: toCoords(
+              getFile(from.coords),
+              getRank(from.coords) + i
             )
           }
         })
       }
-      if (nwPiece !== undefined) {
+      if (nwPiece !== null) {
         nWall = true
       }
     }

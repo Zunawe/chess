@@ -1,91 +1,105 @@
-import { Coordinates, MovePart, Move } from '../index'
+import { getFile, getRank, toCoords, validCoords } from '../coordinates'
+import { MovePart, Move } from '../index'
 
 export const getAllKnightMoves = (from: MovePart): Move[] => {
-  const { coordinates } = from
-  const possibleMoves: Move[] = [
-    {
+  const { coords } = from
+  const possibleMoves: Move[] = []
+  if (validCoords(getFile(coords) + 1, getRank(coords) + 2)) {
+    possibleMoves.push({
       from,
       to: {
         ...from,
-        coordinates: new Coordinates(
-          coordinates.file + 1,
-          coordinates.rank + 2
+        coords: toCoords(
+          getFile(coords) + 1,
+          getRank(coords) + 2
         )
       }
-    },
-    {
+    })
+  }
+  if (validCoords(getFile(coords) + 2, getRank(coords) + 1)) {
+    possibleMoves.push({
       from,
       to: {
         ...from,
-        coordinates: new Coordinates(
-          coordinates.file + 2,
-          coordinates.rank + 1
+        coords: toCoords(
+          getFile(coords) + 2,
+          getRank(coords) + 1
         )
       }
-    },
-    {
+    })
+  }
+  if (validCoords(getFile(coords) + 2, getRank(coords) - 1)) {
+    possibleMoves.push({
       from,
       to: {
         ...from,
-        coordinates: new Coordinates(
-          coordinates.file + 2,
-          coordinates.rank - 1
+        coords: toCoords(
+          getFile(coords) + 2,
+          getRank(coords) - 1
         )
       }
-    },
-    {
+    })
+  }
+  if (validCoords(getFile(coords) + 1, getRank(coords) - 2)) {
+    possibleMoves.push({
       from,
       to: {
         ...from,
-        coordinates: new Coordinates(
-          coordinates.file + 1,
-          coordinates.rank - 2
+        coords: toCoords(
+          getFile(coords) + 1,
+          getRank(coords) - 2
         )
       }
-    },
-    {
+    })
+  }
+  if (validCoords(getFile(coords) - 1, getRank(coords) - 2)) {
+    possibleMoves.push({
       from,
       to: {
         ...from,
-        coordinates: new Coordinates(
-          coordinates.file - 1,
-          coordinates.rank - 2
+        coords: toCoords(
+          getFile(coords) - 1,
+          getRank(coords) - 2
         )
       }
-    },
-    {
+    })
+  }
+  if (validCoords(getFile(coords) - 2, getRank(coords) - 1)) {
+    possibleMoves.push({
       from,
       to: {
         ...from,
-        coordinates: new Coordinates(
-          coordinates.file - 2,
-          coordinates.rank - 1
+        coords: toCoords(
+          getFile(coords) - 2,
+          getRank(coords) - 1
         )
       }
-    },
-    {
+    })
+  }
+  if (validCoords(getFile(coords) - 2, getRank(coords) + 1)) {
+    possibleMoves.push({
       from,
       to: {
         ...from,
-        coordinates: new Coordinates(
-          coordinates.file - 2,
-          coordinates.rank + 1
+        coords: toCoords(
+          getFile(coords) - 2,
+          getRank(coords) + 1
         )
       }
-    },
-    {
+    })
+  }
+  if (validCoords(getFile(coords) - 1, getRank(coords) + 2)) {
+    possibleMoves.push({
       from,
       to: {
         ...from,
-        coordinates: new Coordinates(
-          coordinates.file - 1,
-          coordinates.rank + 2
+        coords: toCoords(
+          getFile(coords) - 1,
+          getRank(coords) + 2
         )
       }
-    }
-  ]
+    })
+  }
 
-  return possibleMoves.filter((move) => {
-    return move.to.coordinates.file <= 7 && move.to.coordinates.file >= 0 && move.to.coordinates.rank <= 7 && move.to.coordinates.rank >= 0
-  })
+  return possibleMoves
 }

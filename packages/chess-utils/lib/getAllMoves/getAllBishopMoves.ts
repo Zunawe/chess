@@ -1,52 +1,59 @@
-import { Coordinates, MovePart, Move } from '../index'
+import { getFile, getRank, toCoords, validCoords } from '../coordinates'
+import { MovePart, Move } from '../index'
 
 export const getAllBishopMoves = (from: MovePart): Move[] => {
-  const { coordinates } = from
+  const { coords } = from
   const possibleMoves: Move[] = []
   for (let i = 1; i < 8; ++i) {
-    possibleMoves.push({
-      from,
-      to: {
-        ...from,
-        coordinates: new Coordinates(
-          coordinates.file + i,
-          coordinates.rank + i
-        )
-      }
-    })
-    possibleMoves.push({
-      from,
-      to: {
-        ...from,
-        coordinates: new Coordinates(
-          coordinates.file + i,
-          coordinates.rank - i
-        )
-      }
-    })
-    possibleMoves.push({
-      from,
-      to: {
-        ...from,
-        coordinates: new Coordinates(
-          coordinates.file - i,
-          coordinates.rank - i
-        )
-      }
-    })
-    possibleMoves.push({
-      from,
-      to: {
-        ...from,
-        coordinates: new Coordinates(
-          coordinates.file - i,
-          coordinates.rank + i
-        )
-      }
-    })
+    if (validCoords(getFile(coords) + i, getRank(coords) + i)) {
+      possibleMoves.push({
+        from,
+        to: {
+          ...from,
+          coords: toCoords(
+            getFile(coords) + i,
+            getRank(coords) + i
+          )
+        }
+      })
+    }
+    if (validCoords(getFile(coords) + i, getRank(coords) - i)) {
+      possibleMoves.push({
+        from,
+        to: {
+          ...from,
+          coords: toCoords(
+            getFile(coords) + i,
+            getRank(coords) - i
+          )
+        }
+      })
+    }
+    if (validCoords(getFile(coords) - i, getRank(coords) - i)) {
+      possibleMoves.push({
+        from,
+        to: {
+          ...from,
+          coords: toCoords(
+            getFile(coords) - i,
+            getRank(coords) - i
+          )
+        }
+      })
+    }
+    if (validCoords(getFile(coords) - i, getRank(coords) + i)) {
+      possibleMoves.push({
+        from,
+        to: {
+          ...from,
+          coords: toCoords(
+            getFile(coords) - i,
+            getRank(coords) + i
+          )
+        }
+      })
+    }
   }
 
-  return possibleMoves.filter((move) => {
-    return move.to.coordinates.file <= 7 && move.to.coordinates.file >= 0 && move.to.coordinates.rank <= 7 && move.to.coordinates.rank >= 0
-  })
+  return possibleMoves
 }

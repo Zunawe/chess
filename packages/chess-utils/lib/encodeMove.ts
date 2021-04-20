@@ -1,8 +1,6 @@
-import { Game, isCastle, getLegalMoves, Coordinates, getBoard } from '.'
-import { isInCheck } from './isInCheck'
-import { isInCheckmate } from './isInCheckmate'
-import { whoseTurn } from './whoseTurn'
-import { coordinatesEqual } from './Coordinates'
+import { Game, isCastle, getLegalMoves, getBoard, getFile, getRank, encodeFile, encodeRank, encodeCoords } from '.'
+import { isCheck } from './isCheck'
+import { isCheckmate } from './isCheckmate'
 import { piecesEqual } from './piecesEqual'
 
 export const encodeMove = (i: number, game: Game): string => {
@@ -23,38 +21,32 @@ export const encodeMove = (i: number, game: Game): string => {
 
   // Castling
   if (isCastle(move)) {
-    return move.to.coordinates.file === 6 ? 'O-O' : 'O-O-O'
+    return getFile(move.to.coords) === 6 ? 'O-O' : 'O-O-O'
   }
 
-  // En Passant
-  // let enPassant = ''
-  // if (Object.entries(gameBeforeMove.board).length < Object.entries(currentGame.board).length &&
-  //   gameBeforeMove.board[move.to.coordinates.toString()] === undefined) {
-  //     enPassant = 'e.p.'
-  //   }
-
   // Disambiguation
-  const otherPieceLocations = Object.entries(boardBeforeMove)
-    .filter(([c, p]) => {
-      return c !== move.from.coordinates.toString() && p.color === move.from.piece.color && p.type === move.from.piece.type
-    })
-    .filter(([c, p]) => {
-      return getLegalMoves({ coordinates: new Coordinates(c), piece: p }, gameBeforeMove)
-        .some((legalMove) => {
-          return coordinatesEqual(legalMove.to.coordinates, move.to.coordinates) && piecesEqual(legalMove.to.piece, move.to.piece)
-        })
-    })
-    .map(([c]) => new Coordinates(c))
+  const ambiguousPieceCoords = []
+  for (const [coords, piece] of boardBeforeMove.entries()) {
+    if (coords === move.from.coords || piece === null || piece.color !== move.from.piece.color) {
+      continue
+    }
+
+    const isAmbiguous = getLegalMoves({ coords, piece }, gameBeforeMove)
+      .some((possibleMove) => possibleMove.to.coords === move.to.coords && piecesEqual(possibleMove.to.piece, move.to.piece))
+    if (isAmbiguous) {
+      ambiguousPieceCoords.push(coords)
+    }
+  }
 
   let disambiguation = ''
-  if (otherPieceLocations.length > 0) {
-    if (otherPieceLocations.every(({ file }) => file !== move.from.coordinates.file)) {
-      disambiguation = move.from.coordinates.toString()[0]
-    } else if (otherPieceLocations.every(({ rank }) => rank !== move.from.coordinates.rank)) {
-      disambiguation = move.from.coordinates.toString()[1]
+  if (ambiguousPieceCoords.length > 0) {
+    if (ambiguousPieceCoords.every((c) => getFile(c) !== getFile(move.from.coords))) {
+      disambiguation = encodeFile(getFile(move.from.coords))
+    } else if (ambiguousPieceCoords.every((c) => getRank(c) !== getRank(move.from.coords))) {
+      disambiguation = encodeRank(getRank(move.from.coords))
     } else {
       // Incredibly uncommon, but technically possible
-      disambiguation = move.from.coordinates.toString()
+      disambiguation = encodeCoords(move.from.coords)
     }
   }
 
@@ -64,10 +56,10 @@ export const encodeMove = (i: number, game: Game): string => {
     promotion = '=' + move.to.piece.type
   }
 
-  const takes = boardBeforeMove[move.to.coordinates.toString()] === undefined ? '' : 'x'
-  const pieceCode = move.from.piece.type === 'P' ? (takes.length === 0 ? '' : move.from.coordinates.toString()[0]) : move.from.piece.type
-  const square = move.to.coordinates.toString()
-  const check = isInCheckmate(whoseTurn(currentGame), currentGame) ? '#' : (isInCheck(whoseTurn(currentGame), currentGame) ? '+' : '')
+  const takes = boardBeforeMove[move.to.coords] === null ? '' : 'x'
+  const pieceCode = move.from.piece.type === 'P' ? (takes.length === 0 ? '' : encodeFile(getFile(move.from.coords))) : move.from.piece.type
+  const square = encodeCoords(move.to.coords)
+  const check = isCheckmate(currentGame) ? '#' : (isCheck(currentGame) ? '+' : '')
 
   return pieceCode + disambiguation + takes + square + promotion + check
 }

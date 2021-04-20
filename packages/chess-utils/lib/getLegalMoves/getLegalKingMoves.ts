@@ -1,4 +1,5 @@
-import { Coordinates, getAllMoves, coordinatesEqual, isCastle, piecesEqual, MovePart, Move, Game, getBoard } from '../index'
+import { toCoords } from '../coordinates'
+import { getAllMoves, isCastle, piecesEqual, MovePart, Move, Game, getBoard, getFile, getRank } from '../index'
 
 export const getLegalKingMoves = (from: MovePart, game: Game): Move[] => {
   const board = getBoard(game)
@@ -11,22 +12,22 @@ export const getLegalKingMoves = (from: MovePart, game: Game): Move[] => {
       const rank = from.piece.color === 'L' ? 0 : 7
 
       // King must be in original position
-      if (from.coordinates.rank !== rank || from.coordinates.file !== 4) {
+      if (getRank(from.coords) !== rank || getFile(from.coords) !== 4) {
         return false
       }
 
-      const direction = (to.coordinates.file - from.coordinates.file) / 2
+      const direction = (getFile(to.coords) - getFile(from.coords)) / 2
 
       // All spaces between king and rook must not be occupied
       for (let f = 4 + direction; f !== 0 && f !== 7; f += direction) {
-        if (board[(new Coordinates(f, rank)).toString()] !== undefined) {
+        if (board[toCoords(f, rank)] !== null) {
           return false
         }
       }
 
       // Rook of the same color must be in the corresponding corner
-      const rook = board[(new Coordinates(direction < 0 ? 0 : 7, rank)).toString()]
-      if (rook === undefined || rook.color !== from.piece.color) {
+      const rook = board[toCoords(direction < 0 ? 0 : 7, rank)]
+      if (rook === null || rook.color !== from.piece.color) {
         return false
       }
 
@@ -37,7 +38,7 @@ export const getLegalKingMoves = (from: MovePart, game: Game): Move[] => {
           return false
         }
         // Rook moved
-        if (piecesEqual(game.moves[i].from.piece, rook) && coordinatesEqual(game.moves[i].from.coordinates, new Coordinates(direction < 0 ? 0 : 7, rank))) {
+        if (piecesEqual(game.moves[i].from.piece, rook) && game.moves[i].from.coords === toCoords(direction < 0 ? 0 : 7, rank)) {
           return false
         }
       }
@@ -45,8 +46,8 @@ export const getLegalKingMoves = (from: MovePart, game: Game): Move[] => {
       return true
     }
 
-    const pieceAtDestination = board[to.coordinates.toString()]
-    if (pieceAtDestination === undefined) {
+    const pieceAtDestination = board[to.coords]
+    if (pieceAtDestination === null) {
       return true
     } else {
       return pieceAtDestination.color !== from.piece.color

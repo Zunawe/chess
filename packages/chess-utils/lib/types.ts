@@ -1,5 +1,3 @@
-import { Coordinates } from './index'
-
 export type Color = 'D' | 'L'
 export type PieceType = 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
 
@@ -8,12 +6,10 @@ export interface Piece {
   type: PieceType
 }
 
-export interface Board {
-  [key: string]: Piece
-}
+export type Board = Array<Piece | null>
 
 export interface MovePart {
-  coordinates: Coordinates
+  coords: number
   piece: Piece
 }
 

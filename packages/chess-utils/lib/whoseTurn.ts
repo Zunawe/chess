@@ -1,6 +1,5 @@
-import { Color, Move, Game } from '.'
+import { Color, Game } from '.'
 
-export const whoseTurn = (arg: Move[] | Game): Color => {
-  const moves = Array.isArray(arg) ? arg : arg.moves
-  return moves.length % 2 === 0 ? 'L' : 'D'
+export const whoseTurn = (game: Game): Color => {
+  return game.moves.length % 2 === 0 ? 'L' : 'D'
 }
