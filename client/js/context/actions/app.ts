@@ -28,8 +28,8 @@ export const setDragging = (dragging: boolean): SetDraggingAction => (new SetDra
 export class SetPromotingAction extends Action {}
 export const setPromoting = (value: boolean): SetPromotingAction => (new SetPromotingAction(value))
 
-export class SetRoomAction extends Action {}
-export const setRoom = (code: string): SetRoomAction => (new SetRoomAction(code))
+export class SetRoomCodeAction extends Action {}
+export const setRoomCode = (code: string): SetRoomCodeAction => (new SetRoomCodeAction(code))
 
 export class SetPerspectiveAction extends Action {}
 export const setPerspective = (color: Chess.Color): SetPerspectiveAction => (new SetPerspectiveAction(color))

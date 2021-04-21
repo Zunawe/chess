@@ -9,7 +9,7 @@ import {
   SetPromotingAction,
   UndoLastMoveAction,
   ReplaceLastMoveAction,
-  SetRoomAction,
+  SetRoomCodeAction,
   SetPerspectiveAction
 } from '../actions/app'
 
@@ -54,10 +54,10 @@ export const reducer: Reducer = (state, action) => {
       ...state,
       promoting: action.payload
     }
-  } else if (action instanceof SetRoomAction) {
+  } else if (action instanceof SetRoomCodeAction) {
     return {
       ...state,
-      room: action.payload
+      roomCode: action.payload
     }
   } else if (action instanceof SetPerspectiveAction) {
     return {

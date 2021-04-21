@@ -6,7 +6,7 @@ import { Server } from 'socket.io'
 import * as Chess from 'chess-utils'
 
 import { httpLogger, errorLogger } from './middleware'
-import { logger } from './util'
+import { getRoomCode, logger } from './util'
 import * as routes from './routes'
 import * as GameManager from './services/GameManager'
 
@@ -73,20 +73,33 @@ const init = async (): Promise<void> => {
       socket.emit('joined', code)
     })
 
-    socket.on('move', (code, move) => {
-      const game = GameManager.makeMove(code, move)
-      io.in(code).emit('sync', Chess.encodeGame(game))
+    socket.on('move', (move) => {
+      const roomCode = getRoomCode(socket)
+      if (roomCode === undefined) return
+
+      const game = GameManager.makeMove(roomCode, move)
+      io.in(roomCode).emit('sync', Chess.encodeGame(game))
+    })
+
+    socket.on('sync', () => {
+      const roomCode = getRoomCode(socket)
+      if (roomCode === undefined) return
+
+      const game = GameManager.getGame(roomCode)
+      if (game === undefined) return
+
+      socket.emit('sync', Chess.encodeGame(game))
     })
 
     socket.on('disconnecting', () => {
-      socket.rooms.forEach((room) => {
-        if (room === socket.id) return
-        io.in(room).allSockets().then((sockets) => {
-          if (sockets.size === 1) {
-            GameManager.removeGame(room)
-          }
-        }).catch((reason) => logger.error(reason))
-      })
+      const roomCode = getRoomCode(socket)
+      if (roomCode === undefined) return
+
+      io.in(roomCode).allSockets().then((sockets) => {
+        if (sockets.size === 1) {
+          GameManager.removeGame(roomCode)
+        }
+      }).catch((reason) => logger.error(reason))
     })
   })
 

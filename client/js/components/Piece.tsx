@@ -65,7 +65,7 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
         }
       }
     }
-  }, [color, type, state.room, state.game])
+  }, [color, type, state.roomCode, state.game])
 
   const isSelected = useMemo(() => {
     return state.selected !== null && state.selected === coordinates

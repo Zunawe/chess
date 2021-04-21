@@ -10,11 +10,3 @@ export const get: RequestHandler = (req, res) => {
     }
   })
 }
-
-export const getFile: RequestHandler = (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'dist', 'client', req.params.file), (err) => {
-    if (err !== undefined) {
-      logger.error(err)
-    }
-  })
-}

@@ -14,7 +14,7 @@ const initialState: State = {
   selected: null,
   promoting: false,
   perspective: 'L',
-  room: '',
+  roomCode: '',
   socket: io()
 }
 

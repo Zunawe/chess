@@ -1,9 +1,9 @@
 import * as Chess from 'chess-utils'
 
 import { Thunk } from '../middlewares'
-import { resetGame, setGame, setRoom, setPerspective } from './app'
+import { setGame, setRoomCode } from './app'
 
-export const initializeSocket: () => Thunk = () => {
+export const initializeSocket: (roomCode: string) => Thunk = (roomCode: string) => {
   return (dispatch, getState) => {
     const { socket } = getState()
 
@@ -11,11 +11,10 @@ export const initializeSocket: () => Thunk = () => {
       console.log('Connected')
     })
 
-    socket.on('joined', (code: string, color: Chess.Color) => {
-      console.log(`Joined room ${code}`)
-      dispatch(resetGame())
-      dispatch(setRoom(code))
-      dispatch(setPerspective(color))
+    socket.on('joined', (roomCode: string) => {
+      console.log(`Joined room ${roomCode}`)
+      dispatch(setRoomCode(roomCode))
+      dispatch(resyncGame())
     })
 
     socket.on('full', () => {
@@ -25,13 +24,15 @@ export const initializeSocket: () => Thunk = () => {
     socket.on('sync', (encodedGame) => {
       dispatch(setGame(Chess.decodeGame(encodedGame)))
     })
+
+    dispatch(joinRoom(roomCode))
   }
 }
 
 export const sendLastMove: (game: Chess.Game) => Thunk = (game: Chess.Game) => {
   return (dispatch, getState) => {
-    const { room, socket } = getState()
-    socket.emit('move', room, Chess.encodeMove(game.moves.length - 1, game))
+    const { roomCode, socket } = getState()
+    socket.emit('move', roomCode, Chess.encodeMove(game.moves.length - 1, game))
   }
 }
 

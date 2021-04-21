@@ -9,7 +9,7 @@ declare interface State {
   selected: null | number
   promoting: boolean
   perspective: import('chess-utils').Color
-  room: string
+  roomCode: string
   socket: import('socket.io-client').Socket
 }
 
