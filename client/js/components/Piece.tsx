@@ -1,9 +1,8 @@
 import React, { FC, useCallback, useContext, useMemo, useState } from 'react'
 
-import { setDragging, selectPiece, makeMove, attemptPromotion } from '../context/actions/app'
+import { setDragging, selectPiece, makeMove, startPromotion } from '../context/actions/app'
 import { AppContext } from '../context/app'
 import * as Chess from 'chess-utils'
-import { useSocket } from '../hooks/useSocket'
 
 export interface PieceProps {
   color: Chess.Color
@@ -15,7 +14,6 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
   const [state, dispatch] = useContext(AppContext)
   const [dx, setDx] = useState(0)
   const [dy, setDy] = useState(0)
-  const socket = useSocket()
 
   const startDrag = useCallback((e) => {
     dispatch(setDragging(true))
@@ -61,11 +59,9 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
         }
 
         if (type === 'P' && (r === 0 || r === 7)) {
-          dispatch(attemptPromotion(move))
+          dispatch(startPromotion(move))
         } else {
-          dispatch(makeMove(move, (newGame) => {
-            if (state.room !== '') socket.emit('move', state.room, Chess.encodeMove(newGame.moves.length - 1, newGame))
-          }))
+          dispatch(makeMove(move))
         }
       }
     }

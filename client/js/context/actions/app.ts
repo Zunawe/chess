@@ -1,6 +1,8 @@
-import { Action } from './Action'
-import { Thunk } from '../middlewares'
 import * as Chess from 'chess-utils'
+
+import { Action } from './Action'
+import { sendLastMove } from './socket'
+import { Thunk } from '../middlewares'
 
 export class ResetGameAction extends Action {}
 export const resetGame = (): ResetGameAction => (new ResetGameAction())
@@ -32,27 +34,44 @@ export const setRoom = (code: string): SetRoomAction => (new SetRoomAction(code)
 export class SetPerspectiveAction extends Action {}
 export const setPerspective = (color: Chess.Color): SetPerspectiveAction => (new SetPerspectiveAction(color))
 
-export const makeMove: (move: Chess.Move, callback?: (newGame: Chess.Game) => void) => Thunk = (move: Chess.Move, callback?: (newGame: Chess.Game) => void) => {
+export const makeMove: (move: Chess.Move) => Thunk = (move: Chess.Move) => {
   return (dispatch, getState) => {
     const { game } = getState()
+
     if (Chess.isLegalMove(move, game)) {
       const newGame = Chess.createGame([...game.moves, move])
       dispatch(setGame(newGame))
-      callback?.(newGame)
+      dispatch(sendLastMove(newGame))
     }
   }
 }
 
-export const attemptPromotion: (move: Chess.Move) => Thunk = (move: Chess.Move) => {
+export const startPromotion: (move: Chess.Move) => Thunk = (move: Chess.Move) => {
   return (dispatch, getState) => {
     const { game } = getState()
 
     const testMove: Chess.Move = Chess.copyMove(move)
     testMove.to.piece.type = 'Q'
     if (Chess.isLegalMove(testMove, game)) {
-      dispatch(setGame(Chess.createGame([...game.moves, move])))
       dispatch(setPromoting(true))
+      dispatch(setGame(Chess.createGame([...game.moves, move])))
     }
+  }
+}
+
+export const finalizePromotion: (promotion: Chess.Move) => Thunk = (promotion: Chess.Move) => {
+  return (dispatch, getState) => {
+    const { promoting, game } = getState()
+
+    if (!promoting) {
+      return
+    }
+
+    const newGame = Chess.createGame([...game.moves.slice(0, -1), promotion])
+
+    dispatch(setPromoting(false))
+    dispatch(setGame(newGame))
+    dispatch(sendLastMove(newGame))
   }
 }
 

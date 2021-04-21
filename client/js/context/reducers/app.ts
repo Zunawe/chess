@@ -1,4 +1,5 @@
 import * as Chess from 'chess-utils'
+
 import {
   ResetGameAction,
   SetGameAction,

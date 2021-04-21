@@ -1,4 +1,5 @@
 import React, { FC, createContext } from 'react'
+import { io } from 'socket.io-client'
 
 import { useEnhancedReducer } from '../hooks'
 import { thunkMiddleware } from './middlewares'
@@ -13,7 +14,8 @@ const initialState: State = {
   selected: null,
   promoting: false,
   perspective: 'L',
-  room: ''
+  room: '',
+  socket: io()
 }
 
 export const AppContext = createContext<[State, Dispatch, () => State]>([initialState, () => {}, () => initialState])

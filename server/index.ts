@@ -69,15 +69,8 @@ const init = async (): Promise<void> => {
         GameManager.createGame(code)
       }
 
-      io.in(code).allSockets().then((sockets) => {
-        if (sockets.size < 2) {
-          const color = sockets.size === 0 ? 'L' : 'D'
-          void socket.join(code) /* eslint-disable-line no-void */
-          socket.emit('joined', code, color)
-        } else {
-          socket.emit('full', code)
-        }
-      }).catch((reason) => logger.error(reason))
+      void socket.join(code) /* eslint-disable-line no-void */
+      socket.emit('joined', code)
     })
 
     socket.on('move', (code, move) => {

@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useContext, useMemo } from 'react'
 import * as Chess from 'chess-utils'
 import { AppContext } from '../context/app'
-import { replaceLastMove, setPromoting } from '../context/actions/app'
+import { finalizePromotion } from '../context/actions/app'
 
 export const PromotionSelector: FC = () => {
   const [state, dispatch] = useContext(AppContext)
@@ -10,8 +10,7 @@ export const PromotionSelector: FC = () => {
   const handleClick = useCallback((piece) => () => {
     const promotion = Chess.copyMove(lastMove)
     promotion.to.piece.type = piece
-    dispatch(setPromoting(false))
-    dispatch(replaceLastMove(promotion))
+    dispatch(finalizePromotion(promotion))
   }, [lastMove])
 
   if (!state.promoting) {
@@ -31,7 +30,6 @@ export const PromotionSelector: FC = () => {
         <div
           key={piece}
           className={`pieceButton ${lastMove.from.piece.color}${piece}`}
-          // src={`/images/${lastMove.from[1].color}${piece}.svg`}
           onClick={handleClick(piece)}
         />
       ))}

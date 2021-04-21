@@ -10,6 +10,7 @@ declare interface State {
   promoting: boolean
   perspective: import('chess-utils').Color
   room: string
+  socket: import('socket.io-client').Socket
 }
 
 declare interface Store {
