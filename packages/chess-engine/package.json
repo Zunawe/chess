@@ -1,11 +1,10 @@
 {
-  "name": "chess-utils",
+  "name": "chess-engine",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "setup": "npm i && npx husky install",
     "test": "jest",
     "build": "tsc",
     "lint": "ts-standard lib",
@@ -20,5 +19,8 @@
     "ts-jest": "^26.5.5",
     "ts-standard": "^10.0.0",
     "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "chess-utils": "file:../chess-utils"
   }
 }
