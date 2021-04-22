@@ -5,7 +5,7 @@ import { getLegalMoves } from './getLegalMoves'
 import { movesEqual } from './movesEqual'
 import { whoseTurn } from './whoseTurn'
 
-export const decodeMove = (encodedMove: string, game: Game): Move => {
+export const moveFromPgn = (encodedMove: string, game: Game): Move => {
   const board = getBoard(game)
   const color = whoseTurn(game)
 

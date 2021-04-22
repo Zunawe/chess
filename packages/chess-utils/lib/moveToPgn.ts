@@ -3,7 +3,7 @@ import { isCheck } from './isCheck'
 import { isCheckmate } from './isCheckmate'
 import { piecesEqual } from './piecesEqual'
 
-export const encodeMove = (i: number, game: Game): string => {
+export const moveToPgn = (i: number, game: Game): string => {
   const move = game.moves[i]
   if (move === undefined) {
     throw new Error(`Index out of bounds for provided moves: ${i}`)

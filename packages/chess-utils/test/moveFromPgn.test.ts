@@ -1,14 +1,14 @@
-import { decodeMove, Game, createPiece, decodeCoords } from '../lib'
+import { moveFromPgn, Game, createPiece, decodeCoords } from '../lib'
 import { createGame } from '../lib/createGame'
 
-describe('decodeMove', () => {
+describe('moveFromPgn', () => {
   it('should decode a pawn moving forward', () => {
     const game: Game = createGame()
-    expect(decodeMove('a4', game)).toStrictEqual({
+    expect(moveFromPgn('a4', game)).toStrictEqual({
       from: { coords: decodeCoords('a2'), piece: createPiece('P', 'L') },
       to: { coords: decodeCoords('a4'), piece: createPiece('P', 'L') }
     })
-    expect(decodeMove('a3', game)).toStrictEqual({
+    expect(moveFromPgn('a3', game)).toStrictEqual({
       from: { coords: decodeCoords('a2'), piece: createPiece('P', 'L') },
       to: { coords: decodeCoords('a3'), piece: createPiece('P', 'L') }
     })
@@ -25,7 +25,7 @@ describe('decodeMove', () => {
         to: { coords: decodeCoords('d5'), piece: createPiece('P', 'D') }
       }
     ])
-    expect(decodeMove('Ra3', game)).toStrictEqual({
+    expect(moveFromPgn('Ra3', game)).toStrictEqual({
       from: { coords: decodeCoords('a1'), piece: createPiece('R', 'L') },
       to: { coords: decodeCoords('a3'), piece: createPiece('R', 'L') }
     })
@@ -46,7 +46,7 @@ describe('decodeMove', () => {
         to: { coords: decodeCoords('g4'), piece: createPiece('P', 'L') }
       },
     ])
-    expect(decodeMove('Qh4#', game)).toStrictEqual({
+    expect(moveFromPgn('Qh4#', game)).toStrictEqual({
       from: { coords: decodeCoords('d8'), piece: createPiece('Q', 'D') },
       to: { coords: decodeCoords('h4'), piece: createPiece('Q', 'D') }
     })
@@ -87,7 +87,7 @@ describe('decodeMove', () => {
         to: { coords: decodeCoords('d3'), piece: createPiece('P', 'D') }
       },
     ])
-    expect(decodeMove('Raxd3', game)).toStrictEqual({
+    expect(moveFromPgn('Raxd3', game)).toStrictEqual({
       from: { coords: decodeCoords('a3'), piece: createPiece('R', 'L') },
       to: { coords: decodeCoords('d3'), piece: createPiece('R', 'L') }
     })
@@ -128,7 +128,7 @@ describe('decodeMove', () => {
         to: { coords: decodeCoords('d3'), piece: createPiece('P', 'D') }
       },
     ])
-    expect(() => decodeMove('Rxd3', game)).toThrowError('Could not disambiguate between multiple valid pieces')
+    expect(() => moveFromPgn('Rxd3', game)).toThrowError('Could not disambiguate between multiple valid pieces')
   })
 
   it('should decode a queenside castle', () => {
@@ -166,7 +166,7 @@ describe('decodeMove', () => {
         to: { coords: decodeCoords('e5'), piece: createPiece('P', 'D') }
       },
     ])
-    expect(decodeMove('O-O-O', game)).toStrictEqual({
+    expect(moveFromPgn('O-O-O', game)).toStrictEqual({
       from: { coords: decodeCoords('e1'), piece: createPiece('K', 'L') },
       to: { coords: decodeCoords('c1'), piece: createPiece('K', 'L') }
     })

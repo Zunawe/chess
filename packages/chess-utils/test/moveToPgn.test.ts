@@ -1,7 +1,7 @@
-import { encodeMove, Game, createPiece, decodeCoords } from '../lib'
+import { moveToPgn, Game, createPiece, decodeCoords } from '../lib'
 import { createGame } from '../lib/createGame'
 
-describe('encodeMove', () => {
+describe('moveToPgn', () => {
   let game: Game
 
   beforeEach(() => {
@@ -71,41 +71,41 @@ describe('encodeMove', () => {
 
   describe('Regular Moves', () => {
     it('should encode a pawn moving forward', () => {
-      expect(encodeMove(0, game)).toBe('a4')
+      expect(moveToPgn(0, game)).toBe('a4')
     })
 
     it('should encode a rook move', () => {
-      expect(encodeMove(2, game)).toBe('Ra3')
+      expect(moveToPgn(2, game)).toBe('Ra3')
     })
 
     it('should encode a queen move', () => {
-      expect(encodeMove(3, game)).toBe('Qd6')
+      expect(moveToPgn(3, game)).toBe('Qd6')
     })
 
     it('should encode a knight move', () => {
-      expect(encodeMove(4, game)).toBe('Nc3')
+      expect(moveToPgn(4, game)).toBe('Nc3')
     })
 
     it('should encode a bishop move', () => {
-      expect(encodeMove(5, game)).toBe('Bg4')
+      expect(moveToPgn(5, game)).toBe('Bg4')
     })
   })
 
   describe('Castling', () => {
     it('should encode a queenside castle', () => {
-      expect(encodeMove(9, game)).toBe('O-O-O')
+      expect(moveToPgn(9, game)).toBe('O-O-O')
     })
   })
 
   describe('Check', () => {
     it('should encode checking the king', () => {
-      expect(encodeMove(10, game)).toBe('axb7+')
+      expect(moveToPgn(10, game)).toBe('axb7+')
     })
   })
 
   describe('Pawn Promotion', () => {
     it('should encode promotion to queen', () => {
-      expect(encodeMove(14, game)).toBe('bxc8=Q+')
+      expect(moveToPgn(14, game)).toBe('bxc8=Q+')
     })
   })
 
@@ -149,7 +149,7 @@ describe('encodeMove', () => {
           to: { coords: decodeCoords('d3'), piece: createPiece('R', 'L') }
         }
       ])
-      expect(encodeMove(8, game)).toBe('Raxd3')
+      expect(moveToPgn(8, game)).toBe('Raxd3')
     })
   })
 })
