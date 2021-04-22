@@ -19,7 +19,7 @@ export const isLegalMove = (move: Move, game: Game): boolean => {
 
   return getLegalMoves(move.from, game)
     // Move can't leave king in check
-    .filter((legalMove) => !isCheck({ ...game, moves: [...game.moves, legalMove] }))
+    .filter((legalMove) => !isCheck({ ...game, moves: [...game.moves, legalMove] }, color))
     .filter((legalMove) => {
       if (isCastle(legalMove)) {
         // King can't castle while in check
@@ -36,7 +36,7 @@ export const isLegalMove = (move: Move, game: Game): boolean => {
             coords: toCoords(getFile(legalMove.from.coords) + direction, getRank(legalMove.to.coords))
           }
         }
-        return !isCheck({ ...game, moves: [...game.moves, testMove] })
+        return !isCheck({ ...game, moves: [...game.moves, testMove] }, color)
       }
 
       return true

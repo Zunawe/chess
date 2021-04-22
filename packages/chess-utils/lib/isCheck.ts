@@ -1,8 +1,8 @@
 import { getBoard } from './getBoard'
-import { getAttackedSpaces, flipColor, whoseTurn, Game } from '.'
+import { getAttackedSpaces, flipColor, whoseTurn, Game, Color } from '.'
 
-export const isCheck = (game: Game): boolean => {
-  const color = whoseTurn(game)
+export const isCheck = (game: Game, color?: Color): boolean => {
+  color = color ?? whoseTurn(game)
   const board = getBoard(game)
 
   const kingCoords = board.findIndex((piece) => piece !== null && piece.type === 'K' && piece.color === color)
