@@ -9,9 +9,10 @@ import {
   SetPromotingAction,
   UndoLastMoveAction,
   ReplaceLastMoveAction,
-  SetRoomCodeAction,
-  SetPerspectiveAction
+  SetPerspectiveAction,
+  SetColorAction
 } from '../actions/app'
+import { SetSocketAction } from '../actions/socket'
 
 export const reducer: Reducer = (state, action) => {
   if (action instanceof UndoLastMoveAction) {
@@ -54,15 +55,20 @@ export const reducer: Reducer = (state, action) => {
       ...state,
       promoting: action.payload
     }
-  } else if (action instanceof SetRoomCodeAction) {
-    return {
-      ...state,
-      roomCode: action.payload
-    }
   } else if (action instanceof SetPerspectiveAction) {
     return {
       ...state,
       perspective: action.payload
+    }
+  } else if (action instanceof SetSocketAction) {
+    return {
+      ...state,
+      socket: action.payload
+    }
+  } else if (action instanceof SetColorAction) {
+    return {
+      ...state,
+      color: action.payload
     }
   }
   return state

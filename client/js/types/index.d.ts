@@ -5,12 +5,11 @@ declare abstract class Action {
 
 declare interface State {
   game: import('chess-utils').Game
+  color: import('chess-utils').Color
   dragging: boolean
-  selected: null | number
+  selected: number | null
   promoting: boolean
-  perspective: import('chess-utils').Color
-  roomCode: string
-  socket: import('socket.io-client').Socket
+  socket: import('socket.io-client').Socket | null
 }
 
 declare interface Store {

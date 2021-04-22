@@ -1,20 +1,26 @@
+import { io, Socket } from 'socket.io-client'
 import * as Chess from 'chess-utils'
 
+import { Action } from './Action'
 import { Thunk } from '../middlewares'
-import { setGame, setRoomCode } from './app'
+import { setColor, setGame } from './app'
 
-export const initializeSocket: (roomCode: string) => Thunk = (roomCode: string) => {
+export class SetSocketAction extends Action {}
+export const setSocket = (socket: Socket): SetSocketAction => (new SetSocketAction(socket))
+
+export const joinRoom: (roomCode: string, color?: Chess.Color) => Thunk = (roomCode: string, color?: Chess.Color) => {
   return (dispatch, getState) => {
     const { socket } = getState()
+    if (socket === null) throw new Error('Socket not initialized')
 
-    socket.on('connect', () => {
-      console.log('Connected')
+    socket.on('join', () => {
+      console.log('A player has joined')
+      dispatch(resyncGame())
     })
 
-    socket.on('joined', (roomCode: string) => {
-      console.log(`Joined room ${roomCode}`)
-      dispatch(setRoomCode(roomCode))
-      dispatch(resyncGame())
+    socket.on('color', (color: Chess.Color) => {
+      console.log(`You're playing as ${color}`)
+      dispatch(setColor(color))
     })
 
     socket.on('full', () => {
@@ -22,28 +28,34 @@ export const initializeSocket: (roomCode: string) => Thunk = (roomCode: string) 
     })
 
     socket.on('sync', (encodedGame) => {
+      console.log('Resyncing game...')
       dispatch(setGame(Chess.decodeGame(encodedGame)))
     })
 
-    dispatch(joinRoom(roomCode))
+    socket.emit('join', roomCode, color)
+  }
+}
+
+export const initializeSocket: () => Thunk = () => {
+  return (dispatch, getState) => {
+    dispatch(setSocket(io()))
   }
 }
 
 export const sendLastMove: (game: Chess.Game) => Thunk = (game: Chess.Game) => {
   return (dispatch, getState) => {
-    const { roomCode, socket } = getState()
-    socket.emit('move', roomCode, Chess.encodeMove(game.moves.length - 1, game))
+    const { socket } = getState()
+    if (socket === null) throw new Error('Socket not initialized')
+
+    socket.emit('move', Chess.encodeMove(game.moves.length - 1, game))
   }
 }
 
 export const resyncGame: () => Thunk = () => {
   return (dispatch, getState) => {
-    getState().socket.emit('sync')
-  }
-}
+    const { socket } = getState()
+    if (socket === null) throw new Error('Socket not initialized')
 
-export const joinRoom: (code: string) => Thunk = (code: string) => {
-  return (dispatch, getState) => {
-    getState().socket.emit('join', code)
+    socket.emit('sync')
   }
 }

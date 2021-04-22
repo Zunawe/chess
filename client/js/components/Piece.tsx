@@ -39,7 +39,7 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
   const endDrag = useCallback((e) => {
     dispatch(setDragging(false))
 
-    if (Chess.whoseTurn(state.game) !== state.perspective) {
+    if (Chess.whoseTurn(state.game) !== state.color) {
       return
     }
 
@@ -65,7 +65,7 @@ export const Piece: FC<PieceProps> = ({ color, type, coordinates }) => {
         }
       }
     }
-  }, [color, type, state.roomCode, state.game])
+  }, [color, type, state.game])
 
   const isSelected = useMemo(() => {
     return state.selected !== null && state.selected === coordinates

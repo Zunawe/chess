@@ -2,13 +2,13 @@ import http from 'http'
 import path from 'path'
 import express from 'express'
 import helmet from 'helmet'
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 import * as Chess from 'chess-utils'
 
 import { httpLogger, errorLogger } from './middleware'
 import { getRoomCode, logger } from './util'
 import * as routes from './routes'
-import * as GameManager from './services/GameManager'
+import * as RoomManager from './services/RoomManager'
 
 const init = async (): Promise<void> => {
   logger.info('Starting server')
@@ -63,41 +63,61 @@ const init = async (): Promise<void> => {
   app.use(errorLogger)
 
   // Sockets
-  io.on('connect', (socket) => {
-    socket.on('join', (code) => {
-      if (!GameManager.gameExists(code)) {
-        GameManager.createGame(code)
+  io.on('connect', (socket: Socket) => {
+    socket.on('join', (roomCode, color) => {
+      if (!RoomManager.roomExists(roomCode)) {
+        RoomManager.createRoom(roomCode)
+      }
+      const room = RoomManager.getRoom(roomCode) as RoomManager.Room
+
+      const availableColors = (['L', 'D'] as Chess.Color[])
+        .filter((color) => room.players[color] === null)
+
+      if (availableColors.length === 0) {
+        socket.emit('full')
+        return
       }
 
-      void socket.join(code) /* eslint-disable-line no-void */
-      socket.emit('joined', code)
+      if (color === null) {
+        color = availableColors[0]
+      } else if (!availableColors.includes(color)) {
+        socket.emit('color taken')
+      }
+
+      RoomManager.addPlayer(roomCode, socket.id, color)
+
+      void socket.join(roomCode) /* eslint-disable-line no-void */
+      io.in(roomCode).emit('join')
+      socket.emit('color', color)
     })
 
     socket.on('move', (move) => {
       const roomCode = getRoomCode(socket)
       if (roomCode === undefined) return
 
-      const game = GameManager.makeMove(roomCode, move)
-      io.in(roomCode).emit('sync', Chess.encodeGame(game))
+      const room = RoomManager.makeMove(roomCode, move)
+      io.in(roomCode).emit('sync', Chess.encodeGame(room.game))
     })
 
     socket.on('sync', () => {
       const roomCode = getRoomCode(socket)
       if (roomCode === undefined) return
 
-      const game = GameManager.getGame(roomCode)
-      if (game === undefined) return
+      const room = RoomManager.getRoom(roomCode)
+      if (room === undefined) return
 
-      socket.emit('sync', Chess.encodeGame(game))
+      socket.emit('sync', Chess.encodeGame(room.game))
     })
 
     socket.on('disconnecting', () => {
       const roomCode = getRoomCode(socket)
       if (roomCode === undefined) return
 
+      RoomManager.removePlayer(roomCode, socket.id)
+
       io.in(roomCode).allSockets().then((sockets) => {
         if (sockets.size === 1) {
-          GameManager.removeGame(roomCode)
+          RoomManager.removeRoom(roomCode)
         }
       }).catch((reason) => logger.error(reason))
     })

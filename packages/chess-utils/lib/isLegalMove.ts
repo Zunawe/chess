@@ -21,7 +21,7 @@ export const isLegalMove = (move: Move, game: Game): boolean => {
     // Move can't leave king in check
     .filter((legalMove) => !isCheck({ ...game, moves: [...game.moves, legalMove] }))
     .filter((legalMove) => {
-      if (isCastle(move)) {
+      if (isCastle(legalMove)) {
         // King can't castle while in check
         if (isCheck(game)) {
           return false

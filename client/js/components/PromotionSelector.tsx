@@ -22,8 +22,8 @@ export const PromotionSelector: FC = () => {
     <div
       className={[
         'promotionSelector',
-        `${state.perspective === lastMove.from.piece.color ? 'top' : 'bottom'}`,
-        `col-${state.perspective === 'L' ? Chess.getFile(lastMove.to.coords) : 7 - Chess.getFile(lastMove.to.coords)}`
+        `${state.color === lastMove.from.piece.color ? 'top' : 'bottom'}`,
+        `col-${state.color === 'L' ? Chess.getFile(lastMove.to.coords) : 7 - Chess.getFile(lastMove.to.coords)}`
       ].join(' ')}
     >
       {promotionPieces.map((piece) => (

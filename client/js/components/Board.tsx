@@ -5,7 +5,11 @@ import { AppContext } from '../context/app'
 import { deselectPiece, stopPromotion } from '../context/actions/app'
 import { PromotionSelector, Tile, TileProps } from './index'
 
-export const Board: FC = () => {
+interface BoardProps {
+  perspective?: Chess.Color
+}
+
+export const Board: FC<BoardProps> = ({ perspective = 'L' }) => {
   const [state, dispatch] = useContext(AppContext)
   const handleClick = useCallback(() => {
     if (!state.dragging) {
@@ -34,7 +38,7 @@ export const Board: FC = () => {
 
   return (
     <div id='boardContainer'>
-      <div id='board' className={state.perspective === 'D' ? 'flipped' : ''} onClick={handleClick}>
+      <div id='board' className={perspective === 'D' ? 'flipped' : ''} onClick={handleClick}>
         {tiles.map((rank, r) => {
           return (
             <div className='rank' key={r}>
@@ -49,6 +53,5 @@ export const Board: FC = () => {
       </div>
       <PromotionSelector />
     </div>
-
   )
 }
