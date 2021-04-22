@@ -1,4 +1,4 @@
-export type Color = 'D' | 'L'
+export type Color = 'W' | 'B'
 export type PieceType = 'K' | 'Q' | 'R' | 'N' | 'B' | 'P'
 
 export interface Piece {

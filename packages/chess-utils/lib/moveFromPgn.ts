@@ -13,8 +13,8 @@ export const moveFromPgn = (encodedMove: string, game: Game): Move => {
   if (castleMatch !== undefined) {
     const piece = createPiece('K', color)
     return {
-      from: { coords: toCoords(4, color === 'L' ? 0 : 7), piece },
-      to: { coords: toCoords(queenSide === undefined ? 6 : 2, color === 'L' ? 0 : 7), piece }
+      from: { coords: toCoords(4, color === 'W' ? 0 : 7), piece },
+      to: { coords: toCoords(queenSide === undefined ? 6 : 2, color === 'W' ? 0 : 7), piece }
     }
   }
 

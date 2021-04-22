@@ -2,7 +2,7 @@ import { Move, PieceType, Color, createPiece } from '.'
 import { decodeCoords } from './coordinates'
 
 export const deserializeMove = (serializedMove: string): Move => {
-  const [, color, p1, c1, p2, c2] = serializedMove.match(/^(L|D)([PQRBNK])([abcdefgh][12345678])([PQRBNK])([abcdefgh][12345678])$/) ?? []
+  const [, color, p1, c1, p2, c2] = serializedMove.match(/^(W|B)([PQRBNK])([abcdefgh][12345678])([PQRBNK])([abcdefgh][12345678])$/) ?? []
 
   if (
     color === undefined ||

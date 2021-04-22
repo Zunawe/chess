@@ -3,7 +3,7 @@ import { MovePart, Move } from '../index'
 
 export const getAllPawnMoves = (from: MovePart): Move[] => {
   const { coords, piece } = from
-  const direction = piece.color === 'L' ? 1 : -1
+  const direction = piece.color === 'W' ? 1 : -1
   const possibleMoves: Move[] = []
   if (validCoords(getRank(coords) + direction)) {
     possibleMoves.push({

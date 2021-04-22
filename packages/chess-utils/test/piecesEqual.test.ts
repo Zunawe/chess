@@ -6,11 +6,11 @@ describe('piecesEqual', () => {
   beforeEach(() => {
     a = {
       type: 'P',
-      color: 'L'
+      color: 'W'
     }
     b = {
       type: 'P',
-      color: 'L'
+      color: 'W'
     }
   })
 
@@ -25,7 +25,7 @@ describe('piecesEqual', () => {
   })
 
   it('should find different colored pieces to be different', () => {
-    b.color = 'D'
+    b.color = 'B'
     expect(piecesEqual(a, b)).toBe(false)
   })
 })

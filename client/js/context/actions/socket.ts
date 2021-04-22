@@ -27,9 +27,9 @@ export const joinRoom: (roomCode: string, color?: Chess.Color) => Thunk = (roomC
       console.log('Room is full')
     })
 
-    socket.on('sync', (encodedGame) => {
+    socket.on('sync', (serializedGame) => {
       console.log('Resyncing game...')
-      dispatch(setGame(Chess.decodeGame(encodedGame)))
+      dispatch(setGame(Chess.deserializeGame(serializedGame)))
     })
 
     socket.emit('join', roomCode, color)
@@ -47,7 +47,7 @@ export const sendLastMove: (game: Chess.Game) => Thunk = (game: Chess.Game) => {
     const { socket } = getState()
     if (socket === null) throw new Error('Socket not initialized')
 
-    socket.emit('move', Chess.encodeMove(game.moves.length - 1, game))
+    socket.emit('move', Chess.serializeMove(game.moves[game.moves.length - 1]))
   }
 }
 

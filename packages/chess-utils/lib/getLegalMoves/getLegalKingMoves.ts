@@ -9,7 +9,7 @@ export const getLegalKingMoves = (from: MovePart, game: Game): Move[] => {
 
     // Castling
     if (isCastle(possibleMove)) {
-      const rank = from.piece.color === 'L' ? 0 : 7
+      const rank = from.piece.color === 'W' ? 0 : 7
 
       // King must be in original position
       if (getRank(from.coords) !== rank || getFile(from.coords) !== 4) {

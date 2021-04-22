@@ -5,12 +5,12 @@ describe('movesEqual', () => {
 
   beforeEach(() => {
     a = {
-      from: { coords: decodeCoords('a2'), piece: createPiece('P', 'L') },
-      to: { coords: decodeCoords('a3'), piece: createPiece('P', 'L') }
+      from: { coords: decodeCoords('a2'), piece: createPiece('P', 'W') },
+      to: { coords: decodeCoords('a3'), piece: createPiece('P', 'W') }
     }
     b = {
-      from: { coords: decodeCoords('a2'), piece: createPiece('P', 'L') },
-      to: { coords: decodeCoords('a3'), piece: createPiece('P', 'L') }
+      from: { coords: decodeCoords('a2'), piece: createPiece('P', 'W') },
+      to: { coords: decodeCoords('a3'), piece: createPiece('P', 'W') }
     }
   })
 
@@ -26,8 +26,8 @@ describe('movesEqual', () => {
   })
 
   it('should find different colored pieces to be different', () => {
-    b.from.piece.color = 'D'
-    b.to.piece.color = 'D'
+    b.from.piece.color = 'B'
+    b.to.piece.color = 'B'
     expect(movesEqual(a, b)).toBe(false)
   })
 

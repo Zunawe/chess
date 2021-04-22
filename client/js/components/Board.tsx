@@ -9,7 +9,7 @@ interface BoardProps {
   perspective?: Chess.Color
 }
 
-export const Board: FC<BoardProps> = ({ perspective = 'L' }) => {
+export const Board: FC<BoardProps> = ({ perspective = 'W' }) => {
   const [state, dispatch] = useContext(AppContext)
   const handleClick = useCallback(() => {
     if (!state.dragging) {
@@ -38,7 +38,7 @@ export const Board: FC<BoardProps> = ({ perspective = 'L' }) => {
 
   return (
     <div id='boardContainer'>
-      <div id='board' className={perspective === 'D' ? 'flipped' : ''} onClick={handleClick}>
+      <div id='board' className={perspective === 'B' ? 'flipped' : ''} onClick={handleClick}>
         {tiles.map((rank, r) => {
           return (
             <div className='rank' key={r}>

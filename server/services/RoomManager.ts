@@ -4,8 +4,8 @@ import { logger } from '../util'
 export interface Room {
   game: Chess.Game
   players: {
-    L: string | null
-    D: string | null
+    W: string | null
+    B: string | null
   }
 }
 
@@ -19,8 +19,8 @@ export const createRoom = (code: string): Room => {
   const room = {
     game: Chess.createGame(),
     players: {
-      L: null,
-      D: null
+      W: null,
+      B: null
     }
   }
   rooms.set(code, room)
@@ -41,7 +41,7 @@ export const makeMove = (code: string, move: string): Room => {
   const { game } = room
   const newRoom: Room = {
     ...room,
-    game: Chess.createGame([...game.moves, Chess.decodeMove(move, game)], game.initialBoard)
+    game: Chess.createGame([...game.moves, Chess.deserializeMove(move)], game.initialBoard)
   }
   rooms.set(code, newRoom)
 
@@ -68,11 +68,11 @@ export const removePlayer = (code: string, username: string): void => {
 
   logger.debug(`Player ${username} leaving match`)
 
-  const isL = room.players.L === username
-  const isD = room.players.L === username
+  const isW = room.players.W === username
+  const isB = room.players.B === username
 
-  if (isL) room.players.L = null
-  if (isD) room.players.D = null
+  if (isW) room.players.W = null
+  if (isB) room.players.B = null
 
   rooms.set(code, room)
 }

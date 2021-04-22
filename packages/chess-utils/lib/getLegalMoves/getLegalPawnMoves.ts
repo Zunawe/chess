@@ -3,8 +3,8 @@ import { toCoords } from '../coordinates'
 
 export const getLegalPawnMoves = (from: MovePart, game: Game): Move[] => {
   const board = getBoard(game)
-  const isFirstMove = from.piece.color === 'L' ? getRank(from.coords) === 1 : getRank(from.coords) === 6
-  const direction = from.piece.color === 'L' ? 1 : -1
+  const isFirstMove = from.piece.color === 'W' ? getRank(from.coords) === 1 : getRank(from.coords) === 6
+  const direction = from.piece.color === 'W' ? 1 : -1
   const legalMoves = getAllMoves(from).filter((possibleMove) => {
     const { from, to } = possibleMove
 

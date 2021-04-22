@@ -70,7 +70,7 @@ const init = async (): Promise<void> => {
       }
       const room = RoomManager.getRoom(roomCode) as RoomManager.Room
 
-      const availableColors = (['L', 'D'] as Chess.Color[])
+      const availableColors = (['W', 'B'] as Chess.Color[])
         .filter((color) => room.players[color] === null)
 
       if (availableColors.length === 0) {
@@ -96,7 +96,7 @@ const init = async (): Promise<void> => {
       if (roomCode === undefined) return
 
       const room = RoomManager.makeMove(roomCode, move)
-      io.in(roomCode).emit('sync', Chess.encodeGame(room.game))
+      io.in(roomCode).emit('sync', Chess.serializeGame(room.game))
     })
 
     socket.on('sync', () => {
@@ -106,7 +106,7 @@ const init = async (): Promise<void> => {
       const room = RoomManager.getRoom(roomCode)
       if (room === undefined) return
 
-      socket.emit('sync', Chess.encodeGame(room.game))
+      socket.emit('sync', Chess.serializeGame(room.game))
     })
 
     socket.on('disconnecting', () => {

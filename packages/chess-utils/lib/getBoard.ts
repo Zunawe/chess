@@ -8,38 +8,38 @@ export const getBoard = (game: Game): Board => {
 
 export const getStartingBoard = (): Board => {
   const data: Array<[number, Piece]> = [
-    [toCoords(0, 1), createPiece('P', 'L')],
-    [toCoords(1, 1), createPiece('P', 'L')],
-    [toCoords(2, 1), createPiece('P', 'L')],
-    [toCoords(3, 1), createPiece('P', 'L')],
-    [toCoords(4, 1), createPiece('P', 'L')],
-    [toCoords(5, 1), createPiece('P', 'L')],
-    [toCoords(6, 1), createPiece('P', 'L')],
-    [toCoords(7, 1), createPiece('P', 'L')],
-    [toCoords(0, 0), createPiece('R', 'L')],
-    [toCoords(1, 0), createPiece('N', 'L')],
-    [toCoords(2, 0), createPiece('B', 'L')],
-    [toCoords(3, 0), createPiece('Q', 'L')],
-    [toCoords(4, 0), createPiece('K', 'L')],
-    [toCoords(5, 0), createPiece('B', 'L')],
-    [toCoords(6, 0), createPiece('N', 'L')],
-    [toCoords(7, 0), createPiece('R', 'L')],
-    [toCoords(0, 6), createPiece('P', 'D')],
-    [toCoords(1, 6), createPiece('P', 'D')],
-    [toCoords(2, 6), createPiece('P', 'D')],
-    [toCoords(3, 6), createPiece('P', 'D')],
-    [toCoords(4, 6), createPiece('P', 'D')],
-    [toCoords(5, 6), createPiece('P', 'D')],
-    [toCoords(6, 6), createPiece('P', 'D')],
-    [toCoords(7, 6), createPiece('P', 'D')],
-    [toCoords(0, 7), createPiece('R', 'D')],
-    [toCoords(1, 7), createPiece('N', 'D')],
-    [toCoords(2, 7), createPiece('B', 'D')],
-    [toCoords(3, 7), createPiece('Q', 'D')],
-    [toCoords(4, 7), createPiece('K', 'D')],
-    [toCoords(5, 7), createPiece('B', 'D')],
-    [toCoords(6, 7), createPiece('N', 'D')],
-    [toCoords(7, 7), createPiece('R', 'D')]
+    [toCoords(0, 1), createPiece('P', 'W')],
+    [toCoords(1, 1), createPiece('P', 'W')],
+    [toCoords(2, 1), createPiece('P', 'W')],
+    [toCoords(3, 1), createPiece('P', 'W')],
+    [toCoords(4, 1), createPiece('P', 'W')],
+    [toCoords(5, 1), createPiece('P', 'W')],
+    [toCoords(6, 1), createPiece('P', 'W')],
+    [toCoords(7, 1), createPiece('P', 'W')],
+    [toCoords(0, 0), createPiece('R', 'W')],
+    [toCoords(1, 0), createPiece('N', 'W')],
+    [toCoords(2, 0), createPiece('B', 'W')],
+    [toCoords(3, 0), createPiece('Q', 'W')],
+    [toCoords(4, 0), createPiece('K', 'W')],
+    [toCoords(5, 0), createPiece('B', 'W')],
+    [toCoords(6, 0), createPiece('N', 'W')],
+    [toCoords(7, 0), createPiece('R', 'W')],
+    [toCoords(0, 6), createPiece('P', 'B')],
+    [toCoords(1, 6), createPiece('P', 'B')],
+    [toCoords(2, 6), createPiece('P', 'B')],
+    [toCoords(3, 6), createPiece('P', 'B')],
+    [toCoords(4, 6), createPiece('P', 'B')],
+    [toCoords(5, 6), createPiece('P', 'B')],
+    [toCoords(6, 6), createPiece('P', 'B')],
+    [toCoords(7, 6), createPiece('P', 'B')],
+    [toCoords(0, 7), createPiece('R', 'B')],
+    [toCoords(1, 7), createPiece('N', 'B')],
+    [toCoords(2, 7), createPiece('B', 'B')],
+    [toCoords(3, 7), createPiece('Q', 'B')],
+    [toCoords(4, 7), createPiece('K', 'B')],
+    [toCoords(5, 7), createPiece('B', 'B')],
+    [toCoords(6, 7), createPiece('N', 'B')],
+    [toCoords(7, 7), createPiece('R', 'B')]
   ]
 
   return data.reduce<Board>((board, [coords, piece]) => {
@@ -64,8 +64,8 @@ const applyMove = (move: Move, board: Board): Board => {
   // Castle
   if (isCastle(move)) {
     const rookCoords = getFile(move.to.coords) - getFile(move.from.coords) < 0
-      ? (move.from.piece.color === 'L' ? decodeCoords('a1') : decodeCoords('a8'))
-      : (move.from.piece.color === 'L' ? decodeCoords('h1') : decodeCoords('h8'))
+      ? (move.from.piece.color === 'W' ? decodeCoords('a1') : decodeCoords('a8'))
+      : (move.from.piece.color === 'W' ? decodeCoords('h1') : decodeCoords('h8'))
 
     const rook = newBoard[rookCoords]
     if (rook === null || rook.type !== 'R') {

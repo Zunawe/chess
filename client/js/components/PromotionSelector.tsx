@@ -23,7 +23,7 @@ export const PromotionSelector: FC = () => {
       className={[
         'promotionSelector',
         `${state.color === lastMove.from.piece.color ? 'top' : 'bottom'}`,
-        `col-${state.color === 'L' ? Chess.getFile(lastMove.to.coords) : 7 - Chess.getFile(lastMove.to.coords)}`
+        `col-${state.color === 'W' ? Chess.getFile(lastMove.to.coords) : 7 - Chess.getFile(lastMove.to.coords)}`
       ].join(' ')}
     >
       {promotionPieces.map((piece) => (

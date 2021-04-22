@@ -9,7 +9,7 @@ const initialState: State = {
     initialBoard: [],
     moves: []
   },
-  color: 'L',
+  color: 'W',
   dragging: false,
   selected: null,
   promoting: false,
