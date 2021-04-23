@@ -1,4 +1,4 @@
-import { MovePart, Move, Game, getBoard, getFile, getRank, toCoords } from '../index'
+import { MovePart, Move, Game, getBoard, getFile, getRank, toCoords } from '..'
 
 export const getLegalRookMoves = (from: MovePart, game: Game): Move[] => {
   const board = getBoard(game)
@@ -8,19 +8,19 @@ export const getLegalRookMoves = (from: MovePart, game: Game): Move[] => {
   let wWall = false
   let nWall = false
 
+  const f = getFile(from.coords)
+  const r = getRank(from.coords)
+
   const legalMoves: Move[] = []
   for (let i = 1; i < 8; ++i) {
-    if (!eWall && getFile(from.coords) + i <= 7) {
-      const nePiece = board[toCoords(getFile(from.coords) + i, getRank(from.coords))]
+    if (!eWall && f + i <= 7) {
+      const nePiece = board[toCoords(f + i, r)]
       if (nePiece === null || nePiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coords: toCoords(
-              getFile(from.coords) + i,
-              getRank(from.coords)
-            )
+            coords: toCoords(f + i, r)
           }
         })
       }
@@ -29,20 +29,14 @@ export const getLegalRookMoves = (from: MovePart, game: Game): Move[] => {
       }
     }
 
-    if (!sWall && getRank(from.coords) - i >= 0) {
-      const sePiece = board[(toCoords(
-        getFile(from.coords),
-        getRank(from.coords) - i
-      ))]
+    if (!sWall && r - i >= 0) {
+      const sePiece = board[(toCoords(f, r - i))]
       if (sePiece === null || sePiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coords: toCoords(
-              getFile(from.coords),
-              getRank(from.coords) - i
-            )
+            coords: toCoords(f, r - i)
           }
         })
       }
@@ -51,20 +45,14 @@ export const getLegalRookMoves = (from: MovePart, game: Game): Move[] => {
       }
     }
 
-    if (!wWall && getFile(from.coords) - i >= 0) {
-      const swPiece = board[(toCoords(
-        getFile(from.coords) - i,
-        getRank(from.coords)
-      ))]
+    if (!wWall && f - i >= 0) {
+      const swPiece = board[(toCoords(f - i, r))]
       if (swPiece === null || swPiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coords: toCoords(
-              getFile(from.coords) - i,
-              getRank(from.coords)
-            )
+            coords: toCoords(f - i, r)
           }
         })
       }
@@ -73,20 +61,14 @@ export const getLegalRookMoves = (from: MovePart, game: Game): Move[] => {
       }
     }
 
-    if (!nWall && getRank(from.coords) + i <= 7) {
-      const nwPiece = board[(toCoords(
-        getFile(from.coords),
-        getRank(from.coords) + i
-      ))]
+    if (!nWall && r + i <= 7) {
+      const nwPiece = board[(toCoords(f, r + i))]
       if (nwPiece === null || nwPiece.color !== from.piece.color) {
         legalMoves.push({
           from,
           to: {
             ...from,
-            coords: toCoords(
-              getFile(from.coords),
-              getRank(from.coords) + i
-            )
+            coords: toCoords(f, r + i)
           }
         })
       }

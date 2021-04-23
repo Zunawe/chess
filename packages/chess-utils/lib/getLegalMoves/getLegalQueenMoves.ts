@@ -1,4 +1,4 @@
-import { MovePart, Move, Game } from '../index'
+import { MovePart, Move, Game } from '..'
 
 import { getLegalBishopMoves } from './getLegalBishopMoves'
 import { getLegalRookMoves } from './getLegalRookMoves'

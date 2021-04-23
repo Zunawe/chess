@@ -1,4 +1,4 @@
-import { MovePart, Move, Game } from '../index'
+import { MovePart, Move, Game, isCheck } from '..'
 
 import { getLegalPawnMoves } from './getLegalPawnMoves'
 import { getLegalKnightMoves } from './getLegalKnightMoves'
@@ -8,20 +8,29 @@ import { getLegalBishopMoves } from './getLegalBishopMoves'
 import { getLegalQueenMoves } from './getLegalQueenMoves'
 
 export const getLegalMoves = (from: MovePart, game: Game): Move[] => {
+  let legalMoves = []
   switch (from.piece.type) {
     case 'P':
-      return getLegalPawnMoves(from, game)
+      legalMoves = getLegalPawnMoves(from, game)
+      break
     case 'R':
-      return getLegalRookMoves(from, game)
+      legalMoves = getLegalRookMoves(from, game)
+      break
     case 'N':
-      return getLegalKnightMoves(from, game)
+      legalMoves = getLegalKnightMoves(from, game)
+      break
     case 'B':
-      return getLegalBishopMoves(from, game)
+      legalMoves = getLegalBishopMoves(from, game)
+      break
     case 'Q':
-      return getLegalQueenMoves(from, game)
+      legalMoves = getLegalQueenMoves(from, game)
+      break
     case 'K':
-      return getLegalKingMoves(from, game)
+      legalMoves = getLegalKingMoves(from, game)
+      break
     default:
       throw new Error('Invalid piece type')
   }
+
+  return legalMoves.filter((move) => !isCheck({ ...game, moves: [...game.moves, move] }, from.piece.color))
 }

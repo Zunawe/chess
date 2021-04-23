@@ -1,11 +1,11 @@
-import { getAllMoves, MovePart, Move, Game, getBoard, getRank, getFile } from '..'
+import { validCoords, MovePart, Move, Game, getBoard, getRank, getFile } from '..'
 import { toCoords } from '../coordinates'
 
 export const getLegalPawnMoves = (from: MovePart, game: Game): Move[] => {
   const board = getBoard(game)
   const isFirstMove = from.piece.color === 'W' ? getRank(from.coords) === 1 : getRank(from.coords) === 6
   const direction = from.piece.color === 'W' ? 1 : -1
-  const legalMoves = getAllMoves(from).filter((possibleMove) => {
+  const legalMoves = getPossiblePawnMoves(from).filter((possibleMove) => {
     const { from, to } = possibleMove
 
     // Double move on first turn
@@ -69,4 +69,171 @@ export const getLegalPawnMoves = (from: MovePart, game: Game): Move[] => {
   })
 
   return legalMoves
+}
+
+const getPossiblePawnMoves = (from: MovePart): Move[] => {
+  const { coords, piece } = from
+  const direction = piece.color === 'W' ? 1 : -1
+  const f = getFile(coords)
+  const r = getRank(coords)
+
+  const possibleMoves: Move[] = []
+  if (validCoords(getRank(coords) + direction)) {
+    possibleMoves.push({
+      from,
+      to: {
+        ...from,
+        coords: toCoords(f, r + direction)
+      }
+    })
+    possibleMoves.push({
+      from,
+      to: {
+        coords: toCoords(f, r + direction),
+        piece: {
+          ...piece,
+          type: 'Q'
+        }
+      }
+    })
+    possibleMoves.push({
+      from,
+      to: {
+        coords: toCoords(f, r + direction),
+        piece: {
+          ...piece,
+          type: 'R'
+        }
+      }
+    })
+    possibleMoves.push({
+      from,
+      to: {
+        coords: toCoords(f, r + direction),
+        piece: {
+          ...piece,
+          type: 'B'
+        }
+      }
+    })
+    possibleMoves.push({
+      from,
+      to: {
+        coords: toCoords(f, r + direction),
+        piece: {
+          ...piece,
+          type: 'N'
+        }
+      }
+    })
+    if (validCoords(f + 1)) {
+      possibleMoves.push({
+        from,
+        to: {
+          ...from,
+          coords: toCoords(f + 1, r + direction)
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(f + 1, r + direction),
+          piece: {
+            ...piece,
+            type: 'Q'
+          }
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(f + 1, r + direction),
+          piece: {
+            ...piece,
+            type: 'R'
+          }
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(f + 1, r + direction),
+          piece: {
+            ...piece,
+            type: 'B'
+          }
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(f + 1, r + direction),
+          piece: {
+            ...piece,
+            type: 'N'
+          }
+        }
+      })
+    }
+    if (validCoords(f - 1)) {
+      possibleMoves.push({
+        from,
+        to: {
+          ...from,
+          coords: toCoords(f - 1, r + direction)
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(f - 1, r + direction),
+          piece: {
+            ...piece,
+            type: 'Q'
+          }
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(f - 1, r + direction),
+          piece: {
+            ...piece,
+            type: 'R'
+          }
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(f - 1, r + direction),
+          piece: {
+            ...piece,
+            type: 'B'
+          }
+        }
+      })
+      possibleMoves.push({
+        from,
+        to: {
+          coords: toCoords(f - 1, r + direction),
+          piece: {
+            ...piece,
+            type: 'N'
+          }
+        }
+      })
+    }
+  }
+  if (validCoords(r + direction + direction)) {
+    possibleMoves.push({
+      from,
+      to: {
+        ...from,
+        coords: toCoords(f, r + direction + direction)
+      }
+    })
+  }
+
+  return possibleMoves
 }

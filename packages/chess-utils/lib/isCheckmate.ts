@@ -1,6 +1,5 @@
 import { Game, Color, isCheck, getLegalMoves } from '.'
 import { getBoard } from './getBoard'
-import { isLegalMove } from './isLegalMove'
 import { whoseTurn } from './whoseTurn'
 
 export const isCheckmate = (game: Game, color?: Color): boolean => {
@@ -16,7 +15,7 @@ export const isCheckmate = (game: Game, color?: Color): boolean => {
       continue
     }
 
-    if (getLegalMoves({ coords, piece }, game).some((move) => isLegalMove(move, game))) {
+    if (getLegalMoves({ coords, piece }, game).length > 0) {
       return false
     }
   }
