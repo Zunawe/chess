@@ -1,24 +1,9 @@
-import { Game, Color, isCheck, getLegalMoves } from '.'
-import { getBoard } from './getBoard'
-import { whoseTurn } from './whoseTurn'
+import { Game, isCheck, getAllLegalMoves } from '.'
 
-export const isCheckmate = (game: Game, color?: Color): boolean => {
-  color = color ?? whoseTurn(game)
-  const board = getBoard(game)
-
-  if (!isCheck(game, color)) {
+export const isCheckmate = (game: Game): boolean => {
+  if (!isCheck(game)) {
     return false
   }
 
-  for (const [coords, piece] of board.entries()) {
-    if (piece === null || piece.color !== color) {
-      continue
-    }
-
-    if (getLegalMoves({ coords, piece }, game).length > 0) {
-      return false
-    }
-  }
-
-  return true
+  return getAllLegalMoves(game).length === 0
 }

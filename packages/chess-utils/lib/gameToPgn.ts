@@ -10,7 +10,7 @@ export const gameToPgn = (game: Game): string => {
     const lMove = pgnMoves[i]
     const dMove = pgnMoves[i + 1] ?? ''
 
-    pgn += `${i + 1}. ${lMove} ${dMove}`
+    pgn += `${(i / 2) + 1}. ${lMove} ${dMove} `
   }
 
   return pgn
