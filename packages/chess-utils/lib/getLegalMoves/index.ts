@@ -1,4 +1,4 @@
-import { MovePart, Move, Game, isCheck } from '..'
+import { MovePart, Move, Game, isCheck, toCoords, getFile, getRank, isCastle } from '..'
 
 import { getLegalPawnMoves } from './getLegalPawnMoves'
 import { getLegalKnightMoves } from './getLegalKnightMoves'
@@ -27,6 +27,28 @@ export const getLegalMoves = (from: MovePart, game: Game): Move[] => {
       break
     case 'K':
       legalMoves = getLegalKingMoves(from, game)
+        .filter((move) => {
+          if (isCastle(move)) {
+            // Can't castle while in check
+            if (isCheck(game, from.piece.color)) {
+              return false
+            }
+
+            const direction = (getFile(move.to.coords) - getFile(from.coords)) / 2
+            // King can't cross a space that would put him in check during castle
+            const testMove: Move = {
+              from: from,
+              to: {
+                ...move.to,
+                coords: toCoords(getFile(from.coords) + direction, getRank(move.to.coords))
+              }
+            }
+            if (isCheck({ ...game, moves: [...game.moves, testMove] }, from.piece.color)) {
+              return false
+            }
+          }
+          return true
+        })
       break
     default:
       throw new Error('Invalid piece type')

@@ -1,4 +1,4 @@
-import { isCastle, piecesEqual, MovePart, Move, Game, getBoard, getFile, getRank, isCheck, toCoords, validCoords } from '..'
+import { isCastle, piecesEqual, MovePart, Move, Game, getBoard, getFile, getRank, toCoords, validCoords } from '..'
 
 export const getLegalKingMoves = (from: MovePart, game: Game): Move[] => {
   const board = getBoard(game)
@@ -40,23 +40,6 @@ export const getLegalKingMoves = (from: MovePart, game: Game): Move[] => {
         if (piecesEqual(game.moves[i].from.piece, rook) && game.moves[i].from.coords === toCoords(direction < 0 ? 0 : 7, rank)) {
           return false
         }
-      }
-
-      // Can't castle while in check
-      if (isCheck(game, from.piece.color)) {
-        return false
-      }
-
-      // King can't cross a space that would put him in check during castle
-      const testMove: Move = {
-        from: from,
-        to: {
-          ...to,
-          coords: toCoords(getFile(from.coords) + direction, getRank(to.coords))
-        }
-      }
-      if (isCheck({ ...game, moves: [...game.moves, testMove] }, from.piece.color)) {
-        return false
       }
 
       return true
