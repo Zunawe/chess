@@ -7,6 +7,7 @@
     "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
+    "esModuleInterop": true
   },
   "include": [
     "./lib/**/*.ts"
