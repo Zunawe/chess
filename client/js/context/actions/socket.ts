@@ -25,6 +25,7 @@ export const joinRoom: (roomCode: string, color?: Chess.Color) => Thunk = (roomC
 
     socket.on('full', () => {
       console.log('Room is full')
+      location.href = '/chess'
     })
 
     socket.on('sync', (serializedGame) => {
