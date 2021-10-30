@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "setup": "npm i && npx husky install",
+    "clean": "rm -rf dist node_modules",
     "test": "jest",
     "build": "tsc",
     "lint": "ts-standard lib",
