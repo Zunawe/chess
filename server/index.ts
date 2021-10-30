@@ -6,7 +6,7 @@ import { Server, Socket } from 'socket.io'
 import * as Chess from 'chess-utils'
 
 import { httpLogger, errorLogger } from './middleware'
-import { getRoomCode, logger } from './util'
+import { getRoomCode, logger, isProductionEnv, isDevelopmentEnv } from './util'
 import * as routes from './routes'
 import * as RoomManager from './services/RoomManager'
 
@@ -20,14 +20,14 @@ const init = async (): Promise<void> => {
   const io = new Server(server)
 
   // Middlewares
-  if (process.env.NODE_ENV === 'production') {
+  if (isProductionEnv()) {
     app.use(helmet())
   }
 
   app.use(httpLogger)
 
   // Hot module replacement
-  if (process.env.NODE_ENV === 'development') {
+  if (isDevelopmentEnv()) {
     try {
       const webpack = (await import('webpack')).default
       const webpackConfig = (await import(path.join(process.cwd(), 'webpack.dev'))).default
@@ -51,7 +51,7 @@ const init = async (): Promise<void> => {
   }
 
   app.use(express.json())
-  if (process.env.NODE_ENV === 'production') {
+  if (isProductionEnv()) {
     app.use('/chess', express.static(path.join(process.cwd(), 'dist', 'client')))
   }
 
